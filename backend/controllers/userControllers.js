@@ -145,3 +145,30 @@ exports.userOtpSend = async (req, res) => {
     return res.status(400).json({ error: "Invalid details", error });
   }
 };
+
+//OTP verification
+exports.verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res
+      .status(400)
+      .json({ error: "Both email and OTP must be entered" });
+  }
+
+  try {
+    const user = await users.findOne({ email });
+
+    if (user && user.otp === otp) {
+      user.otp = null;
+      await user.save();
+
+      return res.status(200).json({ message: "OTP verified successfully" });
+    } else {
+      return res.status(400).json({ error: "Invalid OTP or email" });
+    }
+  } catch (error) {
+    console.error("Error verifying OTP", error);
+    return res.status(400).json({ error: "Invalid Details", error });
+  }
+};
