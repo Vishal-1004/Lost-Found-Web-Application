@@ -12,5 +12,8 @@ router.post("/login", controllers.login);
 // User SignUp
 router.post("/sign-up", controllers.signup);
 
-router.post("/otp-verify", controllers.userOtpSend);
+//OTP generation
+router.post("/otp-send", controllers.userOtpSend);
+//OTP verification
+router.post("/otp-verify", controllers.verifyOtp);
 module.exports = router;
