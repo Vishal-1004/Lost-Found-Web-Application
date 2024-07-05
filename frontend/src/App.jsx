@@ -2,6 +2,7 @@ import {BrowserRouter,Routes,Route} from "react-router-dom"
 import {NavBar,Footer} from "./components"
 import { LoginPage, SignUp } from "./pages";
 
+// checking 
 const App = () => {
   return (
     <BrowserRouter>
