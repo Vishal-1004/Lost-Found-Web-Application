@@ -25,13 +25,15 @@ function Login() {
 
   const emailOrRegNo = watch("email_or_reg_no");
 
+  // Capitalize the registration no./email
   useEffect(() => {
     setValue("email_or_reg_no", emailOrRegNo?.toUpperCase());
   }, [emailOrRegNo, setValue]);
 
   return (
     <div className="login-area flex justify-center items-center pt-[80px] sm:pt-[50px] pb-[50px]">
-      <div className="box">
+      {/* Login box */}
+      <div className="box sm:w-full md:max-w-[480px] mx-auto sm:py-[50px]">
         <h2 className="text-gray-700 outline-none block text-[40px] xl:text-[44px] font-bold mx-auto mb-3 w-full text-center">
           Login
         </h2>
@@ -41,6 +43,7 @@ function Login() {
           onSubmit={handleSubmit(onSubmit)}
           noValidate
         >
+          {/* Email or Registration number */}
           <div className="mb-3 w-full px-2">
             <label
               className="text-sm font-medium text-gray-700 flex items-center"
@@ -73,6 +76,7 @@ function Login() {
             )}
           </div>
 
+          {/* Password */}
           <div className="mb-3 w-full px-2">
             <label
               className="text-sm font-medium text-gray-700 flex items-center"
@@ -101,7 +105,8 @@ function Login() {
               <div className="invalid-feedback">{errors.password.message}</div>
             )}
           </div>
-
+          
+          {/* Forgot Password */}
           <div className="mb-3 w-full px-2 text-right">
             <Link
               to="/sign-up"
@@ -111,6 +116,7 @@ function Login() {
             </Link>
           </div>
 
+          {/* Login button */}
           <div className="mt-3 text-center">
             <button
               type="submit"
@@ -130,6 +136,7 @@ function Login() {
             </button>
           </div>
 
+          {/* Signup */}
           <div className="mt-3 text-center">
             <p className="text-sm">
               Don't have an account?{" "}
