@@ -102,6 +102,8 @@ exports.signup = async (req, res) => {
       .json({ message: "Internal Sever Error", specificError: error.message });
   }
 };
+
+// OTP Generation
 exports.userOtpSend = async (req, res) => {
   const { email } = req.body;
 

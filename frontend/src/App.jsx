@@ -6,14 +6,17 @@ const App = () => {
   return (
     <BrowserRouter>
       <NavBar />
-      {/* <LoginPage />
-      <SignUp /> */}
       <Routes>
-        <Route path="/" element={<h1 style={{"textAlign" : "center"}}>Homepage Here!</h1>} />
+        <Route
+          path="/"
+          element={<h1 style={{ textAlign: "center" }}>Homepage Here!</h1>}
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/sign-up" element={<SignUp />} />
       </Routes>
       <Footer />
     </BrowserRouter>
-  )
+  );
 };
 
 export default App;

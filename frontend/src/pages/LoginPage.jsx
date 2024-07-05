@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import "../style/Login&SignUp/Login.css";
 import ToastMsg from "../constants/ToastMsg";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [formLoading, setFormLoading] = useState(false);
@@ -102,9 +103,12 @@ function Login() {
           </div>
 
           <div className="mb-3 w-full px-2 text-right">
-            <a href="#" className="text-sm text-primary hover:underline">
+            <Link
+              to="/sign-up"
+              className="text-sm text-primary hover:underline"
+            >
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           <div className="mt-3 text-center">
@@ -129,9 +133,12 @@ function Login() {
           <div className="mt-3 text-center">
             <p className="text-sm">
               Don't have an account?{" "}
-              <a href="#" className="text-primary font-medium hover:underline">
+              <Link
+                to="/sign-up"
+                className="text-primary font-medium hover:underline"
+              >
                 Sign Up
-              </a>
+              </Link>
             </p>
           </div>
         </form>
