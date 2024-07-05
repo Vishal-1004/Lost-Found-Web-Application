@@ -7,7 +7,7 @@ import {faInstagram} from '@fortawesome/free-brands-svg-icons'
 
 const Footer = () => {
   return (
-    <div className="bg-blue-300 w-screen flex items-center gap-8 bottom-0 px-32 py-16 border-t-2 justify-between">
+    <div className="bg-blue-300 w-max-screen overflow-hidden flex items-center gap-8 bottom-0 px-10 py-16 border-t-2 justify-between">
       <div className="flex flex-col gap-4">
         <h1 className="underline font-semibold text-xl">Events</h1>
         <ul className="flex flex-col gap-2">
