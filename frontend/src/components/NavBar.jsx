@@ -65,7 +65,7 @@ const NavBar = () => {
         </Link>
 
         {/* Links in the right for laptops */}
-        <div ref={itemsRef} className='hidden md:flex items-center gap-4'>
+        <div className='hidden md:flex items-center gap-4'>
             <ul className='flex  gap-2'>
                 <Link to="/"><li className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>Lost</li></Link>
                 <Link to="/"><li className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>Found</li></Link>
@@ -82,13 +82,13 @@ const NavBar = () => {
                     <img className='h-[6vh] cursor-pointer border-2 p-1 rounded-full  border-gray-400' src={response.imgURL} />
                 </div>
             }
-            {/* If not logged in             */}
+            {/* If not logged in*/}
             {!response.loggedIn && 
             <div>
                 <button className=' cursor-pointer border-2 py-2 px-4 font-semibold rounded text-[1.2rem] hover:bg-gray-900/10 active:bg-gray-900/20 border-gray-300' > Login </button>
             </div>}
             {profileClicked && 
-                <ul className='flex absolute top-[12%] right-5 p-2 flex-col justify-center items-center bg-white shadow-lg gap-2'>
+                <ul ref={itemsRef} className='flex absolute top-[12%] right-5 p-2 flex-col justify-center items-center bg-white shadow-lg gap-2'>
                     <Link to="/"><li className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-center disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'><FontAwesomeIcon icon={faUser} /> Profile</li></Link>
                     <Link to="/"><li className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-center disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'><FontAwesomeIcon icon={faArrowRightFromBracket} /> Log Out</li></Link>
                 </ul> 
@@ -96,7 +96,7 @@ const NavBar = () => {
         </div>
 
         {/* Links in the right for mobile screens */}
-        <div ref={itemsRef} className='flex md:hidden items-center gap-4'>
+        <div className='flex md:hidden items-center gap-4'>
             {/* Default Profile image if logged in and no image URL*/}
             {response.loggedIn && !response.imgURL &&
                 <div onClick={()=>setHamburgerClicked(!hamburgerClicked)}>
@@ -115,7 +115,7 @@ const NavBar = () => {
                 <button onClick={()=>setHamburgerClicked(!hamburgerClicked)} className=' cursor-pointer border-2 py-2 px-4 font-semibold rounded text-[1.2rem] hover:bg-gray-900/10 active:bg-gray-900/20 border-gray-300' > <FontAwesomeIcon icon={faBars} /> </button>
             </div>}
             {!hamburgerClicked && 
-                <ul className='flex absolute top-[12%] right-5 p-2  flex-col justify-center bg-white shadow-lg gap-2'>
+                <ul ref={itemsRef} className='flex absolute top-[12%] right-5 p-2  flex-col justify-center bg-white shadow-lg gap-2'>
                     <Link className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-between disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none' to="/"><li><FontAwesomeIcon icon={faPersonCircleQuestion} /> Lost</li></Link>
                     <Link className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-between disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none' to="/"><li><FontAwesomeIcon icon={faPersonCirclePlus} /> Found</li></Link>
                     {response.loggedIn && <Link className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-between disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none' to="/"><li><FontAwesomeIcon icon={faUser} /> Profile</li></Link>}
