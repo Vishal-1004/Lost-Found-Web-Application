@@ -7,9 +7,10 @@ const controllers = require("../controllers/userControllers");
 router.get("/", controllers.api);
 
 // User Login
-router.post("/login",controllers.login)
+router.post("/login", controllers.login);
 
 // User SignUp
-router.post("/sign-up",controllers.signup)
+router.post("/sign-up", controllers.signup);
 
+router.post("/otp-verify", controllers.userOtpSend);
 module.exports = router;
