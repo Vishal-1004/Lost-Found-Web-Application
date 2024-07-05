@@ -6,7 +6,7 @@ const App = () => {
     <BrowserRouter>
       <NavBar />
       <Routes>
-        <Route path="/" element={<h1>Lol</h1>} />
+        <Route path="/" element={<h1 style={{"textAlign" : "center"}}>Homepage Here!</h1>} />
       </Routes>
     </BrowserRouter>
   )
