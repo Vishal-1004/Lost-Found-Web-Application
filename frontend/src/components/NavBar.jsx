@@ -4,31 +4,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser,faArrowRightFromBracket,faArrowRightToBracket,faPersonCircleQuestion,faPersonCirclePlus,faBars } from '@fortawesome/free-solid-svg-icons'
 
 const response={
-    loggedIn : false,
+    loggedIn : true,
 }
 
-function OutsideClick(ref) {
-    const [isClicked, setIsClicked] = useState();
-    useEffect(() => {
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setIsClicked(true);
-        } else {
-          setIsClicked(false);
-        }
-      }
-    
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-    return isClicked;
-}
 
 const NavBar = () => {
-    const itemsRef = useRef(null)
-    const itemsOutsideClick = OutsideClick(itemsRef)
+
+    const itemsRef = useRef(null);
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [itemsRef]);
+
+    function handleClickOutside(event) {
+        if (itemsRef.current && !itemsRef.current.contains(event.target)) {
+            setProfileClicked(false)
+            setHamburgerClicked(false)
+        }
+    }
     const [profileClicked,setProfileClicked]=useState(false)
     const [hamburgerClicked,setHamburgerClicked] =useState(false)
   return (
@@ -91,7 +87,7 @@ const NavBar = () => {
             <div>
                 <button className=' cursor-pointer border-2 py-2 px-4 font-semibold rounded text-[1.2rem] hover:bg-gray-900/10 active:bg-gray-900/20 border-gray-300' > Login </button>
             </div>}
-            {!profileClicked && 
+            {profileClicked && 
                 <ul className='flex absolute top-[12%] right-5 p-2 flex-col justify-center items-center bg-white shadow-lg gap-2'>
                     <Link to="/"><li className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-center disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'><FontAwesomeIcon icon={faUser} /> Profile</li></Link>
                     <Link to="/"><li className='px-4 py-2 text-[1.2rem] font-bold rounded hover:bg-gray-900/10 active:bg-gray-900/20 flex gap-2 items-center justify-center disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'><FontAwesomeIcon icon={faArrowRightFromBracket} /> Log Out</li></Link>
