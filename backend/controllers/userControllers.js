@@ -7,6 +7,14 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // Importing models/schemas
 const { users } = require("../models");
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "vitcseguide@gmail.com",
+    pass: "gvdt kqqs zzvr vfib",
+  },
+});
+
 // sample API
 exports.api = async (req, res) => {
   res.status(200).json({ message: "Server is working" });
@@ -92,5 +100,46 @@ exports.signup = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Internal Sever Error", specificError: error.message });
+  }
+};
+exports.userOtpSend = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Please Enter Your Email" });
+  }
+
+  try {
+    const preuser = await users.findOne({ email: email });
+
+    if (preuser) {
+      const OTP = Math.floor(100000 + Math.random() * 900000);
+
+      preuser.otp = OTP;
+      await preuser.save();
+
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: "Sending Email For OTP Validation",
+        text: `OTP:- ${OTP}`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log("error", error);
+          return res.status(400).json({ error: "email not sent" });
+        } else {
+          console.log("Email sent", info.response);
+          return res.status(200).json({ message: "email sent Successfully" });
+        }
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ error: "This user does not exist in our db" });
+    }
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid details", error });
   }
 };
