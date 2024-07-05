@@ -9,7 +9,6 @@ import {
   faPersonCirclePlus,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import BackToTop from "./BackToTop";
 
 const response = {
   loggedIn: false,
@@ -34,7 +33,7 @@ const NavBar = () => {
   const [profileClicked, setProfileClicked] = useState(false);
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
   return (
-    <div className="w-max-screen flex  shadow-lg justify-between items-center p-4">
+    <div className="w-screen flex  shadow-lg justify-between items-center p-4">
       {/* Logo for laptop screens */}
       <Link to="/" className="md:inline cursor-pointer hidden">
         <svg
