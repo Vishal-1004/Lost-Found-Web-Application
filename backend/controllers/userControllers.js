@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const SECRECT_KEY = "abcdefghijklmnop";
+const nodemailer = require("nodemailer");
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Importing models/schemas
 const { users } = require("../models");
