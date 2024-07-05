@@ -44,6 +44,9 @@ const userSchema = new mongoose.Schema({
     default: "USER",
     required: true,
   },
+  otp: {
+    type: String,
+  },
 });
 
 // hash password
@@ -59,17 +62,17 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateAuthtoken = async function () {
   try {
     let newToken = jwt.sign({ _id: this._id }, SECRECT_KEY, {
-      expiresIn: "1h", // 1h set's the expiration to 1 hour ( 30m for 30 minutes)
+      expiresIn: "1h", // 1h sets the expiration to 1 hour (30m for 30 minutes)
     });
 
     //await this.save();
     return newToken;
   } catch (error) {
-    res.status(400).json(error);
+    throw new Error(error);
   }
 };
 
 // creating model
-const users = new mongoose.model("users", userSchema);
+const users = mongoose.model("users", userSchema);
 
 module.exports = users;
