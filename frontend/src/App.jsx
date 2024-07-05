@@ -1,5 +1,5 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom"
-import NavBar from "./components/NavBar";
+import {NavBar,Footer} from "./components"
 
 const App = () => {
   return (
@@ -8,6 +8,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<h1 style={{"textAlign" : "center"}}>Homepage Here!</h1>} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 };
