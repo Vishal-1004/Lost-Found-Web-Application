@@ -44,7 +44,7 @@ const SignUp = () => {
   return (
     <div className="signup-area flex justify-center items-center pt-[80px] sm:pt-[50px] pb-[50px]">
       {/* Signup box */}
-      <div className="box sm:w-full md:max-w-[740px] mx-auto">
+      <div className="box sm:w-full md:max-w-[740px] mx-auto md:py-[50px]">
         <h2 className="text-gray-700 outline-none block text-[40px] xl:text-[44px] font-bold mx-auto mb-3 w-full text-center">
           Sign Up
         </h2>
