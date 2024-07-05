@@ -1,1 +1,3 @@
-// sample page
+import ToastMsg from "./ToastMsg";
+
+export { ToastMsg }
