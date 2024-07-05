@@ -1,12 +1,10 @@
-import {BrowserRouter,Routes,Route} from "react-router-dom"
-import {NavBar,Footer} from "./components"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginPage, SignUp } from "./pages";
 
-// checking 
+// checking
 const App = () => {
   return (
     <BrowserRouter>
-      <NavBar />
       <Routes>
         <Route
           path="/"
@@ -15,7 +13,6 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUp />} />
       </Routes>
-      <Footer />
     </BrowserRouter>
   );
 };
