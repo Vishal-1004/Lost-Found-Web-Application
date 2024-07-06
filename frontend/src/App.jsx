@@ -7,11 +7,13 @@ import {
   VerifyEmail,
   VerifyOTP,
 } from "./pages";
+import { Navbar } from "./components";
 
 // checking
 const App = () => {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route
           path="/"
