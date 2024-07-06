@@ -15,7 +15,12 @@ export const storedUserData = (state = initialState, action) => {
       };
 
     case "REMOVE_USER_DATA":
-      return initialState;
+      return {
+        ...state,
+        userToken: "",
+        userStatus: "USER",
+        userName: "",
+      };
 
     default:
       return state;
