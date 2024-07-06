@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
+
 import "../style/Login&SignUp/SignUp.css";
+
 import { ToastMsg } from "../constants";
+import { signupFunction } from "../services/API";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [formLoading, setFormLoading] = useState(false);
 
   const {
@@ -16,27 +22,51 @@ const SignUp = () => {
     reset,
   } = useForm();
 
-  const onSubmit = (formData) => {
+  const handleSignUp = async (formData) => {
+    setFormLoading(true);
     if (formData.password !== formData.confirm_password) {
-      ToastMsg("Passwords do not match!", "error");
-    //   console.log("Error")
+      ToastMsg("Passwords & Confirm Password do not match!", "error");
       return;
     }
-    
-    ToastMsg("Signup Successful!", "success");
-    // console.log("Succes")
-    reset();
+    try {
+      const { name, email, password, registrationNo, dayScholarORhosteler } =
+        formData;
+
+      const response = await signupFunction(
+        name,
+        email,
+        password,
+        registrationNo,
+        dayScholarORhosteler
+      );
+      //console.log(response);
+      if (response.status == 200) {
+        ToastMsg(response.data.message, "success");
+
+        // Navigate to login page
+        navigate("/login");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
+      setFormLoading(false);
+      reset();
+    }
+
+    //console.log(formData);
   };
 
-  const RegNo = watch("reg_no");
-  const Email = watch("email");
-
   // Capitalize the registration number
+  const RegNo = watch("registrationNo");
   useEffect(() => {
-    setValue("reg_no", RegNo?.toUpperCase());
+    setValue("registrationNo", RegNo?.toUpperCase());
   }, [RegNo, setValue]);
-  
+
   // Making the email lower cased
+  const Email = watch("email");
   useEffect(() => {
     setValue("email", Email?.toLowerCase());
   }, [Email, setValue]);
@@ -51,7 +81,7 @@ const SignUp = () => {
         <form
           name="signup-form"
           className="w-full"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleSignUp)}
           noValidate
         >
           <div className="flex flex-wrap -mx-2 px-2">
@@ -65,11 +95,13 @@ const SignUp = () => {
                 <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
               </label>
               <input
-                className={`form-control ${errors.name ? "border-red-500" : ""}`}
+                className={`form-control ${
+                  errors.name ? "border-red-500" : ""
+                }`}
                 name="Name"
                 type="text"
                 id="name"
-                placeholder="Name"
+                placeholder="eg: Vishal Kumar Yadav"
                 {...register("name", {
                   required: "Name is required",
                   pattern: {
@@ -87,20 +119,20 @@ const SignUp = () => {
             <div className="mb-3 w-full md:w-1/2 px-2">
               <label
                 className="text-sm font-medium text-gray-700 flex items-center"
-                htmlFor="reg_no"
+                htmlFor="registrationNo"
               >
                 Registration No:{" "}
                 <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
               </label>
               <input
                 className={`form-control ${
-                  errors.reg_no ? "border-red-500" : ""
+                  errors.registrationNo ? "border-red-500" : ""
                 }`}
                 name="Registration No"
                 type="text"
-                id="reg_no"
-                placeholder="eg: 22BCE1411"
-                {...register("reg_no", {
+                id="registrationNo"
+                placeholder="eg: 21BCE1846"
+                {...register("registrationNo", {
                   required: "Registration number is required",
                   pattern: {
                     value: /^(1|2)[0-9](B|M)[A-Z]{2}[0-9]{4}$/,
@@ -108,19 +140,21 @@ const SignUp = () => {
                   },
                 })}
               />
-              {errors.reg_no && (
-                <div className="invalid-feedback">{errors.reg_no.message}</div>
+              {errors.registrationNo && (
+                <div className="invalid-feedback">
+                  {errors.registrationNo.message}
+                </div>
               )}
             </div>
           </div>
 
           {/* Email */}
-          <div className="mb-3 w-full px-2">
+          <div className="mb-3 w-full  px-2">
             <label
               className="text-sm font-medium text-gray-700 flex items-center"
               htmlFor="email"
             >
-              Email:{" "}
+              VIT Email:{" "}
               <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
@@ -128,9 +162,9 @@ const SignUp = () => {
               name="Email"
               type="email"
               id="email"
-              placeholder="Email"
+              placeholder="eg: vishalkumar.yadav2021a@vitstudent.ac.in"
               {...register("email", {
-                required: "Email is required",
+                required: "VIT email is required",
                 pattern: {
                   value:
                     /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$/,
@@ -144,31 +178,31 @@ const SignUp = () => {
           </div>
 
           {/* Hosteller or Day scholar */}
-          <div className="mb-3 w-full md:w-2/3 px-2">
+          <div className="mb-3 w-full md:w-1/2 px-2">
             <label
               className="text-sm font-medium text-gray-700 flex items-center"
-              htmlFor="hostel_day"
+              htmlFor="dayScholarORhosteler"
             >
               Hosteller/Day Scholar:{" "}
               <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <select
               className={`form-control ${
-                errors.hostel_day ? "border-red-500" : ""
+                errors.dayScholarORhosteler ? "border-red-500" : ""
               }`}
               name="Hosteller/Day Scholar"
-              id="hostel_day"
-              {...register("hostel_day", {
+              id="dayScholarORhosteler"
+              {...register("dayScholarORhosteler", {
                 required: "This field is required",
               })}
             >
               <option value="">Select an option</option>
-              <option value="hosteller">Hosteller</option>
-              <option value="day_scholar">Day Scholar</option>
+              <option value="Hosteller">Hosteller</option>
+              <option value="Day Scholar">Day Scholar</option>
             </select>
-            {errors.hostel_day && (
+            {errors.dayScholarORhosteler && (
               <div className="invalid-feedback">
-                {errors.hostel_day.message}
+                {errors.dayScholarORhosteler.message}
               </div>
             )}
           </div>
@@ -194,13 +228,15 @@ const SignUp = () => {
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters long",
+                    value: 6,
+                    message: "Password must be at least 6 characters long",
                   },
                 })}
               />
               {errors.password && (
-                <div className="invalid-feedback">{errors.password.message}</div>
+                <div className="invalid-feedback">
+                  {errors.password.message}
+                </div>
               )}
             </div>
 
@@ -224,8 +260,8 @@ const SignUp = () => {
                 {...register("confirm_password", {
                   required: "Confirm Password is required",
                   minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters long",
+                    value: 6,
+                    message: "Password must be at least 6 characters long",
                   },
                 })}
               />
@@ -255,6 +291,19 @@ const SignUp = () => {
                 "Sign Up"
               )}
             </button>
+          </div>
+
+          {/* Login */}
+          <div className="mt-3 text-center">
+            <p className="text-sm">
+              Allready have an account?{" "}
+              <Link
+                to="/login"
+                className="text-primary font-medium hover:underline"
+              >
+                Login
+              </Link>
+            </p>
           </div>
         </form>
       </div>

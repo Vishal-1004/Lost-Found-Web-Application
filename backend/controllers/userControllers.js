@@ -46,6 +46,7 @@ exports.login = async (req, res) => {
             message: "Login Successfull!",
             userToken: token,
             status: user.status,
+            name: user.name,
           });
         }
       } else {
@@ -81,7 +82,7 @@ exports.signup = async (req, res) => {
     const user = await users.findOne({ registrationNo });
 
     if (user) {
-      return res.status(400).json({ error: "User Allready Exist" });
+      return res.status(400).json({ message: "User Allready Exist" });
     } else {
       const registerUser = new users({
         name,
@@ -103,7 +104,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-// OTP Generation
+// Verifying Email and Genearting OTP
 exports.userOtpSend = async (req, res) => {
   const { email } = req.body;
 
@@ -121,7 +122,7 @@ exports.userOtpSend = async (req, res) => {
       await preuser.save();
 
       const mailOptions = {
-        from: process.env.EMAIL,
+        from: "vitcseguide@gmail.com",
         to: email,
         subject: "Sending Email For OTP Validation",
         text: `OTP:- ${OTP}`,
@@ -130,7 +131,7 @@ exports.userOtpSend = async (req, res) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.log("error", error);
-          return res.status(400).json({ error: "email not sent" });
+          return res.status(400).json({ message: "email not sent" });
         } else {
           console.log("Email sent", info.response);
           return res.status(200).json({ message: "email sent Successfully" });
@@ -139,21 +140,21 @@ exports.userOtpSend = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ error: "This user does not exist in our db" });
+        .json({ message: "This email is not yet registered" });
     }
   } catch (error) {
-    return res.status(400).json({ error: "Invalid details", error });
+    return res.status(400).json({ message: "Invalid details", error });
   }
 };
 
-//OTP verification
+// OTP verification
 exports.verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
 
   if (!email || !otp) {
     return res
       .status(400)
-      .json({ error: "Both email and OTP must be entered" });
+      .json({ message: "Both email and OTP must be entered" });
   }
 
   try {
@@ -165,10 +166,10 @@ exports.verifyOtp = async (req, res) => {
 
       return res.status(200).json({ message: "OTP verified successfully" });
     } else {
-      return res.status(400).json({ error: "Invalid OTP or email" });
+      return res.status(400).json({ message: "Invalid OTP or email" });
     }
   } catch (error) {
     console.error("Error verifying OTP", error);
-    return res.status(400).json({ error: "Invalid Details", error });
+    return res.status(400).json({ message: "Invalid Details", error });
   }
 };

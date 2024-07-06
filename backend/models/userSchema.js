@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   dayScholarORhosteler: {
     type: String,
-    enum: ["Day Scholar", "Hosteler"],
+    enum: ["Day Scholar", "Hosteller"],
     default: "Day Scholar",
     required: true,
   },

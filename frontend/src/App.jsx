@@ -1,5 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginPage, SignUp } from "./pages";
+
+import {
+  LoginPage,
+  ResetPassword,
+  SignUp,
+  VerifyEmail,
+  VerifyOTP,
+} from "./pages";
 
 // checking
 const App = () => {
@@ -12,6 +19,9 @@ const App = () => {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/forgot-password" element={<VerifyEmail />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
-import "../style/Login&SignUp/Login.css";
+
 import ToastMsg from "../constants/ToastMsg";
-import { Link } from "react-router-dom";
+import "../style/Login&SignUp/Login.css";
+
+import { loginFunction } from "../services/API";
+
+import { storeUserData } from "../actions";
 
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formLoading, setFormLoading] = useState(false);
 
   const {
@@ -17,18 +27,44 @@ function Login() {
     reset,
   } = useForm();
 
-  const onSubmit = (formData) => {
-    ToastMsg("Login Successful!", "success");
-    // console.log("Success")
-    reset();
+  // User Login Function
+  const handleLogin = async (formData) => {
+    //console.log(formData);
+    setFormLoading(true);
+    try {
+      const { registrationNo, password } = formData;
+      const response = await loginFunction(registrationNo, password);
+      console.log(response);
+
+      if (response.status == 200) {
+        const userToken = response.data.userToken;
+        const userStatus = response.data.status;
+        const userName = response.data.name;
+
+        ToastMsg(response.data.message, "success");
+
+        // Store user data in Redux store
+        dispatch(storeUserData(userToken, userStatus, userName));
+
+        // Navigate to home page
+        navigate("/");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
+      setFormLoading(false);
+      reset();
+    }
   };
 
-  const emailOrRegNo = watch("email_or_reg_no");
-
-  // Capitalize the registration no./email
+  // Capitalize the registration no.
+  const registrationNo = watch("registrationNo");
   useEffect(() => {
-    setValue("email_or_reg_no", emailOrRegNo?.toUpperCase());
-  }, [emailOrRegNo, setValue]);
+    setValue("registrationNo", registrationNo?.toUpperCase());
+  }, [registrationNo, setValue]);
 
   return (
     <div className="login-area w-screen flex justify-center items-center pt-[80px] sm:pt-[50px] pb-[50px]">
@@ -40,38 +76,38 @@ function Login() {
         <form
           name="login-form"
           className="w-full"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleLogin)}
           noValidate
         >
-          {/* Email or Registration number */}
+          {/*Registration number */}
           <div className="mb-3 w-full px-2">
             <label
               className="text-sm font-medium text-gray-700 flex items-center"
-              htmlFor="email_or_reg_no"
+              htmlFor="registrationNo"
             >
-              Email/Registration No:{" "}
+              Registration No:{" "}
               <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               className={`form-control ${
-                errors.email_or_reg_no ? "border-red-500" : ""
+                errors.registrationNo ? "border-red-500" : ""
               }`}
-              name="Email/Registration No"
+              name="Registration No"
               type="text"
-              id="email_or_reg_no"
-              placeholder="Email or Registration No"
-              {...register("email_or_reg_no", {
-                required: "Email or registration number is required",
+              id="registrationNo"
+              placeholder="Registration No"
+              {...register("registrationNo", {
+                required: "Registration number is required",
                 pattern: {
                   value:
                     /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$|^(1|2)[0-9](B|M)[A-Z]{2}[0-9]{4}$/,
-                  message: "Invalid email or registration number",
+                  message: "Invalid registration number",
                 },
               })}
             />
-            {errors.email_or_reg_no && (
+            {errors.registrationNo && (
               <div className="invalid-feedback">
-                {errors.email_or_reg_no.message}
+                {errors.registrationNo.message}
               </div>
             )}
           </div>
@@ -96,8 +132,8 @@ function Login() {
               {...register("password", {
                 required: "Password is required",
                 minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters long",
+                  value: 6,
+                  message: "Password must be at least 6 characters long",
                 },
               })}
             />
@@ -109,7 +145,7 @@ function Login() {
           {/* Forgot Password */}
           <div className="mb-3 w-full px-2 text-right">
             <Link
-              to="/sign-up"
+              to="/forgot-password"
               className="text-sm text-primary hover:underline"
             >
               Forgot Password?
@@ -139,7 +175,7 @@ function Login() {
           {/* Signup */}
           <div className="mt-3 text-center">
             <p className="text-sm">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 to="/sign-up"
                 className="text-primary font-medium hover:underline"
@@ -152,6 +188,6 @@ function Login() {
       </div>
     </div>
   );
-};
+}
 
 export default Login;

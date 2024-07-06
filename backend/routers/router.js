@@ -7,13 +7,14 @@ const controllers = require("../controllers/userControllers");
 router.get("/", controllers.api);
 
 // User Login
-router.post("/login", controllers.login);
+router.post("/api/v1/login", controllers.login);
 
 // User SignUp
-router.post("/sign-up", controllers.signup);
+router.post("/api/v1/sign-up", controllers.signup);
 
-//OTP generation
-router.post("/otp-send", controllers.userOtpSend);
+// Email verification and OTP Generation
+router.post("/api/v1/otp-send", controllers.userOtpSend);
+
 //OTP verification
-router.post("/otp-verify", controllers.verifyOtp);
+router.post("/api/v1/otp-verify", controllers.verifyOtp);
 module.exports = router;
