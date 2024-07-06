@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import { ToastMsg } from "../../constants";
 
 import { verifyOtpFucntion } from "../../services/API";
+import { useDispatch, useSelector } from "react-redux";
+import { otpVerificationDone } from "../../actions";
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email;
+  const dispatch = useDispatch();
+
+  const email = useSelector((state) => state.resetPasswordState.userEmail);
 
   const [formLoading, setFormLoading] = useState(false);
 
@@ -32,7 +35,8 @@ const VerifyOtp = () => {
       //console.log(response);
       if (response.status == 200) {
         ToastMsg(response.data.message, "success");
-        navigate("/reset-password", { state: { email } });
+        dispatch(otpVerificationDone());
+        navigate("/reset-password");
       } else {
         ToastMsg(response.response.data.message, "error");
       }

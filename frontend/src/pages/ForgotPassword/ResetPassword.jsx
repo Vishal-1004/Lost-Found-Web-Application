@@ -1,8 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ResetPassword = () => {
-  const location = useLocation();
-  const email = location.state?.email;
+  const email = useSelector((state) => state.resetPasswordState.userEmail);
 
   return (
     <div>

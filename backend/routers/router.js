@@ -17,4 +17,6 @@ router.post("/api/v1/otp-send", controllers.userOtpSend);
 
 //OTP verification
 router.post("/api/v1/otp-verify", controllers.verifyOtp);
+
+router.post("/api/v1/password-reset", controllers.resetPassword);
 module.exports = router;

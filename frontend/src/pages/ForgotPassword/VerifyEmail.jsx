@@ -6,9 +6,12 @@ import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import { ToastMsg } from "../../constants";
 
 import { verifyEmailFunction } from "../../services/API";
+import { useDispatch } from "react-redux";
+import { emailVerificationDone } from "../../actions";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formLoading, setFormLoading] = useState(false);
 
@@ -31,7 +34,8 @@ const VerifyEmail = () => {
       //console.log(response);
       if (response.status == 200) {
         ToastMsg(response.data.message, "success");
-        navigate("/verify-otp", { state: { email } });
+        dispatch(emailVerificationDone(email));
+        navigate("/verify-otp");
       } else {
         ToastMsg(response.response.data.message, "error");
         //console.log(response);
