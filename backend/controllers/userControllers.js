@@ -195,7 +195,7 @@ exports.resetPassword = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ error: "This user does not exist in our DB" });
+        .json({ message: "This user does not exist in our DB" });
     }
   } catch (error) {
     console.error("Error during password reset", error);

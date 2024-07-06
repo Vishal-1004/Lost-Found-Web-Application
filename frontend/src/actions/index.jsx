@@ -15,3 +15,7 @@ export const emailVerificationDone = (userEmail) => ({
 export const otpVerificationDone = () => ({
   type: "OTP_VERIFICATION_DONE",
 });
+
+export const resettingPasswordDone = () => ({
+  type: "RESET_PASSWORD_DONE",
+});

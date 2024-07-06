@@ -19,6 +19,14 @@ export const resetPasswordState = (state = initialState, action) => {
         otpVerified: true,
       };
 
+    case "RESET_PASSWORD_DONE":
+      return {
+        ...state,
+        userEmail: "",
+        emailVerified: false,
+        otpVerified: false,
+      };
+
     default:
       return state;
   }

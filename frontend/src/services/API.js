@@ -36,3 +36,10 @@ export const verifyOtpFucntion = async (email, otp) => {
     otp,
   });
 };
+
+export const resetPasswordFunction = async (email, newPassword) => {
+  return await commonrequest("POST", `${BACKEND_URL}/api/v1/reset-password`, {
+    email,
+    newPassword,
+  });
+};
