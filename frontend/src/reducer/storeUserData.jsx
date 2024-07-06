@@ -9,7 +9,7 @@ export const storedUserData = (state = initialState, action) => {
     case "STORE_USER_DATA":
       return {
         ...state,
-        authToken: action.payload.userToken,
+        userToken: action.payload.userToken,
         userStatus: action.payload.userStatus,
         userName: action.payload.userName,
       };
