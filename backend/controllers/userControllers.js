@@ -173,3 +173,32 @@ exports.verifyOtp = async (req, res) => {
     return res.status(400).json({ message: "Invalid Details", error });
   }
 };
+
+//Password reset
+exports.resetPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return res
+      .status(400)
+      .json({ error: "Both email and the new password must be entered" });
+  }
+
+  try {
+    const user = await users.findOne({ email });
+
+    if (user) {
+      user.password = newPassword;
+      await user.save();
+
+      return res.status(200).json({ message: "Password reset successful" });
+    } else {
+      return res
+        .status(400)
+        .json({ error: "This user does not exist in our DB" });
+    }
+  } catch (error) {
+    console.error("Error during password reset", error);
+    return res.status(400).json({ message: "Invalid Details", error });
+  }
+};
