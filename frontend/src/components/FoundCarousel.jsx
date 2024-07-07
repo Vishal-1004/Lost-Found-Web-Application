@@ -61,7 +61,7 @@ const mockData = [
   },
 ];
 
-function FoundCarousel() {
+function FoundCarousel({heading}) {
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
   const containerRef = useRef(null);
@@ -168,7 +168,7 @@ function FoundCarousel() {
           }
         `}
       </style>
-      <h2 className="text-gray-700 text-left text-2xl font-semibold mt-4 ml-2 sm:ml-4">Recently Found Items</h2>
+      <h2 className="text-gray-700 text-left text-2xl font-semibold mt-4 ml-2 sm:ml-4">{heading}</h2>
       <div
         ref={containerRef}
         id="carouselContainer"
