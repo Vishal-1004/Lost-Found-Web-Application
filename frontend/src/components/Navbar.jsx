@@ -14,6 +14,7 @@ const Navbar = () => {
   const navRef = useRef();
   const menuRef = useRef();
   const buttonRef = useRef();
+  const userDropdownRef = useRef();
 
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.storedUserData.userToken);
@@ -46,9 +47,16 @@ const Navbar = () => {
       ) {
         setMenuOpen(false);
       }
+
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(e.target)
+      ) {
+        setEventsClicked(false);
+      }
     };
 
-    if (menuOpen) {
+    if (menuOpen || eventsClicked) {
       window.addEventListener("mousedown", handleClickOutside);
     } else {
       window.removeEventListener("mousedown", handleClickOutside);
@@ -57,7 +65,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuOpen]);
+  }, [menuOpen, eventsClicked]);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -105,7 +113,7 @@ const Navbar = () => {
             </Link>
           </div>
           {userToken ? (
-            <div className="mx-2 block">
+            <div className="mx-2 block" ref={userDropdownRef}>
               <div
                 onClick={() => {
                   setEventsClicked(!eventsClicked);
@@ -222,47 +230,60 @@ const Navbar = () => {
               <button>Found</button>
             </Link>
           </div>
-          <div className="mx-2 block">
-            <Link
-              to="/login"
-              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
-              onClick={() => setMenuOpen(false)}
-            >
-              <button>Login</button>
-            </Link>
-          </div>
-          <div className="mx-2 block">
-            <div
-              onClick={() => {
-                setEventsClicked(!eventsClicked);
-              }}
-              className="px-4 py-2 rounded hover:bg-[#2a67b11e] flex items-center"
-              //onClick={() => setMenuOpen(false)}
-            >
-              <button className="flex items-center">
-                <FaUserCircle size={"32px"} />
-              </button>
-            </div>
-            <div
-              className={
-                eventsClicked
-                  ? "flex absolute justify-start text-[0.85rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2"
-                  : "hidden"
-              }
-            >
-              <Link to="/profile" onClick={() => setMenuOpen(false)}>
-                <button className=" hover:bg-[#2a67b11e] p-2 px-4 rounded">
-                  My Profile
-                </button>
-              </Link>
+          {userToken ? (
+            <div className="mx-2 block" ref={userDropdownRef}>
               <div
-                className=" hover:bg-[#2a67b11e] p-2 px-4 rounded"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  setEventsClicked(!eventsClicked);
+                }}
+                className="px-2 py-2 rounded hover:bg-[#2a67b11e] flex items-center"
               >
-                <button>Logout</button>
+                <button className="flex items-center">
+                  <FaUserCircle size={"32px"} className="mx-1" /> 
+                  {userName.split(" ")[0]}
+                </button>
+              </div>
+              <div
+                className={
+                  eventsClicked
+                    ? "flex absolute justify-start text-[0.85rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2"
+                    : "hidden"
+                }
+              >
+                <Link
+                  to="/profile"
+                  onClick={(e) => {
+                    setEventsClicked(!eventsClicked);
+                    e.stopPropagation();
+                  }}
+                >
+                  <button className=" hover:bg-[#2a67b11e] p-2 px-4 rounded">
+                    My Profile
+                  </button>
+                </Link>
+                <div
+                  className="hover:bg-[#2a67b11e] p-2 px-4 rounded"
+                  onClick={() => {
+                    setEventsClicked(!eventsClicked);
+                    handleLogout();
+                  }}
+                >
+                  <button className="text-red-500 flex items-center">
+                    Logout <MdLogout className="ml-1" />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="mx-2 block">
+              <Link
+                to="/login"
+                className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+              >
+                <button>Login</button>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>
