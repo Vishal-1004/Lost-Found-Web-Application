@@ -2,28 +2,32 @@ const express = require("express");
 const router = new express.Router();
 const multer = require("multer")
 
-const controllers = require("../controllers/userControllers");
-const upload = multer({ dest: 'uploads/' })
+const authControllers = require("../controllers/authControllers");
+const upload = multer({ dest: "uploads/" });
 
 // sample API
-router.get("/", controllers.api);
+router.get("/", authControllers.api);
 
 // User Login
-router.post("/api/v1/login", controllers.login);
+router.post("/api/v1/login", authControllers.login);
 
 // User SignUp
-router.post("/api/v1/sign-up", controllers.signup);
+router.post("/api/v1/sign-up", authControllers.signup);
 
 // Email verification and OTP Generation
-router.post("/api/v1/otp-send", controllers.userOtpSend);
+router.post("/api/v1/otp-send", authControllers.userOtpSend);
 
 // OTP verification
-router.post("/api/v1/otp-verify", controllers.verifyOtp);
+router.post("/api/v1/otp-verify", authControllers.verifyOtp);
 
 // Reseting password
-router.post("/api/v1/reset-password", controllers.resetPassword);
+router.post("/api/v1/reset-password", authControllers.resetPassword);
 
 //Creating Found Post
-router.post("/api/v1/create-found-post",upload.single('image'),controllers.createFoundPost)
+router.post(
+  "/api/v1/create-found-post",
+  upload.single("image"),
+  authControllers.createFoundPost
+);
 
 module.exports = router;
