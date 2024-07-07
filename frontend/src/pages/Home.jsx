@@ -1,7 +1,10 @@
+import Footer from "../components/Footer";
+
 const Home = () => {
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>Homepage Here!</h1>
+      <h1 style={{ textAlign: "center" }}>Home Page!</h1>
+      <Footer/>
     </div>
   );
 };
