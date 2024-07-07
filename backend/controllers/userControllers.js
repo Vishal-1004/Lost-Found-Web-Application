@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const SECRECT_KEY = "abcdefghijklmnop";
 const nodemailer = require("nodemailer");
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+const {cloudinaryUpload} = require("../utilities/cloudinaryUpload")
 
 // Importing models/schemas
 const { users } = require("../models");
@@ -202,3 +203,20 @@ exports.resetPassword = async (req, res) => {
     return res.status(400).json({ message: "Invalid Details", error });
   }
 };
+
+exports.createFoundPost = async(req,res)=>{
+  try {
+    const cloudinaryURL = await cloudinaryUpload(`uploads/${req.file.filename}`);
+    console.log(cloudinaryURL);
+    res.status(200).json({
+      message: "Upload successful!",
+      url: cloudinaryURL
+    });
+  } catch (error) {
+    console.error('Error creating found post:', error);
+    res.status(500).json({
+      message: "Upload failed!",
+      error: error.message
+    });
+  }
+}
