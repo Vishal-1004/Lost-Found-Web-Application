@@ -14,7 +14,7 @@ const HeroSection = () => {
         <p className="text-lg sm:text-xl mb-8">
           Connecting you with your belongings.
         </p>
-        <div className="flex justify-center space-x-4">
+        <div className="md:flex justify-center space-x-4 ">
           <div className="flex items-center bg-white text-[#0D47A1] px-4 py-2 rounded shadow">
             <span>I lost </span>
             <input

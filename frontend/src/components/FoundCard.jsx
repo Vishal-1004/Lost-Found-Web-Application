@@ -8,7 +8,8 @@ function FoundCard({ url, title, date, about, location, detail }) {
     boxShadow: isHovered ? '0 4px 8px rgba(0, 0, 0, 0.2)' : '0 4px 12px rgba(207, 216, 220, 0.4)',
   };
 
-  const shortAbout = about.length > 180 ? `${about.substring(0, 180)}...` : about;
+  const shortAbout =
+    about.length > 100 ? `${about.substring(0, 100)}...` : about;
   const shortTitle = title.length > 20 ? `${title.substring(0, 20)}...` : title;
 
   return (
