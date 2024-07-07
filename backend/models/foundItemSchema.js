@@ -26,6 +26,10 @@ const foundItemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  personRegistrationNumber: {
+    type: String,
+    required: true,
+  },
   personEmail: {
     type: String,
     required: true,
