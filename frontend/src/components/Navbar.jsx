@@ -112,6 +112,14 @@ const Navbar = () => {
               <button>Found</button>
             </Link>
           </div>
+          <div className="mx-2 block">
+            <Link
+              to="/our-team"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+            >
+              <button>Our Team</button>
+            </Link>
+          </div>
           {userToken ? (
             <div className="mx-2 block" ref={userDropdownRef}>
               <div

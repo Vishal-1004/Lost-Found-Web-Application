@@ -160,7 +160,7 @@ function FoundCarousel({heading}) {
   };
 
   return (
-    <div className="relative px-4 sm:px-12">
+    <div className="relative px-4 mb-5 sm:px-12">
       <style>
         {`
           #carouselContainer {
@@ -168,7 +168,9 @@ function FoundCarousel({heading}) {
           }
         `}
       </style>
-      <h2 className="text-gray-700 text-left text-2xl font-semibold mt-4 ml-2 sm:ml-4">{heading}</h2>
+      <h2 className="text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
+        {heading}
+      </h2>
       <div
         ref={containerRef}
         id="carouselContainer"

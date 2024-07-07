@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import {
   Home,
   LoginPage,
+  OurTeam,
   ResetPassword,
   SignUp,
   VerifyEmail,
@@ -96,6 +97,8 @@ const App = () => {
             )
           }
         />
+
+        <Route path="/our-team" element={<OurTeam />} />
       </Routes>
       <Footer />
     </BrowserRouter>
