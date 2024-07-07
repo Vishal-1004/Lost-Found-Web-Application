@@ -9,7 +9,7 @@ import {
   VerifyEmail,
   VerifyOTP,
 } from "./pages";
-import { Navbar } from "./components";
+import { Footer, Navbar } from "./components";
 
 // checking
 const App = () => {
@@ -97,6 +97,7 @@ const App = () => {
           }
         />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };
