@@ -110,6 +110,7 @@ function FoundCarousel() {
   
     return (
       <div className="relative">
+        <h2 className="text-left text-2xl font-semibold mt-4 ml-6">Recently Found Items</h2>
         <div id="carouselContainer" className="flex overflow-x-scroll space-x-4 p-4 transition-all duration-300">
           {mockData.map((item, index) => (
             <FoundCard 
