@@ -128,7 +128,7 @@ const Navbar = () => {
               <div
                 className={
                   eventsClicked
-                    ? "flex absolute justify-start text-[0.85rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2"
+                    ? "flex absolute justify-start text-[0.85rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2 z-10"
                     : "hidden"
                 }
               >
@@ -239,7 +239,7 @@ const Navbar = () => {
                 className="px-2 py-2 rounded hover:bg-[#2a67b11e] flex items-center"
               >
                 <button className="flex items-center">
-                  <FaUserCircle size={"32px"} className="mx-1" /> 
+                  <FaUserCircle size={"32px"} className="mx-1" />
                   {userName.split(" ")[0]}
                 </button>
               </div>
