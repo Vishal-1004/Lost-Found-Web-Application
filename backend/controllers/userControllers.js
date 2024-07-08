@@ -149,5 +149,44 @@ exports.updateHostelerOrDayScholar = async(req,res)=>{
   }
 }
 
+exports.updatePhoneNumber = async(req,res)=>{
+  const {email,phoneNumber} = req.body
+
+  if(!email){
+    return res.status(400).json({
+      message : "Email not filled!"
+    })
+  }
+
+  if(!phoneNumber){
+    return res.status(400).json({
+      message:"Phone Number not filled!"
+    })
+  }
+
+  try{
+    const existingUser=await users.find({email:email})
+    if(existingUser.length<1){
+      return res.status(400).json({
+        message : "User not found!"
+      })
+    }
+    const phoneNumberUpdate=await users.updateOne({email:email},{phoneNumber:phoneNumber})
+    if(!phoneNumberUpdate){
+      return res.status(400).json({
+        message:"Error updating phone number!"
+      })
+    }
+   return  res.status(200).json({
+      message : `Phone Number updated successfully!`
+    })
+  }catch(error){
+      return res.status(400).json({
+      message : 'Error connecting to db!',
+      error : error
+    })
+  }
+}
+
 
 

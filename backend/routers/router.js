@@ -30,4 +30,7 @@ router.post("/api/v1/create-found-post",upload.single("image"),userControllers.c
 //Updating Day Scholar/Hosteler Info
 router.post("/api/v1/update-dayscholar-or-hosteler",userControllers.updateHostelerOrDayScholar);
 
+//Updating Phone Number
+router.post("/api/v1/update-phone-number",userControllers.updatePhoneNumber);
+
 module.exports = router;
