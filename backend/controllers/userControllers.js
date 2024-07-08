@@ -113,12 +113,14 @@ exports.createFoundPost = async(req,res)=>{
 exports.updateHostelerOrDayScholar = async(req,res)=>{
   const {email,stayDetail} = req.body
 
+  //Checking if email was filled
   if(!email){
     return res.status(400).json({
       message : "Email not filled!"
     })
   }
 
+  //Checking whether stayDetail is either Day Scholar or Hosteler
   if(stayDetail!=="Day Scholar" && stayDetail!=="Hosteler"){
     return res.status(400).json({
       message:"Wrong Stay Detail!"
@@ -126,12 +128,15 @@ exports.updateHostelerOrDayScholar = async(req,res)=>{
   }
 
   try{
+    //Checking whether user exists
     const existingUser=await users.find({email:email})
     if(existingUser.length<1){
       return res.status(400).json({
         message : "User not found!"
       })
     }
+
+    //Updating day scholar or hosteler detail
     const stayDetailUpdate=await users.updateOne({email:email},{dayScholarORhosteler:stayDetail})
     if(!stayDetailUpdate){
       return res.status(400).json({
@@ -151,13 +156,15 @@ exports.updateHostelerOrDayScholar = async(req,res)=>{
 
 exports.updatePhoneNumber = async(req,res)=>{
   const {email,phoneNumber} = req.body
-
+  
+  //Checking if email was filled
   if(!email){
     return res.status(400).json({
       message : "Email not filled!"
     })
   }
 
+  //Checking if phone number was filled
   if(!phoneNumber){
     return res.status(400).json({
       message:"Phone Number not filled!"
@@ -165,12 +172,14 @@ exports.updatePhoneNumber = async(req,res)=>{
   }
 
   try{
+    //checking for existing user
     const existingUser=await users.find({email:email})
     if(existingUser.length<1){
       return res.status(400).json({
         message : "User not found!"
       })
     }
+    //updating phone number
     const phoneNumberUpdate=await users.updateOne({email:email},{phoneNumber:phoneNumber})
     if(!phoneNumberUpdate){
       return res.status(400).json({
