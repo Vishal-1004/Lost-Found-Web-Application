@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import FoundCard from './FoundCard';
+import ItemCard from './ItemCard';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const mockData = [
@@ -61,7 +61,7 @@ const mockData = [
   },
 ];
 
-function FoundCarousel({heading}) {
+function ItemCarousel({heading}) {
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
   const containerRef = useRef(null);
@@ -179,14 +179,13 @@ function FoundCarousel({heading}) {
         onMouseLeave={handleMouseLeave}
       >
         {mockData.map((item, index) => (
-          <FoundCard
+          <ItemCard
             key={index}
             url={item.url}
             title={item.title}
             date={item.date}
             about={item.about}
             location={item.location}
-            detail={item.detail}
           />
         ))}
       </div>
@@ -216,4 +215,4 @@ function FoundCarousel({heading}) {
   );
 }
 
-export default FoundCarousel;
+export default ItemCarousel;
