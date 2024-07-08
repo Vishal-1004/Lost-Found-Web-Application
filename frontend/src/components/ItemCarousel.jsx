@@ -1,69 +1,100 @@
 import { useState, useEffect, useRef } from 'react';
-import ItemCard from './ItemCard';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+import ItemCard from './ItemCard';
+import DetailedViewPopup from './DetailedViewPopup';
 
 const mockData = [
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
+    date: "07-07-2024",
     about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
+    date: "07-08-2024",
     about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
+    date: "07-09-2024",
     about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
-    about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
+    date: "07-10-2024",
+    about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
+    date: "07-11-2024",
     about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
+    date: "07-12-2024",
     about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
   {
     url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
     title: "Sunglasses",
-    date: "5th July",
+    date: "07-13-2024",
     about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
     location: "Clock Court",
-    detail: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos voluptatibus sequi praesentium eum veritatis commodi autem, neque est eligendi repellendus adipisci, reprehenderit fugit harum possimus dolor quasi nostrum! Vel, hic culpa dolorem eum possimus labore quidem numquam optio iure odio non. Ullam et ratione ducimus rerum optio reiciendis molestias non.",
+    founder: {
+      name: "someone",
+      email: "abc.xyz@vitstudent.ac.in",
+      number: "9876543210",
+    }
   },
 ];
 
 function ItemCarousel({heading}) {
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
 
@@ -159,6 +190,14 @@ function ItemCarousel({heading}) {
     }
   };
 
+  const handleCardClick = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleClosePopup = () => {
+    setSelectedItem(null);
+  };
+
   return (
     <div className="relative px-4 mb-5 sm:px-12">
       <style>
@@ -179,14 +218,15 @@ function ItemCarousel({heading}) {
         onMouseLeave={handleMouseLeave}
       >
         {mockData.map((item, index) => (
-          <ItemCard
-            key={index}
-            url={item.url}
-            title={item.title}
-            date={item.date}
-            about={item.about}
-            location={item.location}
-          />
+          <div key={index} onClick={() => handleCardClick(item)}>
+            <ItemCard
+              url={item.url}
+              title={item.title}
+              date={item.date}
+              about={item.about}
+              location={item.location}
+            />
+          </div>
         ))}
       </div>
 
@@ -210,6 +250,10 @@ function ItemCarousel({heading}) {
         >
           <FiChevronRight size={24} />
         </button>
+      )}
+
+      {selectedItem && (
+        <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
       )}
     </div>
   );

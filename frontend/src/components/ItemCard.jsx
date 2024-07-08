@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiFillCalendar } from 'react-icons/ai';
+import { format } from 'date-fns';
 
-function ItemCard({ url, title, date, about, location }) {
+function ItemCard({ url, title, date, about, location, }) {
   const [isHovered, setIsHovered] = useState(false);
+
+  const formattedDate = format(new Date(date), 'EEEE, d MMM yyyy');
 
   const cardStyle = {
     transition: 'box-shadow 0.25s ease-in-out',
@@ -16,7 +19,7 @@ function ItemCard({ url, title, date, about, location }) {
 
   return (
     <div
-      className="bg-white p-[10px] pb-[16px] rounded-[16px] min-w-[300px] max-w-[300px]"
+      className="bg-white p-[10px] pb-[16px] rounded-[16px] min-w-[300px] max-w-[300px] cursor-pointer"
       style={cardStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -47,7 +50,7 @@ function ItemCard({ url, title, date, about, location }) {
 
         <div className="mt-4 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
             <AiFillCalendar className="mr-1" size={"20px"} />
-            {date}
+            {formattedDate}
         </div>
       </div>
     </div>
