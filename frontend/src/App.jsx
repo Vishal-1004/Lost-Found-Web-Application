@@ -9,6 +9,7 @@ import {
   SignUp,
   VerifyEmail,
   VerifyOTP,
+  Profile
 } from "./pages";
 import { BackToTop, Footer, Navbar } from "./components";
 import EditProfile from "./pages/EditProfile";
@@ -114,6 +115,7 @@ const App = () => {
         />
 
         <Route path="/our-team" element={<OurTeam />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
       <BackToTop />

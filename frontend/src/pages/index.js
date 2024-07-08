@@ -5,6 +5,7 @@ import VerifyEmail from "./ForgotPassword/VerifyEmail";
 import VerifyOTP from "./ForgotPassword/VerifyOTP";
 import ResetPassword from "./ForgotPassword/ResetPassword";
 import OurTeam from "./OurTeam";
+import Profile from "./Profile";
 
 export {
   Home,
@@ -14,4 +15,5 @@ export {
   VerifyOTP,
   ResetPassword,
   OurTeam,
+  Profile,
 };
