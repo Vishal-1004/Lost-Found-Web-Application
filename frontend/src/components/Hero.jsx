@@ -1,8 +1,20 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom';
 import '../style/Hero.css'; 
 import {FaSearch } from 'react-icons/fa';
+import FormPopup from './FormPopup';
 
 const HeroSection = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleOpenPopup = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div className="relative bg-gradient-to-r from-[#0D47A1] to-[#42A5F5] text-white h-[60vh] flex items-center justify-center z-1">
       {/* Abstract Geometric Pattern Overlay */}
@@ -25,13 +37,14 @@ const HeroSection = () => {
             <FaSearch className="ml-2" />
           </div>
           <Link
-            to="/found"
             className="bg-white text-[#0D47A1] px-4 py-2 rounded shadow hover:bg-gray-200 transition"
+            onClick={handleOpenPopup}
           >
             I Found Something
           </Link>
         </div>
       </div>
+      <FormPopup isOpen={showPopup} onClose={handleClosePopup} />
     </div>
   );
 };

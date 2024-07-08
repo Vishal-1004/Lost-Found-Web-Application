@@ -42,6 +42,7 @@ function BackToTop() {
       {backToTop && (
         <button
           style={buttonStyles}
+          className="z-[100]"
           onClick={scrollUp}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
