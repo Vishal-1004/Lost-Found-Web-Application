@@ -30,11 +30,13 @@ function BackToTop() {
     position: "fixed",
     bottom: "37px",
     right: "16px",
-    background: "transparent",
+    background: "white",
     border: "none",
     cursor: "pointer",
     transform: isHovered ? "scale(1.1)" : "scale(1)",
     transition: "transform 0.3s",
+    zIndex:"100",
+    borderRadius:"50%"
   };
 
   return (
