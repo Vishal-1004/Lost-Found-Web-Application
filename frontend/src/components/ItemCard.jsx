@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiFillCalendar } from 'react-icons/ai';
 
-function FoundCard({ url, title, date, about, location, detail }) {
+function ItemCard({ url, title, date, about, location }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const cardStyle = {
@@ -54,4 +54,4 @@ function FoundCard({ url, title, date, about, location, detail }) {
   );
 }
 
-export default FoundCard;
+export default ItemCard;
