@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
+import ToastMsg from "../constants/ToastMsg";
+import { updateHostelerOrDayscholarFunction } from "../services/API";
+import { useSelector } from "react-redux";
 
+// updating phone number function
 const UpdatePhoneNumberForm = () => {
   const {
     register,
@@ -82,7 +86,11 @@ const UpdatePhoneNumberForm = () => {
   );
 };
 
+// updating hosteler or day scholar functio
 const UpdateHostelerDayScholarForm = () => {
+  // getting user email from localstorage
+  const email = useSelector((state) => state.resetPasswordState.userEmail);
+
   const {
     register,
     handleSubmit,
@@ -92,14 +100,26 @@ const UpdateHostelerDayScholarForm = () => {
 
   const [formLoading, setFormLoading] = useState(false);
 
-  const handleHostelerDayScholarUpdate = (formData) => {
+  const handleHostelerDayScholarUpdate = async (formData) => {
     setFormLoading(true);
     console.log("Updating your hosteler or day scholar data: ", formData);
-    // Simulate an API call
-    setTimeout(() => {
-      setFormLoading(false);
+    try {
+      const { dayScholarORhosteler } = formData;
+      const response = await updateHostelerOrDayscholarFunction(email, dayScholarORhosteler);
+      console.log(response);
+
+      if (response.status == 200) {
+        ToastMsg(response.data.message, "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    }finally{
       reset();
-    }, 2000);
+      setFormLoading(false)
+    }
   };
 
   return (
@@ -160,6 +180,7 @@ const UpdateHostelerDayScholarForm = () => {
   );
 };
 
+// updating password function
 const UpdatePasswordForm = () => {
   const {
     register,

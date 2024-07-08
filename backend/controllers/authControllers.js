@@ -63,6 +63,33 @@ exports.login = async (req, res) => {
   }
 };
 
+// Verify user login token
+exports.verifyToken = async (req,res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ message: "Token is required" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRECT_KEY);
+
+    // Optionally, you can check if the user still exists or is still active
+    const user = await users.findById(decoded._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Token is valid", user });
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(200).json({ message: "Token has expired" });
+    }
+
+    return res.status(400).json({ message: "Invalid token" });
+  }
+}
+
 // User SignUp
 exports.signup = async (req, res) => {
   const { name, email, password, registrationNo, dayScholarORhosteler } =

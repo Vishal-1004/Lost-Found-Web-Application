@@ -110,8 +110,9 @@ exports.createFoundPost = async(req,res)=>{
     }
 }
 
+// update hosteler or day scholar information
 exports.updateHostelerOrDayScholar = async(req,res)=>{
-  const {email,stayDetail} = req.body
+  const {email,dayScholarORhosteler} = req.body
 
   //Checking if email was filled
   if(!email){
@@ -121,7 +122,7 @@ exports.updateHostelerOrDayScholar = async(req,res)=>{
   }
 
   //Checking whether stayDetail is either Day Scholar or Hosteler
-  if(stayDetail!=="Day Scholar" && stayDetail!=="Hosteler"){
+  if(dayScholarORhosteler!=="Day Scholar" && dayScholarORhosteler!=="Hosteler"){
     return res.status(400).json({
       message:"Wrong Stay Detail!"
     })
@@ -137,14 +138,14 @@ exports.updateHostelerOrDayScholar = async(req,res)=>{
     }
 
     //Updating day scholar or hosteler detail
-    const stayDetailUpdate=await users.updateOne({email:email},{dayScholarORhosteler:stayDetail})
+    const stayDetailUpdate=await users.updateOne({email:email},{dayScholarORhosteler:dayScholarORhosteler})
     if(!stayDetailUpdate){
       return res.status(400).json({
         message:"Error updating detail!"
       })
     }
    return  res.status(200).json({
-      message : `Stay detail updated to ${stayDetail}`
+      message : `Stay detail updated to ${dayScholarORhosteler}`
     })
   }catch(error){
       return res.status(400).json({
@@ -154,6 +155,7 @@ exports.updateHostelerOrDayScholar = async(req,res)=>{
   }
 }
 
+// updating phone number
 exports.updatePhoneNumber = async(req,res)=>{
   const {email,phoneNumber} = req.body
   

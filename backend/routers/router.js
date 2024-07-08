@@ -12,6 +12,9 @@ router.get("/", authControllers.api);
 // User Login
 router.post("/api/v1/login", authControllers.login);
 
+// Verify login token
+router.post("/api/v1/verify-token",authControllers.verifyToken)
+
 // User SignUp
 router.post("/api/v1/sign-up", authControllers.signup);
 

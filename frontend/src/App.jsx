@@ -13,6 +13,9 @@ import {
 } from "./pages";
 import { BackToTop, Footer, Navbar } from "./components";
 import EditProfile from "./pages/EditProfile";
+import { useEffect } from "react";
+import { verifyTokenFunction } from "./services/API";
+import { ToastMsg } from "./constants";
 
 // checking
 const App = () => {
@@ -23,6 +26,32 @@ const App = () => {
   const otpVerified = useSelector(
     (state) => state.resetPasswordState.otpVerified
   );
+
+  // to logout user when the userToken expires
+  useEffect(() => {
+    const checkToken = async () => {
+      if (userToken) {
+        try {
+          const response = await verifyTokenFunction(userToken);
+          console.log(response);
+
+          if (response.data.message === "Token has expired") {
+            localStorage.clear();
+            ToastMsg("Session expired! Logging out.", "error");
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          }
+        } catch (error) {
+          console.error("Token verification error:", error);
+          localStorage.clear(); // Clear storage if there's an error
+          window.location.reload();
+        }
+      }
+    };
+
+    checkToken();
+  }, []);
 
   return (
     <BrowserRouter>
