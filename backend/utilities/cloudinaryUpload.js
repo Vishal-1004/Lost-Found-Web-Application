@@ -4,6 +4,7 @@ const cloudinary = require('cloudinary').v2;
 
 async function cloudinaryUpload(image){
     // Configuration
+    console.log("inside cloudinaryUpload")
     cloudinary.config({ 
         cloud_name: 'djeplonq5', 
         api_key: '443613367272531', 
@@ -16,6 +17,7 @@ async function cloudinaryUpload(image){
         image,{ folder: "/Found-Items" }
     )
     .catch((error) => {
+        console.log("inside cloudinaryUpload catch")
         console.log(error);
     });    
     

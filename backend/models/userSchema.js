@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema({
     default: "Day Scholar",
     required: true,
   },
+  phoneNumber:{
+    type:Number,
+  },
   lostItemsID: {
     type: [String],
     default: [],
