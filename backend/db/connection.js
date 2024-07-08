@@ -5,10 +5,7 @@ const DB =
   "mongodb+srv://admin1:admin1@cluster0.05x7ye5.mongodb.net/?appName=Cluster0";
 
 mongoose
-  .connect(DB, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
+  .connect(DB)
   .then(() => console.log("Database Connected"))
   .catch((error) => {
     console.log("error", error);

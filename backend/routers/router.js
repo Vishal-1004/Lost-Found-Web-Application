@@ -3,6 +3,7 @@ const router = new express.Router();
 const multer = require("multer")
 
 const authControllers = require("../controllers/authControllers");
+const userControllers = require("../controllers/userControllers")
 const upload = multer({ dest: "uploads/" });
 
 // sample API
@@ -24,10 +25,6 @@ router.post("/api/v1/otp-verify", authControllers.verifyOtp);
 router.post("/api/v1/reset-password", authControllers.resetPassword);
 
 //Creating Found Post
-router.post(
-  "/api/v1/create-found-post",
-  upload.single("image"),
-  authControllers.createFoundPost
-);
+router.post("/api/v1/create-found-post",upload.single("image"),userControllers.createFoundPost);
 
 module.exports = router;
