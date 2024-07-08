@@ -30,8 +30,8 @@ const userSchema = new mongoose.Schema({
     default: "Day Scholar",
     required: true,
   },
-  phoneNumber:{
-    type:Number,
+  phoneNumber: {
+    type: Number,
   },
   lostItemsID: {
     type: [String],
@@ -48,6 +48,9 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   otp: {
+    type: String,
+  },
+  authToken: {
     type: String,
   },
 });
@@ -68,12 +71,14 @@ userSchema.methods.generateAuthtoken = async function () {
       expiresIn: "1h", // 1h sets the expiration to 1 hour (30m for 30 minutes)
     });
 
-    //await this.save();
+    this.authToken = newToken;
+    await this.save();
     return newToken;
   } catch (error) {
     throw new Error(error);
   }
 };
+
 
 // creating model
 const users = mongoose.model("users", userSchema);

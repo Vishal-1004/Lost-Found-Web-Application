@@ -188,9 +188,9 @@ exports.updatePhoneNumber = async(req,res)=>{
         message:"Error updating phone number!"
       })
     }
-   return  res.status(200).json({
-      message : `Phone Number updated successfully!`
-    })
+   return res.status(200).json({
+     message: "Phone Number updated successfully!",
+   });
   }catch(error){
       return res.status(400).json({
       message : 'Error connecting to db!',

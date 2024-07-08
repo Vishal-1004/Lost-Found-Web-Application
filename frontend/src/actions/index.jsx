@@ -1,6 +1,12 @@
-export const storeUserData = (userToken, userStatus, userName) => ({
+export const storeUserData = (
+  userToken,
+  userStatus,
+  userName,
+  userRegistrationNo,
+  userEmail
+) => ({
   type: "STORE_USER_DATA",
-  payload: { userToken, userStatus, userName },
+  payload: { userToken, userStatus, userName, userRegistrationNo, userEmail },
 });
 
 export const removeUserData = () => ({

@@ -2,6 +2,8 @@ const initialState = {
   userToken: "",
   userStatus: "USER",
   userName: "",
+  userRegistrationNo: "",
+  userEmail: "",
 };
 
 export const storedUserData = (state = initialState, action) => {
@@ -12,6 +14,8 @@ export const storedUserData = (state = initialState, action) => {
         userToken: action.payload.userToken,
         userStatus: action.payload.userStatus,
         userName: action.payload.userName,
+        userRegistrationNo: action.payload.userRegistrationNo,
+        userEmail: action.payload.userEmail,
       };
 
     case "REMOVE_USER_DATA":

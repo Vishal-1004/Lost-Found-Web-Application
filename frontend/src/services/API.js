@@ -63,3 +63,11 @@ export const updateHostelerOrDayscholarFunction = async (email, dayScholarORhost
     dayScholarORhosteler,
   });
 }
+
+// updating phone number info function
+export const updatePhoneNumberFunction = async (email, phoneNumber) => {
+  return await commonrequest("POST", `${BACKEND_URL}/api/v1/update-phone-number`, {
+    email,
+    phoneNumber,
+  });
+}

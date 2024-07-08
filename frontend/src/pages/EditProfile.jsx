@@ -2,11 +2,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import ToastMsg from "../constants/ToastMsg";
-import { updateHostelerOrDayscholarFunction } from "../services/API";
+import {
+  updateHostelerOrDayscholarFunction,
+  updatePhoneNumberFunction,
+} from "../services/API";
 import { useSelector } from "react-redux";
 
 // updating phone number function
 const UpdatePhoneNumberForm = () => {
+  // getting user email from localstorage
+  const userEmail = useSelector((state) => state.storedUserData.userEmail);
+
   const {
     register,
     handleSubmit,
@@ -16,14 +22,26 @@ const UpdatePhoneNumberForm = () => {
 
   const [formLoading, setFormLoading] = useState(false);
 
-  const handlePhoneNoUpdate = (formData) => {
+  const handlePhoneNoUpdate = async (formData) => {
     setFormLoading(true);
     console.log("Updating your phone number data: ", formData);
-    // Simulate an API call
-    setTimeout(() => {
-      setFormLoading(false);
+    try {
+      const { phoneNumber } = formData;
+      const response = await updatePhoneNumberFunction(userEmail, phoneNumber);
+      console.log(response);
+
+      if (response.status == 200) {
+        ToastMsg(response.data.message, "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
       reset();
-    }, 2000);
+      setFormLoading(false);
+    }
   };
 
   return (
@@ -89,7 +107,7 @@ const UpdatePhoneNumberForm = () => {
 // updating hosteler or day scholar functio
 const UpdateHostelerDayScholarForm = () => {
   // getting user email from localstorage
-  const email = useSelector((state) => state.resetPasswordState.userEmail);
+  const userEmail = useSelector((state) => state.storedUserData.userEmail);
 
   const {
     register,
@@ -102,10 +120,13 @@ const UpdateHostelerDayScholarForm = () => {
 
   const handleHostelerDayScholarUpdate = async (formData) => {
     setFormLoading(true);
-    console.log("Updating your hosteler or day scholar data: ", formData);
+    //console.log("Updating your hosteler or day scholar data: ", formData);
     try {
       const { dayScholarORhosteler } = formData;
-      const response = await updateHostelerOrDayscholarFunction(email, dayScholarORhosteler);
+      const response = await updateHostelerOrDayscholarFunction(
+        userEmail,
+        dayScholarORhosteler
+      );
       console.log(response);
 
       if (response.status == 200) {
@@ -116,9 +137,9 @@ const UpdateHostelerDayScholarForm = () => {
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
       console.log("Internal Server Error: ", error);
-    }finally{
+    } finally {
       reset();
-      setFormLoading(false)
+      setFormLoading(false);
     }
   };
 
@@ -148,7 +169,7 @@ const UpdateHostelerDayScholarForm = () => {
           })}
         >
           <option value="">Select an option</option>
-          <option value="Hosteller">Hosteller</option>
+          <option value="Hosteler">Hosteller</option>
           <option value="Day Scholar">Day Scholar</option>
         </select>
         {errors.dayScholarORhosteler && (

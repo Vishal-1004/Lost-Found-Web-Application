@@ -38,13 +38,23 @@ function Login() {
 
       if (response.status == 200) {
         const userToken = response.data.userToken;
-        const userStatus = response.data.status;
-        const userName = response.data.name;
+        const userStatus = response.data.userData.status;
+        const userName = response.data.userData.name;
+        const userEmail = response.data.userData.email;
+        const userRegistrationNo = response.data.userData.registrationNo;
 
         ToastMsg(response.data.message, "success");
 
         // Store user data in Redux store
-        dispatch(storeUserData(userToken, userStatus, userName));
+        dispatch(
+          storeUserData(
+            userToken,
+            userStatus,
+            userName,
+            userRegistrationNo,
+            userEmail
+          )
+        );
 
         // Navigate to home page
         navigate("/");
