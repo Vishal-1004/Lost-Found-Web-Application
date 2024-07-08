@@ -10,7 +10,8 @@ import {
   VerifyEmail,
   VerifyOTP,
 } from "./pages";
-import { Footer, Navbar } from "./components";
+import { BackToTop, Footer, Navbar } from "./components";
+import EditProfile from "./pages/EditProfile";
 
 // checking
 const App = () => {
@@ -27,6 +28,20 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route
+          path="/edit-profile"
+          element={
+            userToken ? (
+              <EditProfile />
+            ) : emailVerified && !otpVerified ? (
+              <VerifyOTP />
+            ) : emailVerified && otpVerified ? (
+              <ResetPassword />
+            ) : (
+              <LoginPage />
+            )
+          }
+        />
         <Route
           path="/login"
           element={
@@ -101,6 +116,7 @@ const App = () => {
         <Route path="/our-team" element={<OurTeam />} />
       </Routes>
       <Footer />
+      <BackToTop />
     </BrowserRouter>
   );
 };

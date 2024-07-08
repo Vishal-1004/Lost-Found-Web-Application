@@ -14,7 +14,7 @@ const OurTeam = () => {
       <h1 className="text-[64px] text-center font-bold uppercase text-gray-700 pd-8">
         Our Team
       </h1>
-      <div className="hidden md:flex md:flex-row justify-center items-center md:items-end">
+      <div className="md:flex md:flex-row justify-center items-center md:items-end">
         <div className="inline-block scale-150 my-20 mx-20">
           <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
             Team Lead

@@ -99,7 +99,7 @@ const Navbar = () => {
           <div className="mx-2 block">
             <Link
               to="/lost"
-              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
               <button>Lost</button>
             </Link>
@@ -107,7 +107,7 @@ const Navbar = () => {
           <div className="mx-2 block">
             <Link
               to="/found"
-              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
               <button>Found</button>
             </Link>
@@ -115,7 +115,7 @@ const Navbar = () => {
           <div className="mx-2 block">
             <Link
               to="/our-team"
-              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
               <button>Our Team</button>
             </Link>
@@ -126,7 +126,7 @@ const Navbar = () => {
                 onClick={() => {
                   setEventsClicked(!eventsClicked);
                 }}
-                className="px-4 py-2 rounded hover:bg-[#2a67b11e] flex items-center"
+                className="px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer flex items-center"
               >
                 <button className="flex items-center">
                   <FaUserCircle size={"32px"} className="mx-1" /> Hello{" "}
@@ -136,7 +136,7 @@ const Navbar = () => {
               <div
                 className={
                   eventsClicked
-                    ? "flex absolute justify-start text-[0.85rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2 z-10"
+                    ? "flex absolute justify-start text-[0.9rem] w-[8rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2 z-10"
                     : "hidden"
                 }
               >
@@ -145,13 +145,21 @@ const Navbar = () => {
                   onClick={() => {
                     setEventsClicked(!eventsClicked);
                   }}
+                  className=" hover:bg-[#2a67b11e] p-2 px-4 rounded coursor-pointer"
                 >
-                  <button className=" hover:bg-[#2a67b11e] p-2 px-4 rounded">
-                    My Profile
-                  </button>
+                  <button>My Profile</button>
+                </Link>
+                <Link
+                  to="/edit-profile"
+                  onClick={() => {
+                    setEventsClicked(!eventsClicked);
+                  }}
+                  className=" hover:bg-[#2a67b11e] p-2 px-4 rounded coursor-pointer"
+                >
+                  <button>Edit Profile</button>
                 </Link>
                 <div
-                  className="hover:bg-[#2a67b11e] p-2 px-4 rounded"
+                  className="hover:bg-[#2a67b11e] p-2 px-4 rounded cursor-pointer"
                   onClick={() => {
                     setEventsClicked(!eventsClicked);
                     handleLogout();
@@ -236,6 +244,14 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
             >
               <button>Found</button>
+            </Link>
+          </div>
+          <div className="mx-2 block">
+            <Link
+              to="/our-team"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+            >
+              <button>Our Team</button>
             </Link>
           </div>
           {userToken ? (
