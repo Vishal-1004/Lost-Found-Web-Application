@@ -168,7 +168,7 @@ function FoundCarousel({heading}) {
           }
         `}
       </style>
-      <h2 className="text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
+      <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
         {heading}
       </h2>
       <div
