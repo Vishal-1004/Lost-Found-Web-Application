@@ -41,6 +41,7 @@ exports.createFoundPost = async(req,res)=>{
             if(newFoundItemPost){
               return res.status(200).json({
                 message: "Upload successful!",
+                registered:true
               });
             }
           }
@@ -48,7 +49,7 @@ exports.createFoundPost = async(req,res)=>{
           console.log("inside catch")
           return res.status(500).json({
             message: "Upload failed!",
-            error: error.message
+            error: error.message,
           });
         }
       }else{
@@ -80,6 +81,7 @@ exports.createFoundPost = async(req,res)=>{
               if(newFoundItemPost){
                 return res.status(200).json({
                   message: "Upload successful!",
+                  registered:false
                 });
               }
             }else{
@@ -88,6 +90,7 @@ exports.createFoundPost = async(req,res)=>{
               if(newFoundItemPostwithNonRegisteredUser){
                 return res.status(200).json({
                   message: "Upload successful!",
+                  registered:false
                 });
               }
             }
