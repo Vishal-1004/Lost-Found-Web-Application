@@ -110,5 +110,44 @@ exports.createFoundPost = async(req,res)=>{
     }
 }
 
+exports.updateHostelerOrDayScholar = async(req,res)=>{
+  const {email,stayDetail} = req.body
+
+  if(!email){
+    return res.status(400).json({
+      message : "Email not filled!"
+    })
+  }
+
+  if(stayDetail!=="Day Scholar" && stayDetail!=="Hosteler"){
+    return res.status(400).json({
+      message:"Wrong Stay Detail!"
+    })
+  }
+
+  try{
+    const existingUser=await users.find({email:email})
+    if(existingUser.length<1){
+      return res.status(400).json({
+        message : "User not found!"
+      })
+    }
+    const stayDetailUpdate=await users.updateOne({email:email},{dayScholarORhosteler:stayDetail})
+    if(!stayDetailUpdate){
+      return res.status(400).json({
+        message:"Error updating detail!"
+      })
+    }
+   return  res.status(200).json({
+      message : `Stay detail updated to ${stayDetail}`
+    })
+  }catch(error){
+      return res.status(400).json({
+      message : 'Error connecting to db!',
+      error : error
+    })
+  }
+}
+
 
 

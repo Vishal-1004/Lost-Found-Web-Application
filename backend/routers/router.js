@@ -27,4 +27,7 @@ router.post("/api/v1/reset-password", authControllers.resetPassword);
 //Creating Found Post
 router.post("/api/v1/create-found-post",upload.single("image"),userControllers.createFoundPost);
 
+//Updating Day Scholar/Hosteler Info
+router.post("/api/v1/update-dayscholar-or-hosteler",userControllers.updateHostelerOrDayScholar);
+
 module.exports = router;
