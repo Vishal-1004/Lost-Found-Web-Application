@@ -71,3 +71,10 @@ export const updatePhoneNumberFunction = async (email, phoneNumber) => {
     phoneNumber,
   });
 }
+
+// creating found item post
+export const createFoundItemPost = async (data) => {
+  return await commonrequest("POST", `${BACKEND_URL}/api/v1/create-found-post`, data, {
+    "Content-Type": "multipart/form-data",
+  });
+};

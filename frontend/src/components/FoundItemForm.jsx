@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
-import { ToastMsg } from "../constants";
 import { useSelector } from "react-redux";
+import ToastMsg from "../constants/ToastMsg";
+import { createFoundItemPost } from "../services/API";
 
 // default locations available
 const locations = [
@@ -42,20 +43,40 @@ function FoundItemForm({ onClose }) {
     reset,
   } = useForm();
 
+  // handling the image file which the user gives
+  const [file, setFile] = useState(null);
+
   // on submit
-  const handleAddItem = (formData) => {
+  const handleFormSubmit = async (formData) => {
     setFormLoading(true);
+    const formDataToSend = new FormData();
+    formDataToSend.append("itemImage", file);
+    formDataToSend.append("itemTitle", formData.itemTitle);
+    formDataToSend.append("itemDescription", formData.itemDescription);
+    formDataToSend.append("itemFoundDate", formData.date);
+    formDataToSend.append("itemLocation", formData.itemLocation);
+    formDataToSend.append("founderName", userName);
+    formDataToSend.append("founderRegistrationNumber", userRegistrationNo);
+    formDataToSend.append("founderEmail", userEmail);
+    formDataToSend.append("founderPhoneNumber", userPhoneNumber);
+
+    console.log(formDataToSend.itemImage);
+    /*
     try {
-      console.log("Form data submitted:", formData);
-      ToastMsg("Form submitted successfully!", "success");
-      onClose();
+      const response = await createFoundItemPost(formDataToSend);
+      console.log(response);
+      if (response.status === 200) {
+        ToastMsg("Form submitted successfully!", "success");
+      } else {
+        ToastMsg("Form submission failed!", "error");
+      }
     } catch (error) {
       ToastMsg("Form submission failed!", "error");
       console.error("Error: ", error);
     } finally {
       setFormLoading(false);
       reset();
-    }
+    }*/
   };
 
   // handle custom input field for location
@@ -81,7 +102,11 @@ function FoundItemForm({ onClose }) {
   // *******************************************
 
   return (
-    <form className="w-full" onSubmit={handleSubmit(handleAddItem)} noValidate>
+    <form
+      className="w-full"
+      onSubmit={handleSubmit(handleFormSubmit)}
+      noValidate
+    >
       <div className="flex flex-wrap sm:flex-nowrap gap-4">
         {/* Item title */}
         <div className="mb-3 w-full sm:w-1/2">
@@ -345,6 +370,10 @@ function FoundItemForm({ onClose }) {
           id="itemImage"
           accept=".jpg,.png,.jpeg"
           {...register("itemImage", { required: "Item image is required" })}
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            console.log(e.target.files[0]);
+          }}
         />
         {errors.itemImage && (
           <div className="invalid-feedback">{errors.itemImage.message}</div>

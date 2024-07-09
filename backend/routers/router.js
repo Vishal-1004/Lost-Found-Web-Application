@@ -27,13 +27,13 @@ router.post("/api/v1/otp-verify", authControllers.verifyOtp);
 // Reseting password
 router.post("/api/v1/reset-password", authControllers.resetPassword);
 
-//Creating Found Post
-router.post("/api/v1/create-found-post",upload.single("image"),userControllers.createFoundPost);
-
 //Updating Day Scholar/Hosteler Info
 router.post("/api/v1/update-dayscholar-or-hosteler",userControllers.updateHostelerOrDayScholar);
 
 //Updating Phone Number
 router.post("/api/v1/update-phone-number",userControllers.updatePhoneNumber);
+
+//Creating Found Post
+router.post("/api/v1/create-found-post", upload.single("image"), userControllers.createFoundPost);
 
 module.exports = router;

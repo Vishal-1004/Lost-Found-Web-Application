@@ -13,6 +13,7 @@ exports.createFoundPost = async(req,res)=>{
         message : "Unfilled details!"
       })
     }
+    console.log("file name is: ***********", req.file.filename);
     try{
       const existingUser=await users.findOne({email:founderEmail,registrationNo:founderRegistrationNumber})
       if(existingUser){
