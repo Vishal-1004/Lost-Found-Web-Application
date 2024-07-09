@@ -72,6 +72,22 @@ export const updatePhoneNumberFunction = async (email, phoneNumber) => {
   });
 }
 
+// updating user password function
+export const updatePasswordFunction = async (email, currentPassword,newPassword) => {
+  return await commonrequest("POST", `${BACKEND_URL}/api/v1/update-password`, {
+    email,
+    currentPassword,
+    newPassword
+  });
+}
+
+// deleting user account function
+export const deleteAccountFunction = async (email) => {
+  return await commonrequest("POST", `${BACKEND_URL}/api/v1/delete-account`, {
+    email,
+  });
+}
+
 // creating found item post
 export const createFoundItemPost = async (data) => {
   return await commonrequest("POST", `${BACKEND_URL}/api/v1/create-found-post`, data, {

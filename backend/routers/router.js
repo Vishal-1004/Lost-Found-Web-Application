@@ -30,16 +30,22 @@ router.post("/api/v1/otp-verify", authControllers.verifyOtp);
 // Reseting password
 router.post("/api/v1/reset-password", authControllers.resetPassword);
 
-//Updating Day Scholar/Hosteler Info
+// Updating Day Scholar/Hosteler Info
 router.post(
   "/api/v1/update-dayscholar-or-hosteler",
   userControllers.updateHostelerOrDayScholar
 );
 
-//Updating Phone Number
+// Updating Phone Number
 router.post("/api/v1/update-phone-number", userControllers.updatePhoneNumber);
 
-//Creating Found Post
+// Update use password
+router.post("/api/v1/update-password",userControllers.updatePassword)
+
+// Delete user account
+router.post("/api/v1/delete-account", userControllers.deleteUser)
+
+// Creating Found Post
 router.post(
   "/api/v1/create-found-post",
   upload.single("image"),
