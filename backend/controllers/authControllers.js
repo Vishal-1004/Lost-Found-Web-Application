@@ -42,10 +42,18 @@ exports.login = async (req, res) => {
         } else {
           const token = await user.generateAuthtoken();
 
+          const data = {
+            name: user.name,
+            email: user.email,
+            dayScholarORhosteler: user.dayScholarORhosteler,
+            registrationNo: user.registrationNo,
+            phoneNumber: user.phoneNumber,
+            status: user.status,
+          };
           return res.status(200).json({
             message: "Login Successfull!",
             userToken: token,
-            userData: user,
+            userData: data,
           });
         }
       } else {
@@ -63,7 +71,7 @@ exports.login = async (req, res) => {
 };
 
 // Verify user login token
-exports.verifyToken = async (req,res) => {
+exports.verifyToken = async (req, res) => {
   const { token } = req.body;
 
   if (!token) {
@@ -79,7 +87,7 @@ exports.verifyToken = async (req,res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json({ message: "Token is valid", user });
+    return res.status(200).json({ message: "Token is valid" });
   } catch (error) {
     if (error.name === "TokenExpiredError") {
       return res.status(200).json({ message: "Token has expired" });
@@ -87,7 +95,7 @@ exports.verifyToken = async (req,res) => {
 
     return res.status(400).json({ message: "Invalid token" });
   }
-}
+};
 
 // User SignUp
 exports.signup = async (req, res) => {

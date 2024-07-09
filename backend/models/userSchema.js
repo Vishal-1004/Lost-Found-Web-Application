@@ -26,12 +26,13 @@ const userSchema = new mongoose.Schema({
   },
   dayScholarORhosteler: {
     type: String,
-    enum: ["Day Scholar", "Hosteller"],
+    enum: ["Day Scholar", "Hosteler"],
     default: "Day Scholar",
     required: true,
   },
   phoneNumber: {
     type: Number,
+    default: "",
   },
   lostItemsID: {
     type: [String],

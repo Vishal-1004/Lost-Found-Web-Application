@@ -18,7 +18,9 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.storedUserData.userToken);
-  const userName = useSelector((state) => state.storedUserData.userName);
+  const userName = useSelector(
+    (state) => state.storedUserData.userData.userName
+  );
 
   // function to handle scroll
   useEffect(() => {

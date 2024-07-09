@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import { ToastMsg } from "../constants";
 
 // default locations available
 const locations = [
-  "Clock Court", 
-  "Gazebo", 
-  "AB-1", 
-  "AB-2", 
-  "AB-3", 
-  "Delta Block", 
   "Custom",
+  "Clock Court",
+  "Gazebo",
+  "AB-1",
+  "AB-2",
+  "AB-3",
+  "Delta Block",
 ];
 
 function FoundItemForm({ onClose }) {
@@ -57,110 +57,187 @@ function FoundItemForm({ onClose }) {
     setValue("founderRegNo", RegNo?.toUpperCase());
   }, [RegNo, setValue]);
 
+  // puting range of input date ****************
+  const currentDate = new Date().toISOString().split("T")[0];
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(lastYearDate.getFullYear() - 1);
+  const lastYearDateString = lastYearDate.toISOString().split("T")[0];
+  // *******************************************
+
   return (
     <form className="w-full" onSubmit={handleSubmit(handleAddItem)} noValidate>
       <div className="flex flex-wrap sm:flex-nowrap gap-4">
         {/* Item title */}
         <div className="mb-3 w-full sm:w-1/2">
-          <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="itemTitle">
-            Item Title: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          <label
+            className="text-sm font-medium text-gray-700 flex items-center"
+            htmlFor="itemTitle"
+          >
+            Item Title:{" "}
+            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
-            className={`form-control text-gray-500 ${errors.itemTitle ? "border-red-500" : ""}`}
+            className={`form-control text-gray-500 ${
+              errors.itemTitle ? "border-red-500" : ""
+            }`}
             name="itemTitle"
             type="text"
             id="itemTitle"
             placeholder="ex: Sunglasses"
             {...register("itemTitle", { required: "Item title is required" })}
           />
-          {errors.itemTitle && <div className="invalid-feedback">{errors.itemTitle.message}</div>}
+          {errors.itemTitle && (
+            <div className="invalid-feedback">{errors.itemTitle.message}</div>
+          )}
         </div>
 
         {/* Date */}
         <div className="mb-3 w-full sm:w-1/2">
-          <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="date">
+          <label
+            className="text-sm font-medium text-gray-700 flex items-center"
+            htmlFor="date"
+          >
             Date: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
-            className={`form-control text-gray-400 ${errors.date ? "border-red-500" : ""}`}
+            className={`form-control text-gray-400 ${
+              errors.date ? "border-red-500" : ""
+            }`}
             name="date"
             type="date"
             id="date"
-            defaultValue={new Date().toISOString().split("T")[0]}
+            defaultValue={currentDate}
             {...register("date", { required: "Date is required" })}
+            min={lastYearDateString}
+            max={currentDate}
           />
-          {errors.date && <div className="invalid-feedback">{errors.date.message}</div>}
+          {errors.date && (
+            <div className="invalid-feedback">{errors.date.message}</div>
+          )}
         </div>
       </div>
 
       {/* Item description */}
       <div className="mb-3">
-        <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="itemDescription">
-          Item Description: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="itemDescription"
+        >
+          Item Description:{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <textarea
-          className={`form-control text-gray-500 ${errors.itemDescription ? "border-red-500" : ""}`}
+          className={`form-control text-gray-500 ${
+            errors.itemDescription ? "border-red-500" : ""
+          }`}
           name="itemDescription"
           id="itemDescription"
           placeholder="Describe the item found"
-          {...register("itemDescription", { required: "Item description is required" })}
+          rows={5}
+          {...register("itemDescription", {
+            required: "Item description is required",
+            minLength: {
+              value: 150,
+              message: "Item description must be at least 150 characters",
+            },
+            maxLength: {
+              value: 300,
+              message: "Item description must not exceed 300 characters",
+            },
+          })}
         />
-        {errors.itemDescription && <div className="invalid-feedback">{errors.itemDescription.message}</div>}
+        {errors.itemDescription && (
+          <div className="invalid-feedback">
+            {errors.itemDescription.message}
+          </div>
+        )}
       </div>
 
       {/* Found location */}
       <div className="mb-3 w-full sm:w-1/2">
-        <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="itemLocation">
-          Item Found Location: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="itemLocation"
+        >
+          Item Found Location:{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <select
-          className={`form-control text-gray-500 ${errors.itemLocation ? "border-red-500" : ""}`}
+          className={`form-control text-gray-500 ${
+            errors.itemLocation ? "border-red-500" : ""
+          }`}
           name="itemLocation"
           id="itemLocation"
-          {...register("itemLocation", { required: "Item location is required" })}
+          {...register("itemLocation", {
+            required: "Item location is required",
+          })}
           onChange={handleLocationChange}
         >
           <option value="">Select a location</option>
           {locations.map((location, index) => (
-            <option key={index} value={location}>{location}</option>
+            <option key={index} value={location}>
+              {location}
+            </option>
           ))}
         </select>
-        {errors.itemLocation && <div className="invalid-feedback">{errors.itemLocation.message}</div>}
+        {errors.itemLocation && (
+          <div className="invalid-feedback">{errors.itemLocation.message}</div>
+        )}
         {customLocation && (
           <input
-            className={`form-control text-gray-500 mt-2 ${errors.customLocation ? "border-red-500" : ""}`}
+            className={`form-control text-gray-500 mt-2 ${
+              errors.customLocation ? "border-red-500" : ""
+            }`}
             name="customLocation"
             type="text"
             placeholder="ex: North Square"
-            {...register("customLocation", { required: "Custom location is required" })}
+            {...register("customLocation", {
+              required: "Custom location is required",
+            })}
           />
         )}
       </div>
 
+      {/* Founder name */}
       <div className="flex flex-wrap sm:flex-nowrap gap-4">
-        {/* Founder name */}
         <div className="mb-3 w-full sm:w-1/2">
-          <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="founderName">
-            Founder Name: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          <label
+            className="text-sm font-medium text-gray-700 flex items-center"
+            htmlFor="founderName"
+          >
+            Founder Name:{" "}
+            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
-            className={`form-control text-gray-500 ${errors.founderName ? "border-red-500" : ""}`}
+            className={`form-control text-gray-500 ${
+              errors.founderName ? "border-red-500" : ""
+            }`}
             name="founderName"
             type="text"
             id="founderName"
             placeholder="ex: Shashank Sharma"
-            {...register("founderName", { required: "Founder name is required" })}
+            {...register("founderName", {
+              required: "Founder name is required",
+            })}
           />
-          {errors.founderName && <div className="invalid-feedback">{errors.founderName.message}</div>}
+          {errors.founderName && (
+            <div className="invalid-feedback">{errors.founderName.message}</div>
+          )}
         </div>
 
         {/* Founder reg no */}
         <div className="mb-3 w-full sm:w-1/2">
-          <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="founderRegNo">
-            Founder Registration No: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          <label
+            className="text-sm font-medium text-gray-700 flex items-center"
+            htmlFor="founderRegNo"
+          >
+            Founder Registration No:{" "}
+            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
-            className={`form-control text-gray-500 ${errors.founderRegNo ? "border-red-500" : ""}`}
+            className={`form-control text-gray-500 ${
+              errors.founderRegNo ? "border-red-500" : ""
+            }`}
             name="founderRegNo"
             type="text"
             id="founderRegNo"
@@ -173,17 +250,27 @@ function FoundItemForm({ onClose }) {
               },
             })}
           />
-          {errors.founderRegNo && <div className="invalid-feedback">{errors.founderRegNo.message}</div>}
+          {errors.founderRegNo && (
+            <div className="invalid-feedback">
+              {errors.founderRegNo.message}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Founder mail id */}
       <div className="mb-3">
-        <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="founderEmail">
-          Founder Email: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="founderEmail"
+        >
+          Founder Email:{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <input
-          className={`form-control text-gray-500 ${errors.founderEmail ? "border-red-500" : ""}`}
+          className={`form-control text-gray-500 ${
+            errors.founderEmail ? "border-red-500" : ""
+          }`}
           name="founderEmail"
           type="email"
           id="founderEmail"
@@ -191,18 +278,24 @@ function FoundItemForm({ onClose }) {
           {...register("founderEmail", {
             required: "Founder email is required",
             pattern: {
-              value: /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$/,
+              value:
+                /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$/,
               message: "Invalid email",
             },
           })}
         />
-        {errors.founderEmail && <div className="invalid-feedback">{errors.founderEmail.message}</div>}
+        {errors.founderEmail && (
+          <div className="invalid-feedback">{errors.founderEmail.message}</div>
+        )}
       </div>
 
       {/* Founder phone number */}
       <div className="mb-3 w-full sm:w-1/2">
-        <label className="text-sm font-medium text-gray-700" htmlFor="founderPhone">
-          Founder Phone Number:{" "}(optional)
+        <label
+          className="text-sm font-medium text-gray-700"
+          htmlFor="founderPhone"
+        >
+          Founder Phone Number: (optional)
         </label>
         <input
           className="form-control text-gray-500"
@@ -216,18 +309,26 @@ function FoundItemForm({ onClose }) {
 
       {/* Item photo */}
       <div className="mb-3">
-        <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="itemImage">
-          Item Image (jpg, png, jpeg): <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="itemImage"
+        >
+          Item Image (jpg, png, jpeg):{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <input
-          className={`form-control text-gray-500 ${errors.itemImage ? "border-red-500" : ""}`}
+          className={`form-control text-gray-500 ${
+            errors.itemImage ? "border-red-500" : ""
+          }`}
           name="itemImage"
           type="file"
           id="itemImage"
           accept=".jpg,.png,.jpeg"
           {...register("itemImage", { required: "Item image is required" })}
         />
-        {errors.itemImage && <div className="invalid-feedback">{errors.itemImage.message}</div>}
+        {errors.itemImage && (
+          <div className="invalid-feedback">{errors.itemImage.message}</div>
+        )}
       </div>
 
       {/* Submit button */}
@@ -235,7 +336,9 @@ function FoundItemForm({ onClose }) {
         <button
           type="submit"
           disabled={formLoading}
-          className={`btnSubmit ${formLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`btnSubmit ${
+            formLoading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           {formLoading ? (
             <>
@@ -249,6 +352,6 @@ function FoundItemForm({ onClose }) {
       </div>
     </form>
   );
-};
+}
 
 export default FoundItemForm;

@@ -28,47 +28,43 @@ function Login() {
   } = useForm();
 
   // User Login Function
-  const handleLogin = async (formData) => {
-    //console.log(formData);
-    setFormLoading(true);
-    try {
-      const { registrationNo, password } = formData;
-      const response = await loginFunction(registrationNo, password);
-      console.log(response);
+const handleLogin = async (formData) => {
+  //console.log(formData);
+  setFormLoading(true);
+  try {
+    const { registrationNo, password } = formData;
+    const response = await loginFunction(registrationNo, password);
+    //console.log(response);
 
-      if (response.status == 200) {
-        const userToken = response.data.userToken;
-        const userStatus = response.data.userData.status;
-        const userName = response.data.userData.name;
-        const userEmail = response.data.userData.email;
-        const userRegistrationNo = response.data.userData.registrationNo;
+    if (response.status === 200) {
+      const userToken = response.data.userToken;
+      const userStatus = response.data.userData.status;
+      const userData = {
+        userName: response.data.userData.name,
+        userEmail: response.data.userData.email,
+        userRegistrationNo: response.data.userData.registrationNo,
+        userPhoneNumber: response.data.userData.phoneNumber,
+        userDayScholarORhosteler: response.data.userData.dayScholarORhosteler,
+      };
 
-        ToastMsg(response.data.message, "success");
+      ToastMsg(response.data.message, "success");
 
-        // Store user data in Redux store
-        dispatch(
-          storeUserData(
-            userToken,
-            userStatus,
-            userName,
-            userRegistrationNo,
-            userEmail
-          )
-        );
+      // Store user data in Redux store
+      dispatch(storeUserData(userToken, userStatus, userData));
 
-        // Navigate to home page
-        navigate("/");
-      } else {
-        ToastMsg(response.response.data.message, "error");
-      }
-    } catch (error) {
-      ToastMsg("Server error! please try later", "error");
-      console.log("Internal Server Error: ", error);
-    } finally {
-      setFormLoading(false);
-      reset();
+      // Navigate to home page
+      navigate("/");
+    } else {
+      ToastMsg(response.response.data.message, "error");
     }
-  };
+  } catch (error) {
+    ToastMsg("Server error! please try later", "error");
+    console.log("Internal Server Error: ", error);
+  } finally {
+    setFormLoading(false);
+    reset();
+  }
+};
 
   // Capitalize the registration no.
   const registrationNo = watch("registrationNo");

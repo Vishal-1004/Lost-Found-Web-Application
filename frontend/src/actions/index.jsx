@@ -1,12 +1,16 @@
-export const storeUserData = (
-  userToken,
-  userStatus,
-  userName,
-  userRegistrationNo,
-  userEmail
-) => ({
+export const storeUserData = (userToken, userStatus, userData) => ({
   type: "STORE_USER_DATA",
-  payload: { userToken, userStatus, userName, userRegistrationNo, userEmail },
+  payload: { userToken, userStatus, userData },
+});
+
+export const updatePhoneNumber = (phoneNo) => ({
+  type: "UPDATE_PHONE_NUMBER",
+  payload: { phoneNo },
+});
+
+export const updateDayScholarORhosteler = (dayScholarORhosteler) => ({
+  type: "UPDATE_DAY_SCHOLAR_HOSTELER",
+  payload: { dayScholarORhosteler },
 });
 
 export const removeUserData = () => ({

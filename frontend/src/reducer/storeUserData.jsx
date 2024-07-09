@@ -1,9 +1,13 @@
 const initialState = {
   userToken: "",
   userStatus: "USER",
-  userName: "",
-  userRegistrationNo: "",
-  userEmail: "",
+  userData: {
+    userName: "",
+    userRegistrationNo: "",
+    userEmail: "",
+    userPhoneNumber: 0,
+    userDayScholarORhosteler: "",
+  },
 };
 
 export const storedUserData = (state = initialState, action) => {
@@ -13,9 +17,33 @@ export const storedUserData = (state = initialState, action) => {
         ...state,
         userToken: action.payload.userToken,
         userStatus: action.payload.userStatus,
-        userName: action.payload.userName,
-        userRegistrationNo: action.payload.userRegistrationNo,
-        userEmail: action.payload.userEmail,
+        userData: {
+          ...state.userData,
+          userName: action.payload.userData.userName,
+          userRegistrationNo: action.payload.userData.userRegistrationNo,
+          userEmail: action.payload.userData.userEmail,
+          userPhoneNumber: action.payload.userData.userPhoneNumber,
+          userDayScholarORhosteler:
+            action.payload.userData.userDayScholarORhosteler,
+        },
+      };
+
+    case "UPDATE_PHONE_NUMBER":
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          userPhoneNumber: action.payload.phoneNo,
+        },
+      };
+
+    case "UPDATE_DAY_SCHOLAR_HOSTELER":
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          userDayScholarORhosteler: action.payload.dayScholarORhosteler,
+        },
       };
 
     case "REMOVE_USER_DATA":
@@ -23,7 +51,12 @@ export const storedUserData = (state = initialState, action) => {
         ...state,
         userToken: "",
         userStatus: "USER",
-        userName: "",
+        userData: {
+          userName: "",
+          userRegistrationNo: "",
+          userEmail: "",
+          userPhoneNumber: "",
+        },
       };
 
     default:

@@ -6,12 +6,22 @@ import {
   updateHostelerOrDayscholarFunction,
   updatePhoneNumberFunction,
 } from "../services/API";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateDayScholarORhosteler, updatePhoneNumber } from "../actions";
 
 // updating phone number function
 const UpdatePhoneNumberForm = () => {
+  const dispatch = useDispatch();
+
   // getting user email from localstorage
-  const userEmail = useSelector((state) => state.storedUserData.userEmail);
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
+
+  // getting user current phone number
+  const userPhoneNumber = useSelector(
+    (state) => state.storedUserData.userData.userPhoneNumber
+  );
 
   const {
     register,
@@ -23,15 +33,23 @@ const UpdatePhoneNumberForm = () => {
   const [formLoading, setFormLoading] = useState(false);
 
   const handlePhoneNoUpdate = async (formData) => {
+    if (formData.phoneNumber == userPhoneNumber) {
+      reset();
+      return ToastMsg(
+        "Please enter a new phone number that is different from your current one.",
+        "warning"
+      );
+    }
     setFormLoading(true);
     console.log("Updating your phone number data: ", formData);
     try {
       const { phoneNumber } = formData;
       const response = await updatePhoneNumberFunction(userEmail, phoneNumber);
-      console.log(response);
+      //console.log(response);
 
       if (response.status == 200) {
         ToastMsg(response.data.message, "success");
+        dispatch(updatePhoneNumber(phoneNumber));
       } else {
         ToastMsg(response.response.data.message, "error");
       }
@@ -106,8 +124,17 @@ const UpdatePhoneNumberForm = () => {
 
 // updating hosteler or day scholar functio
 const UpdateHostelerDayScholarForm = () => {
+  const dispatch = useDispatch();
+
   // getting user email from localstorage
-  const userEmail = useSelector((state) => state.storedUserData.userEmail);
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
+
+  // getting user current hosteler/day scholar information
+  const userDayScholarORhosteler = useSelector(
+    (state) => state.storedUserData.userData.userDayScholarORhosteler
+  );
 
   const {
     register,
@@ -119,6 +146,13 @@ const UpdateHostelerDayScholarForm = () => {
   const [formLoading, setFormLoading] = useState(false);
 
   const handleHostelerDayScholarUpdate = async (formData) => {
+    if (userDayScholarORhosteler == formData.dayScholarORhosteler) {
+      reset();
+      return ToastMsg(
+        "Please select a different category if your status has changed from 'Day Scholar' to 'Hosteler' or vice versa.",
+        "warning"
+      );
+    }
     setFormLoading(true);
     //console.log("Updating your hosteler or day scholar data: ", formData);
     try {
@@ -127,10 +161,11 @@ const UpdateHostelerDayScholarForm = () => {
         userEmail,
         dayScholarORhosteler
       );
-      console.log(response);
+      //console.log(response);
 
       if (response.status == 200) {
         ToastMsg(response.data.message, "success");
+        dispatch(updateDayScholarORhosteler(dayScholarORhosteler));
       } else {
         ToastMsg(response.response.data.message, "error");
       }
@@ -155,7 +190,7 @@ const UpdateHostelerDayScholarForm = () => {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="dayScholarORhosteler"
         >
-          Hosteller/Day Scholar:
+          Hosteler/Day Scholar:
           <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <select
@@ -314,6 +349,9 @@ const UpdatePasswordForm = () => {
 };
 
 const EditProfile = () => {
+  //const userData = useSelector((state) => state.storedUserData.userData);
+  //console.log(userData);
+
   return (
     <div className="px-4 mb-5 sm:px-12">
       {/* Updating phone number info */}
