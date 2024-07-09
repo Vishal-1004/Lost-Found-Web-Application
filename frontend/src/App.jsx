@@ -9,7 +9,8 @@ import {
   SignUp,
   VerifyEmail,
   VerifyOTP,
-  Profile
+  Profile,
+  AllUsers,
 } from "./pages";
 import { BackToTop, Footer, Navbar } from "./components";
 import EditProfile from "./pages/EditProfile";
@@ -20,6 +21,8 @@ import { ToastMsg } from "./constants";
 // checking
 const App = () => {
   const userToken = useSelector((state) => state.storedUserData.userToken);
+  const userStatus = useSelector((state) => state.storedUserData.userStatus);
+
   const emailVerified = useSelector(
     (state) => state.resetPasswordState.emailVerified
   );
@@ -71,6 +74,10 @@ const App = () => {
               <LoginPage />
             )
           }
+        />
+        <Route
+          path="/all-users"
+          element={userToken && userStatus == "ADMIN" ? <AllUsers /> : <Home />}
         />
         <Route
           path="/login"
