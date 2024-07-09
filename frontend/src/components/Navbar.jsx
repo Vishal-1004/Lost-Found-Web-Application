@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import { FaUserCircle } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
@@ -18,7 +18,6 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.storedUserData.userToken);
-  const userStatus = useSelector((state) => state.storedUserData.userStatus);
   const userName = useSelector(
     (state) => state.storedUserData.userData.userName
   );
@@ -88,12 +87,12 @@ const Navbar = () => {
       >
         <Link to="/" className="ml-4">
           <img
-            className="collapse absolute sm:w-[150px] sm:visible"
+            className="collapse absolute sm:w-[150px] md:visible"
             src="https://cdn.codechef.com/images/cc-logo.svg"
             alt="Website Logo"
           />
           <img
-            className="sm:collapse"
+            className="md:collapse"
             src="https://cdn.codechef.com/images/cc-logo-mobile-1.svg"
             alt="Website Logo"
           />
@@ -133,7 +132,7 @@ const Navbar = () => {
               >
                 <button className="flex items-center">
                   <FaUserCircle size={"32px"} className="mx-1" /> Hello{" "}
-                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName}
+                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName }
                 </button>
               </div>
               <div
@@ -161,19 +160,6 @@ const Navbar = () => {
                 >
                   <button>Edit Profile</button>
                 </Link>
-                {userStatus == "ADMIN" ? (
-                  <Link
-                    to="/all-users"
-                    onClick={() => {
-                      setEventsClicked(!eventsClicked);
-                    }}
-                    className=" hover:bg-[#2a67b11e] p-2 px-4 rounded coursor-pointer"
-                  >
-                    All Users
-                  </Link>
-                ) : (
-                  ""
-                )}
                 <div
                   className="hover:bg-[#2a67b11e] p-2 px-4 rounded cursor-pointer"
                   onClick={() => {
@@ -280,7 +266,7 @@ const Navbar = () => {
               >
                 <button className="flex items-center">
                   <FaUserCircle size={"32px"} className="mx-1" />
-                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName}
+                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName }
                 </button>
               </div>
               <div
@@ -301,19 +287,6 @@ const Navbar = () => {
                     My Profile
                   </button>
                 </Link>
-                {userStatus == "ADMIN" ? (
-                  <Link
-                    to="/all-users"
-                    onClick={() => {
-                      setEventsClicked(!eventsClicked);
-                    }}
-                    className=" hover:bg-[#2a67b11e] p-2 px-4 rounded coursor-pointer"
-                  >
-                    All Users
-                  </Link>
-                ) : (
-                  ""
-                )}
                 <div
                   className="hover:bg-[#2a67b11e] p-2 px-4 rounded"
                   onClick={() => {
