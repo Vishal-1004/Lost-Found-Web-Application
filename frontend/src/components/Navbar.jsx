@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 import { FaUserCircle } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
