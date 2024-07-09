@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import { ToastMsg } from "../constants";
+import { useSelector } from "react-redux";
 
 // default locations available
 const locations = [
@@ -15,6 +16,21 @@ const locations = [
 ];
 
 function FoundItemForm({ onClose }) {
+  // getting user data from localstorage****************
+  const userName = useSelector(
+    (state) => state.storedUserData.userData.userName
+  );
+  const userRegistrationNo = useSelector(
+    (state) => state.storedUserData.userData.userRegistrationNo
+  );
+  const userPhoneNumber = useSelector(
+    (state) => state.storedUserData.userData.userPhoneNumber
+  );
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
+  // *****************************************************
+
   const [formLoading, setFormLoading] = useState(false);
   const [customLocation, setCustomLocation] = useState(false);
   const {
@@ -198,8 +214,8 @@ function FoundItemForm({ onClose }) {
         )}
       </div>
 
-      {/* Founder name */}
       <div className="flex flex-wrap sm:flex-nowrap gap-4">
+        {/* Founder name */}
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700 flex items-center"
@@ -215,6 +231,7 @@ function FoundItemForm({ onClose }) {
             name="founderName"
             type="text"
             id="founderName"
+            value={userName ? userName : null}
             placeholder="ex: Shashank Sharma"
             {...register("founderName", {
               required: "Founder name is required",
@@ -242,6 +259,7 @@ function FoundItemForm({ onClose }) {
             type="text"
             id="founderRegNo"
             placeholder="ex: 22BCE1411"
+            value={userRegistrationNo ? userRegistrationNo : null}
             {...register("founderRegNo", {
               required: "Founder registration number is required",
               pattern: {
@@ -274,6 +292,7 @@ function FoundItemForm({ onClose }) {
           name="founderEmail"
           type="email"
           id="founderEmail"
+          value={userEmail ? userEmail : null}
           placeholder="ex: shashank.sharma2022@vitstudent.ac.in"
           {...register("founderEmail", {
             required: "Founder email is required",
@@ -302,6 +321,7 @@ function FoundItemForm({ onClose }) {
           name="founderPhone"
           type="text"
           id="founderPhone"
+          value={userPhoneNumber ? userPhoneNumber : null}
           placeholder="ex: 70221*****"
           {...register("founderPhone")}
         />
