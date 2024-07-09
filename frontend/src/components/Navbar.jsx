@@ -132,7 +132,7 @@ const Navbar = () => {
               >
                 <button className="flex items-center">
                   <FaUserCircle size={"32px"} className="mx-1" /> Hello{" "}
-                  {userName.split(" ")[0]}
+                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName }
                 </button>
               </div>
               <div
@@ -266,7 +266,7 @@ const Navbar = () => {
               >
                 <button className="flex items-center">
                   <FaUserCircle size={"32px"} className="mx-1" />
-                  {userName.split(" ")[0]}
+                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName }
                 </button>
               </div>
               <div
