@@ -17,9 +17,9 @@ const Navbar = () => {
   const userDropdownRef = useRef();
 
   const dispatch = useDispatch();
-  const userToken = useSelector((state) => state.storedUserData.userToken);
+  const userToken = useSelector(state => state.storedUserData.userToken);
   const userName = useSelector(
-    (state) => state.storedUserData.userData.userName
+    (state) => state.storedUserData.userName
   );
 
   // function to handle scroll
@@ -256,60 +256,7 @@ const Navbar = () => {
               <button>Our Team</button>
             </Link>
           </div>
-          {userToken ? (
-            <div className="mx-2 block" ref={userDropdownRef}>
-              <div
-                onClick={() => {
-                  setEventsClicked(!eventsClicked);
-                }}
-                className="px-2 py-2 rounded hover:bg-[#2a67b11e] flex items-center"
-              >
-                <button className="flex items-center">
-                  <FaUserCircle size={"32px"} className="mx-1" />
-                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName }
-                </button>
-              </div>
-              <div
-                className={
-                  eventsClicked
-                    ? "flex absolute justify-start text-[0.85rem]  bg-white shadow-lg rounded mt-2 flex-col space-y-2"
-                    : "hidden"
-                }
-              >
-                <Link
-                  to="/profile"
-                  onClick={(e) => {
-                    setEventsClicked(!eventsClicked);
-                    e.stopPropagation();
-                  }}
-                >
-                  <button className=" hover:bg-[#2a67b11e] p-2 px-4 rounded">
-                    My Profile
-                  </button>
-                </Link>
-                <div
-                  className="hover:bg-[#2a67b11e] p-2 px-4 rounded"
-                  onClick={() => {
-                    setEventsClicked(!eventsClicked);
-                    handleLogout();
-                  }}
-                >
-                  <button className="text-red-500 flex items-center">
-                    Logout <MdLogout className="ml-1" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mx-2 block">
-              <Link
-                to="/login"
-                className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
-              >
-                <button>Login</button>
-              </Link>
-            </div>
-          )}
+          
         </div>
       )}
     </div>
