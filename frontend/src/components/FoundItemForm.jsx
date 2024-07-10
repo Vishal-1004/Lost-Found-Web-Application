@@ -58,11 +58,11 @@ function FoundItemForm({ onClose }) {
     formDataToSend.append("photo", file);
     formDataToSend.append("itemTitle", formData.itemTitle);
     formDataToSend.append("itemDescription", formData.itemDescription);
-    formDataToSend.append("itemFoundDate", formData.date);
     formDataToSend.append(
-      "itemLocation",
-      moment(formData.itemLocation).format("DD-MM-YYYY")
+      "itemFoundDate",
+      moment(formData.date).format("DD-MM-YYYY")
     );
+    formDataToSend.append("itemLocation", formData.itemLocation);
     formDataToSend.append("founderName", userName);
     formDataToSend.append("founderRegistrationNumber", userRegistrationNo);
     formDataToSend.append("founderEmail", userEmail);

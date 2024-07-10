@@ -24,12 +24,11 @@ function ItemCard({ url, title, date, about, location, }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="rounded-[12px] overflow-hidden border border-gray-400 text-center" style={{ width: '100%', height: '300px' }}>
-        <img
-          src={url}
-          alt={title}
-          className="h-[250px] w-full object-cover"
-        />
+      <div
+        className="rounded-[12px] overflow-hidden border border-gray-400 text-center"
+        style={{ width: "100%", height: "300px" }}
+      >
+        <img src={url} alt={title} className="h-full w-full object-cover" />
       </div>
 
       <div className="mt-6">
@@ -38,19 +37,17 @@ function ItemCard({ url, title, date, about, location, }) {
             {shortTitle}
           </h3>
         </div>
-        
+
         <div className="text-[14px] text-gray-500 font-semibold mb-2 flex items-center gap-1">
-            <FaMapMarkerAlt className="mr-2" size={"20px"} />
-            {location}
+          <FaMapMarkerAlt className="mr-2" size={"20px"} />
+          {location}
         </div>
 
-        <p className="text-[14px] text-gray-700">
-            {shortAbout}
-        </p>
+        <p className="text-[14px] text-gray-700">{shortAbout}</p>
 
         <div className="mt-4 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
-            <AiFillCalendar className="mr-1" size={"20px"} />
-            {formattedDate}
+          <AiFillCalendar className="mr-1" size={"20px"} />
+          {formattedDate}
         </div>
       </div>
     </div>

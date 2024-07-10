@@ -95,6 +95,11 @@ export const createFoundItemPost = async (data) => {
   });
 };
 
+// getting found items
+export const getFoundItemsFunction = async (all = 0,count = 5) => {
+  return await commonrequest("GET",`${BACKEND_URL}/api/v1/get-found-items?all=${all}&count=${count}`)
+}
+
 // getting all users data for admin function
 export const getAllUsersFunction = async (
   email,
