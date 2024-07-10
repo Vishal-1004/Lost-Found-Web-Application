@@ -3,8 +3,11 @@ import PropTypes from "prop-types";
 import { format } from "date-fns";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { AiFillCalendar } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 const DetailedView = ({ url, title, date, about, location, founder }) => {
+  const userToken = useSelector((state) => state.storedUserData.userToken);
+
   // use this variable for on-hover actions
   const [isHovered, setIsHovered] = useState(false);
 
@@ -13,11 +16,6 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
   const shortAbout =
     about.length > 250 ? `${about.substring(0, 250)}...` : about;
   const shortTitle = title.length > 25 ? `${title.substring(0, 25)}...` : title;
-
-  // handle claim button action
-  const handleClaim = () => {
-    console.log("Claim this item");
-  };
 
   return (
     <div
@@ -74,14 +72,23 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
         </p>
 
         {/* Posted By */}
-        <div className="border border-gray-300 rounded-[8px] p-2 md:mt-2 flex flex-col gap-1 text-gray-600">
+        {!userToken ? (
+          <p className="text-[15px] font-semibold">Posted by:</p>
+        ) : (
+          ""
+        )}
+        <div
+          className={`${
+            userToken ? "" : "blur"
+          } border border-gray-300 rounded-[8px] p-2 md:mt-2 flex flex-col gap-1 text-gray-600`}
+        >
           {/* Heading */}
           <p className="text-[15px] font-semibold">Posted by:</p>
 
           {/* Name */}
           <p className="text-[14px]">
             <span className="font-semibold text-[13px] mr-2">Name:</span>
-            {founder.name}
+            {userToken ? founder.name : ""}
           </p>
 
           {/* Registration number */}
@@ -89,13 +96,13 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
             <span className="font-semibold text-[13px] mr-2">
               Registration no.:
             </span>
-            {founder.regNo}
+            {userToken ? founder.regNo : ""}
           </p>
 
           {/* Email */}
           <p className="text-[14px]">
             <span className="font-semibold text-[13px] mr-2">Email:</span>
-            {founder.email}
+            {userToken ? founder.email : ""}
           </p>
 
           {/* Hosteller or Day Scholar */}
@@ -103,22 +110,24 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
             <span className="font-semibold text-[13px] mr-2">
               Hosteller/Day Scholar:
             </span>
-            {founder.dayScholarORhosteler}
+            {userToken ? founder.dayScholarORhosteler : ""}
           </p>
 
           {/* Contact Number */}
-          {founder.number ? <p className="text-[14px]">
-            <span className="font-semibold text-[13px] mr-2">Contact:</span>
-            {founder.number}
-          </p> : null}
+          {founder.number ? (
+            <p className="text-[14px]">
+              <span className="font-semibold text-[13px] mr-2">Contact:</span>
+              {userToken ? founder.number : ""}
+            </p>
+          ) : null}
         </div>
-
-        {/* Claim button */}
-        <div className="text-center sm:text-left">
-          <button onClick={handleClaim} className="btnSubmit">
-            Claim !
-          </button>
-        </div>
+        {!userToken ? (
+          <div className="p-4 mt-4 border border-blue-300 bg-blue-100 rounded-md">
+            Login to view details
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

@@ -212,12 +212,19 @@ exports.updateHostelerOrDayScholar = async (req, res) => {
       });
     }
 
-    //Updating day scholar or hosteler detail
+    //Updating day scholar or hosteler detail for user schema
     const stayDetailUpdate = await users.updateOne(
       { email: email },
       { dayScholarORhosteler: dayScholarORhosteler }
     );
-    if (!stayDetailUpdate) {
+
+    // Updating day scholar or hosteler details for found item schema
+    const stayDetailUpdateForFoundSchema = await foundItems.updateMany(
+      { personEmail: email },
+      { personDayScholarORhosteler: dayScholarORhosteler }
+    );
+
+    if (!stayDetailUpdate || !stayDetailUpdateForFoundSchema) {
       return res.status(400).json({
         message: "Error updating detail!",
       });
@@ -264,7 +271,13 @@ exports.updatePhoneNumber = async (req, res) => {
       { email: email },
       { phoneNumber: phoneNumber }
     );
-    if (!phoneNumberUpdate) {
+
+    // Updating day scholar or hosteler details for found item schema
+    const phoneNumberUpdateForFoundSchema = await foundItems.updateMany(
+      { personEmail: email },
+      { personNumber: phoneNumber }
+    );
+    if (!phoneNumberUpdate || !phoneNumberUpdateForFoundSchema) {
       return res.status(400).json({
         message: "Error updating phone number!",
       });
