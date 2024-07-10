@@ -14,7 +14,7 @@ const AllUsers = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  // Getting user email from localstorage
+  // Getting user email from local storage
   const userEmail = useSelector(
     (state) => state.storedUserData.userData.userEmail
   );
@@ -77,62 +77,102 @@ const AllUsers = () => {
     }));
   };
 
+  // handle action button click
+  const handleActionClick = (username) => {
+    console.log(`User: ${username}`);
+  };
+
   return (
-    <>
+    <div className="p-4 max-w-7xl mx-auto">
+      <h1 className="text-2xl font-semibold mb-4">All Users</h1>
       {formLoading ? (
-        <>
+        <div className="flex items-center">
           <FaSpinner className="mr-3 animate-spin" />
           Loading...
-        </>
+        </div>
       ) : (
         <>
-          <div>
-            Current page is: {pageInfo.currentPage} <br />
-            Total Pages is: {pageInfo.totalPages} <br />
-            <div className="flex">
-              {pageInfo.currentPage === 1 ? null : (
-                <button className="bg-red-400 p-2" onClick={handlePrevBtnClick}>
-                  Prev
-                </button>
-              )}
-              {pageInfo.currentPage === pageInfo.totalPages ? null : (
-                <button
-                  className="bg-green-400 p-2"
-                  onClick={handleNextBtnClick}
-                >
-                  Next
-                </button>
-              )}
-            </div>
-            <br />
+          <div className="mb-4">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search users..."
+              className="p-2 border rounded w-full sm:w-1/2"
             />
           </div>
-          <hr />
-          {allUsers.map((user, index) => (
-            <div key={user._id}>
-              <p>User {index + 1}:</p>
-              <p>ID: {user._id}</p>
-              <p>Name: {user.name}</p>
-              <p>Email: {user.email}</p>
-              <p>Registration No: {user.registrationNo}</p>
-              <p>Phone Number: {user.phoneNumber || "N/A"}</p>
-              {user.dayScholarORhosteler && (
-                <p>Day Scholar or Hosteler: {user.dayScholarORhosteler}</p>
-              )}
-              <p>Total Found Posts: {user.foundItemsID.length}</p>
-              <p>Total Lost Posts: {user.lostItemsID.length}</p>
-              {/* Add other fields here as needed */}
-              <hr />
-            </div>
-          ))}
+          <div className="overflow-x-auto xl:overflow-x-visible">
+            <table className="min-w-full bg-white border border-gray-200">
+              <thead>
+                <tr>
+                  <th className="py-2 px-2 border-b">ID</th>
+                  <th className="py-2 px-4 border-b">Name</th>
+                  <th className="py-2 px-4 border-b">Email</th>
+                  <th className="py-2 px-4 border-b">Registration No</th>
+                  <th className="py-2 px-4 border-b">Phone Number</th>
+                  <th className="py-2 px-4 border-b">Day Scholar/Hosteler</th>
+                  <th className="py-2 px-4 border-b">Total Found Posts</th>
+                  <th className="py-2 px-4 border-b">Total Lost Posts</th>
+                  <th className="py-2 px-4 border-b">Role</th>
+                  <th className="py-2 px-4 border-b">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allUsers.map((user, index) => (
+                  <tr key={user._id}>
+                    <td className="py-2 px-2 border-b truncate" style={{ maxWidth: '100px' }}>{user._id}</td>
+                    <td className="py-2 px-4 border-b">{user.name}</td>
+                    <td className="py-2 px-4 border-b">{user.email}</td>
+                    <td className="py-2 px-4 border-b">{user.registrationNo}</td>
+                    <td className="py-2 px-4 border-b">
+                      {user.phoneNumber || "N/A"}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {user.dayScholarORhosteler}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {user.foundItemsID.length}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {user.lostItemsID.length}
+                    </td>
+                    <td className="py-2 px-4 border-b">example</td>
+                    <td className="py-2 px-4 border-b">
+                      <button
+                        className="btnSubmit bg-blue-500 text-white p-2 rounded"
+                        onClick={() => handleActionClick(user.name)}
+                      >
+                        Action
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+          </table>
+          </div>
+
+          <div className="flex justify-between mt-4">
+            {pageInfo.currentPage > 1 && (
+              <button
+                className="btnSubmit bg-red-400 hover:bg-red-600 p-2 rounded"
+                onClick={handlePrevBtnClick}
+              >
+                Prev
+              </button>
+            )}
+            <div className="flex-grow"></div>
+            {pageInfo.currentPage < pageInfo.totalPages && (
+              <button
+                className="btnSubmit bg-green-400 hover:bg-green-600 p-2 rounded"
+                onClick={handleNextBtnClick}
+              >
+                Next
+              </button>
+            )}
+          </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 
