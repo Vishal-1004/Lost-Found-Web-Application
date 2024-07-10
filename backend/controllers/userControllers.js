@@ -280,31 +280,39 @@ exports.updatePhoneNumber = async (req, res) => {
   }
 };
 
+// getting all found items
 exports.fetchFoundItems = async (req, res) => {
   try {
     const { all, count } = req.query;
 
-    if (all === "true" || all === 1) {
+    if (all === "true" || all === "1") {
       // Handle request for all found items
-      const foundItemsAll = await foundItems.find();
-      return res.status(200).json(foundItemsAll);
+      const foundItemsAll = await foundItems.find().sort({ createdAt: -1 });
+      return res.status(200).json({
+        message: "All Found Post Fetched Successfully!",
+        data: foundItemsAll,
+      });
     } else if (count) {
       // Handle request for a specific number of found items
       const countValue = parseInt(count, 10);
       if (isNaN(countValue)) {
         return res.status(400).json({ message: "Invalid count value" });
       }
-      const foundItemsCount = await foundItems.find().limit(countValue);
-      return res.status(200).json(foundItemsCount);
+      const foundItemsCount = await foundItems.find().sort({ createdAt: -1 }).limit(countValue);
+      return res.status(200).json({
+        message: "All Found Post Fetched Successfully!",
+        data: foundItemsCount,
+      });
     } else {
       return res.status(400).json({ message: "Invalid parameter" });
     }
   } catch (error) {
     console.error("Error fetching found items:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 
+// updating your password
 exports.updatePassword = async (req, res) => {
   const { email, oldPassword, newPassword } = req.body;
 
@@ -337,6 +345,7 @@ exports.updatePassword = async (req, res) => {
   }
 };
 
+// user personally deleting his/her account
 exports.deleteAccount = async (req, res) => {
   const { email } = req.body;
 

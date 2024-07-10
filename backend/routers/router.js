@@ -78,7 +78,9 @@ router.post(
   upload.single("photo"),
   userControllers.createFoundPost
 );
-router.get("/api/v1/found-items", userControllers.fetchFoundItems);
+
+// Getting all found items
+router.get("/api/v1/get-found-items", userControllers.fetchFoundItems);
 
 // Get all users for admin to show
 router.post("/api/v1/get-all-users", adminControllers.getAllUsers);
