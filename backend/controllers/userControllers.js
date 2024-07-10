@@ -281,9 +281,9 @@ exports.fetchFoundItems = async (req, res) => {
   try {
     const { all, count } = req.query;
 
-    if (all) {
+    if (all === "true" || all === 1) {
       // Handle request for all found items
-      const foundItemsAll = await FoundItem.find();
+      const foundItemsAll = await foundItems.find();
       return res.status(200).json(foundItemsAll);
     } else if (count) {
       // Handle request for a specific number of found items
@@ -291,7 +291,7 @@ exports.fetchFoundItems = async (req, res) => {
       if (isNaN(countValue)) {
         return res.status(400).json({ message: "Invalid count value" });
       }
-      const foundItemsCount = await FoundItem.find().limit(countValue);
+      const foundItemsCount = await foundItems.find().limit(countValue);
       return res.status(200).json(foundItemsCount);
     } else {
       return res.status(400).json({ message: "Invalid parameter" });
@@ -368,6 +368,7 @@ exports.deleteAccount = async (req, res) => {
       .json({ message: "Internal Server Error", specificError: error.message });
   }
 };
+
 // Deleting user account and associated found items
 exports.deleteUser = async (req, res) => {
   const { email } = req.body;

@@ -124,7 +124,13 @@ exports.signup = async (req, res) => {
         $or: [{ email }, { registrationNumber: registrationNo }],
       });
 
-      console.log(nonexistingUser.foundItemsIds);
+      if (nonexistingUser) {
+        console.log("Non-registered user found:", nonexistingUser);
+        console.log("Found items IDs:", nonexistingUser.foundItemsIds);
+      } else {
+        console.log("Non-registered user not found");
+      }
+
       const registerUser = new users({
         name,
         registrationNo,
@@ -132,11 +138,14 @@ exports.signup = async (req, res) => {
         dayScholarORhosteler,
         password,
         status: "USER",
-        foundItemsId: nonexistingUser ? nonexistingUser.foundItemsIds : [],
+        foundItemsID: nonexistingUser ? nonexistingUser.foundItemsIds : [],
       });
 
       await registerUser.save();
-      console.log(registerUser.foundItemsId);
+      console.log(
+        "Registered user found items IDs:",
+        registerUser.foundItemsID
+      );
 
       // If the user was found in nonRegisteredUser, remove the entry
       if (nonexistingUser) {
