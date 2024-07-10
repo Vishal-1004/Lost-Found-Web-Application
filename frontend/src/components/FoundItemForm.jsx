@@ -87,6 +87,7 @@ function FoundItemForm({ onClose }) {
     } finally {
       setFormLoading(false);
       reset();
+      onClose();
     }
   };
 
@@ -118,7 +119,7 @@ function FoundItemForm({ onClose }) {
       onSubmit={handleSubmit(handleFormSubmit)}
       noValidate
     >
-      <div className="flex flex-wrap sm:flex-nowrap gap-4">
+      <div className="flex flex-wrap sm:flex-nowrap sm:gap-4">
         {/* Item title */}
         <div className="mb-3 w-full sm:w-1/2">
           <label
@@ -250,14 +251,46 @@ function FoundItemForm({ onClose }) {
         )}
       </div>
 
-      <div className="flex flex-wrap sm:flex-nowrap gap-4">
+      {/* Item photo */}
+      <div className="mb-3">
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="itemImage"
+        >
+          Item Image (jpg, png, jpeg):{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+        </label>
+        <input
+          className={`form-control text-gray-500 ${
+            errors.itemImage ? "border-red-500" : ""
+          }`}
+          name="itemImage"
+          type="file"
+          id="itemImage"
+          accept=".jpg,.png,.jpeg"
+          {...register("itemImage", { required: "Item image is required" })}
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            //console.log(e.target.files[0]);
+          }}
+        />
+        {errors.itemImage && (
+          <div className="invalid-feedback">{errors.itemImage.message}</div>
+        )}
+      </div>
+
+      <hr className="my-8 mx-auto border-t-2 border-gray-300 sm:w-[550px]" />
+
+      <p className="text-gray-500 text-[18px] font-semibold mb-2">Posted by:</p>
+
+      <div className="flex flex-wrap sm:flex-nowrap sm:gap-4">
         {/* Founder name */}
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="founderName"
           >
-            Founder Name:{" "}
+            Name:{" "}
             <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
@@ -284,7 +317,7 @@ function FoundItemForm({ onClose }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="founderRegNo"
           >
-            Founder Registration No:{" "}
+            Registration Number:{" "}
             <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
@@ -318,7 +351,7 @@ function FoundItemForm({ onClose }) {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="founderEmail"
         >
-          Founder Email:{" "}
+          Email:{" "}
           <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <input
@@ -344,82 +377,56 @@ function FoundItemForm({ onClose }) {
         )}
       </div>
 
-      {/* Hosteller or Day scholar */}
-      <div className="mb-3 w-full md:w-1/2">
-        <label
-          className="text-sm font-medium text-gray-700 flex items-center"
-          htmlFor="dayScholarORhosteler"
-        >
-          Hosteller/Day Scholar:{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
-        </label>
-        <select
-          className={`form-control ${
-            errors.dayScholarORhosteler ? "border-red-500" : ""
-          }`}
-          name="Hosteller/Day Scholar"
-          id="dayScholarORhosteler"
-          value={userDayScholarORhosteler}
-          {...register("dayScholarORhosteler", {
-            required: "This field is required",
-          })}
-        >
-          <option value="">Select an option</option>
-          <option value="Hosteler">Hosteler</option>
-          <option value="Day Scholar">Day Scholar</option>
-        </select>
-        {errors.dayScholarORhosteler && (
-          <div className="invalid-feedback">
-            {errors.dayScholarORhosteler.message}
-          </div>
-        )}
-      </div>
+      <div className="flex flex-wrap sm:flex-nowrap sm:gap-4 items-center">
+        {/* Hosteller or Day scholar */}
+        <div className="mb-3 w-full sm:w-1/2">
+          <label
+            className="text-sm font-medium text-gray-700 flex items-center"
+            htmlFor="dayScholarORhosteler"
+          >
+            Hosteller/Day Scholar:{" "}
+            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          </label>
+          <select
+            className={`form-control text-gray-500 ${
+              errors.dayScholarORhosteler ? "border-red-500" : ""
+            }`}
+            name="Hosteller/Day Scholar"
+            id="dayScholarORhosteler"
+            value={userDayScholarORhosteler}
+            {...register("dayScholarORhosteler", {
+              required: "This field is required",
+            })}
+          >
+            <option value="">Select an option</option>
+            <option value="Hosteler">Hosteler</option>
+            <option value="Day Scholar">Day Scholar</option>
+          </select>
+          {errors.dayScholarORhosteler && (
+            <div className="invalid-feedback">
+              {errors.dayScholarORhosteler.message}
+            </div>
+          )}
+        </div>
 
-      {/* Founder phone number */}
-      <div className="mb-3 w-full sm:w-1/2">
-        <label
-          className="text-sm font-medium text-gray-700"
-          htmlFor="founderPhone"
-        >
-          Founder Phone Number: (optional)
-        </label>
-        <input
-          className="form-control text-gray-500"
-          name="founderPhone"
-          type="text"
-          id="founderPhone"
-          value={userPhoneNumber ? userPhoneNumber : null}
-          placeholder="ex: 70221*****"
-          {...register("founderPhone")}
-        />
-      </div>
-
-      {/* Item photo */}
-      <div className="mb-3">
-        <label
-          className="text-sm font-medium text-gray-700 flex items-center"
-          htmlFor="itemImage"
-        >
-          Item Image (jpg, png, jpeg):{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
-        </label>
-        <input
-          className={`form-control text-gray-500 ${
-            errors.itemImage ? "border-red-500" : ""
-          }`}
-          name="itemImage"
-          type="file"
-          id="itemImage"
-          accept=".jpg,.png,.jpeg"
-          {...register("itemImage", { required: "Item image is required" })}
-          onChange={(e) => {
-            setFile(e.target.files[0]);
-            //console.log(e.target.files[0]);
-          }}
-        />
-        {errors.itemImage && (
-          <div className="invalid-feedback">{errors.itemImage.message}</div>
-        )}
+        {/* Founder phone number */}
+        <div className="mb-3 w-full sm:w-1/2">
+          <label
+            className="text-sm font-medium text-gray-700"
+            htmlFor="founderPhone"
+          >
+            Phone Number: (optional)
+          </label>
+          <input
+            className="form-control text-gray-500"
+            name="founderPhone"
+            type="text"
+            id="founderPhone"
+            value={userPhoneNumber ? userPhoneNumber : null}
+            placeholder="ex: 70221*****"
+            {...register("founderPhone")}
+          />
+        </div>
       </div>
 
       {/* Submit button */}

@@ -14,9 +14,13 @@ const EditProfile = () => {
 
       <div className="space-y-10">
         <UpdatePhoneNumberForm />
+        <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
         <UpdateHostelerDayScholarForm />
+        <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
         <UpdatePasswordForm />
+        <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
         <DeleteAccount />
+        <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
       </div>
     </div>
   );

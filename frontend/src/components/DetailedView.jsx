@@ -4,14 +4,10 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiFillCalendar } from 'react-icons/ai';
 
 const DetailedView = ({ url, title, date, about, location, founder }) => {
+    // use this variable for on-hover actions
     const [isHovered, setIsHovered] = useState(false);
   
     const formattedDate = format(new Date(date), 'EEEE, d MMM yyyy');
-  
-    const cardStyle = {
-      transition: 'box-shadow 0.25s ease-in-out',
-      boxShadow: isHovered ? '0 4px 8px rgba(0, 0, 0, 0.2)' : '0 4px 12px rgba(207, 216, 220, 0.4)',
-    };
   
     const shortAbout =
       about.length > 250 ? `${about.substring(0, 250)}...` : about;
@@ -24,8 +20,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
   
     return (
       <div 
-        className="bg-white p-[16px] rounded-[16px] grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 md:gap-[30px] max-w-[800px]"
-        style={cardStyle}
+        className="bg-white p-2 rounded-[16px] grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 md:gap-[30px] max-w-[800px]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -71,22 +66,45 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 sm:gap-8 md:gap-0 justify-between text-gray-600">
-          {/* description */}
-          <p className="text-[14px] sm:text-[16px] md:text-[20px]">
+        <div className="flex flex-col gap-4 sm:gap-8 md:gap-2 justify-between text-gray-600">
+          {/* Description */}
+          <p className="text-[14px] sm:text-[16px] md:text-[17px]">
             {shortAbout}
           </p>
 
-          {/* Founder information */}
-          <div className='flex flex-col gap-2'>
-            <p className="font-semibold text-[14px]">
-              Posted by:{" "}{founder.name}
+          {/* Posted By */}
+          <div className='border border-gray-300 rounded-[8px] p-2 md:mt-2 flex flex-col gap-1 text-gray-600'>
+            {/* Heading */}
+            <p className='text-[15px] font-semibold'>Posted by:</p>
+
+            {/* Name */}
+            <p className="text-[14px]">
+              <span className='font-semibold text-[13px] mr-2'>Name:</span>
+              {founder.name}
             </p>
-            <p className="font-semibold text-[14px]">
-              Email:{" "}{founder.email}
+
+            {/* Registration number */}
+            <p className="text-[14px]">
+              <span className='font-semibold text-[13px] mr-2'>Registration no.:</span>
+              {founder.regNo}
             </p>
-            <p className="font-semibold text-[14px]">
-              Contact:{" "}{founder.number}
+
+            {/* Email */}
+            <p className="text-[14px]">
+              <span className='font-semibold text-[13px] mr-2'>Email:</span>
+              {founder.email}
+            </p>
+
+            {/* Hosteller or Day Scholar */}
+            <p className="text-[14px]">
+              <span className='font-semibold text-[13px] mr-2'>Hosteller/Day Scholar:</span>
+              {founder.dayScholarORhosteler}
+            </p>
+
+            {/* Contact Number */}
+            <p className="text-[14px]">
+              <span className='font-semibold text-[13px] mr-2'>Contact:</span>
+              {founder.number}
             </p>
           </div>
 
