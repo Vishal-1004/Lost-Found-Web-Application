@@ -84,7 +84,7 @@ const AllUsers = () => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">All Users</h1>
+      <h1 className="text-center md:text-left text-3xl md:text-4xl font-semibold mb-4">All Users</h1>
       {formLoading ? (
         <div className="flex items-center">
           <FaSpinner className="mr-3 animate-spin" />
@@ -120,9 +120,9 @@ const AllUsers = () => {
               <tbody>
                 {allUsers.map((user, index) => (
                   <tr key={user._id}>
-                    <td className="py-2 px-2 border-b truncate" style={{ maxWidth: '100px' }}>{user._id}</td>
+                    <td className="py-2 px-2 border-b max-w-[100px] truncate">{user._id}</td>
                     <td className="py-2 px-4 border-b">{user.name}</td>
-                    <td className="py-2 px-4 border-b">{user.email}</td>
+                    <td className="py-2 px-4 border-b max-w-[300px] break-words whitespace-normal">{user.email}</td>
                     <td className="py-2 px-4 border-b">{user.registrationNo}</td>
                     <td className="py-2 px-4 border-b">
                       {user.phoneNumber || "N/A"}
@@ -169,6 +169,12 @@ const AllUsers = () => {
                 Next
               </button>
             )}
+          </div>
+
+          <div className="mt-4 text-center">
+            <span className="p-2 bg-gray-200 rounded">
+              Page {pageInfo.currentPage} of {pageInfo.totalPages}
+            </span>
           </div>
         </>
       )}
