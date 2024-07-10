@@ -13,7 +13,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
@@ -25,7 +27,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
@@ -37,7 +41,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
@@ -49,7 +55,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
@@ -61,7 +69,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
@@ -73,7 +83,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
@@ -85,7 +97,9 @@ const mockData = [
     location: "Clock Court",
     founder: {
       name: "someone",
+      regNo: "22BCEXXXX",
       email: "abc.xyz@vitstudent.ac.in",
+      dayScholarORhosteler: "Day Scholar",
       number: "9876543210",
     }
   },
