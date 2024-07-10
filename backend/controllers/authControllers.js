@@ -2,10 +2,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const SECRECT_KEY = "abcdefghijklmnop";
 const nodemailer = require("nodemailer");
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Importing models/schemas
-const { users } = require("../models");
+const { users, nonRegisteredUser } = require("../models");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -113,11 +114,17 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const user = await users.findOne({ registrationNo });
+    const existingUser = await users.findOne({ registrationNo });
 
-    if (user) {
-      return res.status(400).json({ message: "User Allready Exist" });
+    if (existingUser) {
+      return res.status(400).json({ message: "User Already Exists" });
     } else {
+      // Check if the user has previously created found item posts
+      const nonexistingUser = await nonRegisteredUser.findOne({
+        $or: [{ email }, { registrationNumber: registrationNo }],
+      });
+
+      console.log(nonexistingUser.foundItemsIds);
       const registerUser = new users({
         name,
         registrationNo,
@@ -125,16 +132,24 @@ exports.signup = async (req, res) => {
         dayScholarORhosteler,
         password,
         status: "USER",
+        foundItemsId: nonexistingUser ? nonexistingUser.foundItemsIds : [],
       });
 
       await registerUser.save();
-      return res.status(200).json({ message: "SignUp Successfull!" });
+      console.log(registerUser.foundItemsId);
+
+      // If the user was found in nonRegisteredUser, remove the entry
+      if (nonexistingUser) {
+        await nonRegisteredUser.deleteOne({ _id: nonexistingUser._id });
+      }
+
+      return res.status(200).json({ message: "SignUp Successful!" });
     }
   } catch (error) {
     console.error("Error during SignUp:", error);
     return res
       .status(400)
-      .json({ message: "Internal Sever Error", specificError: error.message });
+      .json({ message: "Internal Server Error", specificError: error.message });
   }
 };
 
