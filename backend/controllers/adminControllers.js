@@ -1,6 +1,7 @@
 // Importing models/schemas
 const { users } = require("../models");
 
+// getting all user data
 exports.getAllUsers = async (req, res) => {
   const { email } = req.body;
   const { page = 1, search = "" } = req.query;

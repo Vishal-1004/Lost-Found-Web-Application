@@ -94,3 +94,12 @@ export const createFoundItemPost = async (data) => {
     "Content-Type": "multipart/form-data",
   });
 };
+
+// getting all users data for admin function
+export const getAllUsersFunction =async (email, page = 1, search = "") => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/get-all-users?page=${page}&search=${search}`,
+    { email }
+  );
+};

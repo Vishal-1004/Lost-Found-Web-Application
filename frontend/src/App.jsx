@@ -36,7 +36,7 @@ const App = () => {
       if (userToken) {
         try {
           const response = await verifyTokenFunction(userToken);
-          console.log(response);
+          //console.log(response);
 
           if (response.data.message === "Token has expired") {
             localStorage.clear();

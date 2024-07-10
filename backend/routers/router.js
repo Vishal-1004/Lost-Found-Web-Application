@@ -53,6 +53,6 @@ router.post(
 );
 
 // Get all users for admin to show
-router.post("/api/v1/fetch-users", adminControllers.getAllUsers);
+router.post("/api/v1/get-all-users", adminControllers.getAllUsers);
 
 module.exports = router;
