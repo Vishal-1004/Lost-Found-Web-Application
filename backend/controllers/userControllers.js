@@ -1,4 +1,4 @@
-const {cloudinaryUpload} = require("../utilities/cloudinaryUpload")
+const { cloudinaryUpload } = require("../utilities/cloudinaryUpload");
 const { users, foundItems, nonRegisteredUser } = require("../models");
 const bcrypt = require("bcryptjs");
 
@@ -51,7 +51,8 @@ exports.createFoundPost = async (req, res) => {
       message: "Unfilled details!",
     });
   }
-  console.log("file name is: ***********", req.file.filename);
+  // console.log("file name is: ***********", req.file.filename);
+  // console.log("file name is: ***********", req.file.filename);
   try {
     const existingUser = await users.findOne({
       email: founderEmail,
@@ -273,6 +274,98 @@ exports.updatePhoneNumber = async (req, res) => {
       message: "Error connecting to db!",
       error: error,
     });
+  }
+};
+
+exports.fetchFoundItems = async (req, res) => {
+  try {
+    const { all, count } = req.query;
+
+    if (all === "true" || all === 1) {
+      // Handle request for all found items
+      const foundItemsAll = await foundItems.find();
+      return res.status(200).json(foundItemsAll);
+    } else if (count) {
+      // Handle request for a specific number of found items
+      const countValue = parseInt(count, 10);
+      if (isNaN(countValue)) {
+        return res.status(400).json({ message: "Invalid count value" });
+      }
+      const foundItemsCount = await foundItems.find().limit(countValue);
+      return res.status(200).json(foundItemsCount);
+    } else {
+      return res.status(400).json({ message: "Invalid parameter" });
+    }
+  } catch (error) {
+    console.error("Error fetching found items:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.updatePassword = async (req, res) => {
+  const { email, oldPassword, newPassword } = req.body;
+
+  try {
+    // Find user by email
+    const user = await users.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Compare oldPassword with stored hashed password
+    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ message: "Incorrect old password" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.deleteAccount = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    // Find the user by email
+    const user = await users.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Retrieve the foundItemsIds array from the user document
+    const foundItemsIds = user.foundItemsIds;
+
+    // Delete all found items with IDs in this array from the foundItemSchema
+    await FoundItem.deleteMany({ _id: { $in: foundItemsIds } });
+
+    // Delete the user from the users collection
+    await users.deleteOne({ _id: user._id });
+
+    return res.status(200).json({
+      message: "User account and associated found items deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error during account deletion:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", specificError: error.message });
   }
 };
 

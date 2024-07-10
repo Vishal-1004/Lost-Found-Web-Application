@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const multer = require("multer")
+const multer = require("multer");
 
 const {
   adminControllers,
@@ -30,20 +30,25 @@ router.post("/api/v1/otp-verify", authControllers.verifyOtp);
 // Reseting password
 router.post("/api/v1/reset-password", authControllers.resetPassword);
 
+//Updating Day Scholar/Hosteler Info
 // Updating Day Scholar/Hosteler Info
 router.post(
   "/api/v1/update-dayscholar-or-hosteler",
   userControllers.updateHostelerOrDayScholar
 );
 
+//Updating Phone Number
+router.post("/api/v1/update-phone-number", userControllers.updatePhoneNumber);
+
+//Creating Found Post
 // Updating Phone Number
 router.post("/api/v1/update-phone-number", userControllers.updatePhoneNumber);
 
 // Update use password
-router.post("/api/v1/update-password",userControllers.updatePassword)
+router.post("/api/v1/update-password", userControllers.updatePassword);
 
 // Delete user account
-router.post("/api/v1/delete-account", userControllers.deleteUser)
+router.post("/api/v1/delete-account", userControllers.deleteUser);
 
 // Creating Found Post
 router.post(
@@ -51,8 +56,13 @@ router.post(
   upload.single("image"),
   userControllers.createFoundPost
 );
+router.get("/api/v1/found-items", userControllers.fetchFoundItems);
 
 // Get all users for admin to show
 router.post("/api/v1/get-all-users", adminControllers.getAllUsers);
+
+router.post("/api/v1/update-password", userControllers.updatePassword);
+
+router.post("/api/v1/account-delete", userControllers.deleteAccount);
 
 module.exports = router;
