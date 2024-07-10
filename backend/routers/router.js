@@ -2,12 +2,36 @@ const express = require("express");
 const router = new express.Router();
 const multer = require("multer");
 
+// image storage path
+const imgconfig = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./uploads");
+  },
+  filename: (req, file, callback) => {
+    callback(null, `image-${Date.now()}.${file.originalname}`);
+  },
+});
+
+// image filter
+const isImage = (req, file, callback) => {
+  if (file.mimetype.startsWith("image")) {
+    callback(null, true);
+  } else {
+    callback(new Error("only images is allow"));
+  }
+};
+
+// calling multer
+const upload = multer({
+  storage: imgconfig,
+  fileFilter: isImage,
+});
+
 const {
   adminControllers,
   authControllers,
   userControllers,
 } = require("../controllers");
-const upload = multer({ dest: "uploads/" });
 
 // sample API
 router.get("/", authControllers.api);
@@ -30,7 +54,6 @@ router.post("/api/v1/otp-verify", authControllers.verifyOtp);
 // Reseting password
 router.post("/api/v1/reset-password", authControllers.resetPassword);
 
-//Updating Day Scholar/Hosteler Info
 // Updating Day Scholar/Hosteler Info
 router.post(
   "/api/v1/update-dayscholar-or-hosteler",
@@ -40,7 +63,6 @@ router.post(
 //Updating Phone Number
 router.post("/api/v1/update-phone-number", userControllers.updatePhoneNumber);
 
-//Creating Found Post
 // Updating Phone Number
 router.post("/api/v1/update-phone-number", userControllers.updatePhoneNumber);
 
@@ -53,7 +75,7 @@ router.post("/api/v1/delete-account", userControllers.deleteUser);
 // Creating Found Post
 router.post(
   "/api/v1/create-found-post",
-  upload.single("image"),
+  upload.single("photo"),
   userControllers.createFoundPost
 );
 router.get("/api/v1/found-items", userControllers.fetchFoundItems);

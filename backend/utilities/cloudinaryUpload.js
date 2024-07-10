@@ -1,25 +1,9 @@
-const cloudinary = require('cloudinary').v2;
-const dotenv = require("dotenv");
-dotenv.config();
+const cloudinary = require("cloudinary").v2;
 
-async function cloudinaryUpload(imagePath) {
-  // Configuration
-  console.log("inside cloudinaryUpload");
-  cloudinary.config({
-    cloud_name: "djeplonq5",
-    api_key: "443613367272531",
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
+cloudinary.config({
+  cloud_name: "dcmqniwwc",
+  api_key: "348472516959522",
+  api_secret: "ftiefl_ctfq0yUwNmVCLybIr0KY",
+});
 
-  // Upload an image
-  const uploadResult = await cloudinary.uploader
-    .upload(imagePath, { folder: "/Found-Items" })
-    .catch((error) => {
-      console.log("inside cloudinaryUpload catch");
-      console.log(error);
-    });
-
-  return uploadResult.secure_url;
-}
-
-module.exports = { cloudinaryUpload };
+module.exports = { cloudinary };

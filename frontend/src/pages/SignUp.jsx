@@ -197,7 +197,7 @@ const SignUp = () => {
               })}
             >
               <option value="">Select an option</option>
-              <option value="Hosteller">Hosteller</option>
+              <option value="Hosteler">Hosteller</option>
               <option value="Day Scholar">Day Scholar</option>
             </select>
             {errors.dayScholarORhosteler && (

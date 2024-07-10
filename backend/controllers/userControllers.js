@@ -1,6 +1,7 @@
-const { cloudinaryUpload } = require("../utilities/cloudinaryUpload");
+const { cloudinary } = require("../utilities/cloudinaryUpload");
 const { users, foundItems, nonRegisteredUser } = require("../models");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
 
 async function createFoundItemPost({
   title,
@@ -11,23 +12,29 @@ async function createFoundItemPost({
   personName,
   personRegistrationNumber,
   personEmail,
+  personDayScholarORhosteler,
+  personStatus,
   personNumber,
 }) {
   const newFoundItemPost = await foundItems.create({
-    title: title,
-    itemImage: itemImage,
-    date: date,
-    location: location,
-    description: description,
-    personName: personName,
-    personRegistrationNumber: personRegistrationNumber,
-    personEmail: personEmail,
-    personNumber: personNumber,
+    title,
+    itemImage,
+    date,
+    location,
+    description,
+    personName,
+    personRegistrationNumber,
+    personEmail,
+    personDayScholarORhosteler,
+    personStatus,
+    personNumber,
   });
   return newFoundItemPost;
 }
 
 exports.createFoundPost = async (req, res) => {
+  const upload = await cloudinary.uploader.upload(req.file.path);
+
   const {
     itemTitle,
     itemDescription,
@@ -36,6 +43,8 @@ exports.createFoundPost = async (req, res) => {
     founderName,
     founderRegistrationNumber,
     founderEmail,
+    founderDayScholarORhosteler,
+    founderStatus,
     founderPhoneNumber,
   } = req.body;
   if (
@@ -45,14 +54,14 @@ exports.createFoundPost = async (req, res) => {
     !itemLocation ||
     !founderName ||
     !founderRegistrationNumber ||
-    !founderEmail
+    !founderEmail ||
+    !founderDayScholarORhosteler ||
+    !founderStatus
   ) {
     return res.status(400).json({
-      message: "Unfilled details!",
+      message: "Enter all the details!",
     });
   }
-  // console.log("file name is: ***********", req.file.filename);
-  // console.log("file name is: ***********", req.file.filename);
   try {
     const existingUser = await users.findOne({
       email: founderEmail,
@@ -61,21 +70,18 @@ exports.createFoundPost = async (req, res) => {
     if (existingUser) {
       // User already existing in our database
       try {
-        //Cloudinary upload returning URL
-        const cloudinaryURL = await cloudinaryUpload(
-          `uploads/${req.file.filename}`
-        );
-
         //Creating new post in found Items
         const newFoundItem = await createFoundItemPost({
           title: itemTitle,
-          itemImage: cloudinaryURL,
+          itemImage: upload.secure_url,
           date: itemFoundDate,
           location: itemLocation,
           description: itemDescription,
           personName: founderName,
           personRegistrationNumber: founderRegistrationNumber,
           personEmail: founderEmail,
+          personDayScholarORhosteler: founderDayScholarORhosteler,
+          personStatus: founderStatus,
           personNumber: founderPhoneNumber,
         });
 
@@ -87,15 +93,15 @@ exports.createFoundPost = async (req, res) => {
           );
           if (newFoundItemPost) {
             return res.status(200).json({
-              message: "Upload successful!",
+              message: "Found Post Created Successful!",
               registered: true,
             });
           }
         }
       } catch (error) {
-        console.log("inside catch");
+        //console.log("inside catch");
         return res.status(500).json({
-          message: "Upload failed!",
+          message: "Found Post Creation Failed!",
           error: error.message,
         });
       }
@@ -106,27 +112,24 @@ exports.createFoundPost = async (req, res) => {
         registrationNumber: founderRegistrationNumber,
       });
       try {
-        //Cloudinary upload returning URL
-        const cloudinaryURL = await cloudinaryUpload(
-          `uploads/${req.file.filename}`
-        );
-
         //Creating new post in found Items
         const newFoundItem = await createFoundItemPost({
           title: itemTitle,
-          itemImage: cloudinaryURL,
+          itemImage: upload.secure_url,
           date: itemFoundDate,
           location: itemLocation,
           description: itemDescription,
           personName: founderName,
           personRegistrationNumber: founderRegistrationNumber,
           personEmail: founderEmail,
+          personDayScholarORhosteler: founderDayScholarORhosteler,
+          personStatus: founderStatus,
           personNumber: founderPhoneNumber,
         });
 
         if (newFoundItem) {
           //Adding new post id to users foundItemsID array
-          console.log(existingNonRegisteredUser);
+          //console.log(existingNonRegisteredUser);
           if (existingNonRegisteredUser) {
             //User in nonRegisteredUser already
             const newFoundItemPost = await nonRegisteredUser.updateOne(
@@ -144,7 +147,7 @@ exports.createFoundPost = async (req, res) => {
             );
             if (newFoundItemPost) {
               return res.status(200).json({
-                message: "Upload successful!",
+                message: "Found Post Created Successful!",
                 registered: false,
               });
             }
@@ -158,7 +161,7 @@ exports.createFoundPost = async (req, res) => {
               });
             if (newFoundItemPostwithNonRegisteredUser) {
               return res.status(200).json({
-                message: "Upload successful!",
+                message: "Found Post Created Successful!",
                 registered: false,
               });
             }
@@ -166,14 +169,14 @@ exports.createFoundPost = async (req, res) => {
         }
       } catch (err) {
         return res.status(500).json({
-          message: "New post creation failed!",
+          message: "Found Post Creation Failed!",
           error: error.message,
         });
       }
     }
   } catch (err) {
     return res.status(500).json({
-      message: "New post creation failed!",
+      message: "Found Post Creation Failed!",
       error: error.message,
     });
   }

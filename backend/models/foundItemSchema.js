@@ -8,6 +8,7 @@ const foundItemSchema = new mongoose.Schema({
   itemImage: {
     type: String,
     required: true,
+    default: null,
   },
   date: {
     type: Date,
@@ -33,6 +34,18 @@ const foundItemSchema = new mongoose.Schema({
   personEmail: {
     type: String,
     required: true,
+  },
+  personDayScholarORhosteler: {
+    type: String,
+    enum: ["Day Scholar", "Hosteler"],
+    default: "Day Scholar",
+    required: true,
+  },
+  personStatus: {
+    type: String,
+    required: true,
+    enum: ["USER", "ADMIN", "BLOCKED"],
+    default: "USER",
   },
   personNumber: {
     type: String,

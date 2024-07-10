@@ -4,6 +4,7 @@ import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
+import moment from "moment";
 
 // default locations available
 const locations = [
@@ -30,6 +31,10 @@ function FoundItemForm({ onClose }) {
   const userEmail = useSelector(
     (state) => state.storedUserData.userData.userEmail
   );
+  const userDayScholarORhosteler = useSelector(
+    (state) => state.storedUserData.userData.userDayScholarORhosteler
+  );
+  const userStatus = useSelector((state) => state.storedUserData.userStatus);
   // *****************************************************
 
   const [formLoading, setFormLoading] = useState(false);
@@ -50,33 +55,39 @@ function FoundItemForm({ onClose }) {
   const handleFormSubmit = async (formData) => {
     setFormLoading(true);
     const formDataToSend = new FormData();
-    formDataToSend.append("itemImage", file);
+    formDataToSend.append("photo", file);
     formDataToSend.append("itemTitle", formData.itemTitle);
     formDataToSend.append("itemDescription", formData.itemDescription);
     formDataToSend.append("itemFoundDate", formData.date);
-    formDataToSend.append("itemLocation", formData.itemLocation);
+    formDataToSend.append(
+      "itemLocation",
+      moment(formData.itemLocation).format("DD-MM-YYYY")
+    );
     formDataToSend.append("founderName", userName);
     formDataToSend.append("founderRegistrationNumber", userRegistrationNo);
     formDataToSend.append("founderEmail", userEmail);
+    formDataToSend.append(
+      "founderDayScholarORhosteler",
+      formData.dayScholarORhosteler
+    );
+    formDataToSend.append("founderStatus", userStatus ? userStatus : "USER");
     formDataToSend.append("founderPhoneNumber", userPhoneNumber);
 
-    console.log(formDataToSend.itemImage);
-    /*
     try {
       const response = await createFoundItemPost(formDataToSend);
-      console.log(response);
+      //console.log(response);
       if (response.status === 200) {
-        ToastMsg("Form submitted successfully!", "success");
+        ToastMsg(response.data.message, "success");
       } else {
-        ToastMsg("Form submission failed!", "error");
+        ToastMsg(response.data.message, "error");
       }
     } catch (error) {
-      ToastMsg("Form submission failed!", "error");
-      console.error("Error: ", error);
+      ToastMsg("Internal Server Error! Please Try Later", "error");
+      //console.error("Error: ", error);
     } finally {
       setFormLoading(false);
       reset();
-    }*/
+    }
   };
 
   // handle custom input field for location
@@ -333,6 +344,37 @@ function FoundItemForm({ onClose }) {
         )}
       </div>
 
+      {/* Hosteller or Day scholar */}
+      <div className="mb-3 w-full md:w-1/2">
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="dayScholarORhosteler"
+        >
+          Hosteller/Day Scholar:{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+        </label>
+        <select
+          className={`form-control ${
+            errors.dayScholarORhosteler ? "border-red-500" : ""
+          }`}
+          name="Hosteller/Day Scholar"
+          id="dayScholarORhosteler"
+          value={userDayScholarORhosteler}
+          {...register("dayScholarORhosteler", {
+            required: "This field is required",
+          })}
+        >
+          <option value="">Select an option</option>
+          <option value="Hosteler">Hosteler</option>
+          <option value="Day Scholar">Day Scholar</option>
+        </select>
+        {errors.dayScholarORhosteler && (
+          <div className="invalid-feedback">
+            {errors.dayScholarORhosteler.message}
+          </div>
+        )}
+      </div>
+
       {/* Founder phone number */}
       <div className="mb-3 w-full sm:w-1/2">
         <label
@@ -372,7 +414,7 @@ function FoundItemForm({ onClose }) {
           {...register("itemImage", { required: "Item image is required" })}
           onChange={(e) => {
             setFile(e.target.files[0]);
-            console.log(e.target.files[0]);
+            //console.log(e.target.files[0]);
           }}
         />
         {errors.itemImage && (
