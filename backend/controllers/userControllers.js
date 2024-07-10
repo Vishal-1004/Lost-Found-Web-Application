@@ -1,5 +1,6 @@
 const { cloudinaryUpload } = require("../utilities/cloudinaryUpload");
 const { users, foundItems, nonRegisteredUser } = require("../models");
+const bcrypt = require("bcryptjs");
 
 async function createFoundItemPost({
   title,
@@ -50,6 +51,7 @@ exports.createFoundPost = async (req, res) => {
       message: "Unfilled details!",
     });
   }
+  // console.log("file name is: ***********", req.file.filename);
   // console.log("file name is: ***********", req.file.filename);
   try {
     const existingUser = await users.findOne({
@@ -364,5 +366,99 @@ exports.deleteAccount = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Internal Server Error", specificError: error.message });
+  }
+};
+// Deleting user account and associated found items
+exports.deleteUser = async (req, res) => {
+  const { email } = req.body;
+  //console.log(email)
+  // Checking if email was filled
+  if (!email) {
+    return res.status(400).json({
+      message: "Email not filled!",
+    });
+  }
+
+  try {
+    // Checking for existing users
+    const existingUsers = await users.find({ email: email });
+    if (existingUsers.length < 1) {
+      return res.status(400).json({
+        message: "No users found!",
+      });
+    }
+
+    // Deleting user accounts
+    const userDeletion = await users.deleteMany({ email: email });
+    if (userDeletion.deletedCount === 0) {
+      return res.status(400).json({
+        message: "This user doesn't exist!",
+      });
+    }
+
+    // Deleting associated found items
+    const foundItemsDeletion = await foundItems.deleteMany({
+      personEmail: email,
+    });
+    /*if (foundItemsDeletion.deletedCount === 0) {
+      return res.status(400).json({
+        message: "Error deleting found items!"
+      });
+    }
+*/
+    return res.status(200).json({
+      message: `${userDeletion.deletedCount} user account(s) and ${foundItemsDeletion.deletedCount} found item(s) deleted successfully!`,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Error connecting to db!",
+      error: error,
+    });
+  }
+};
+
+// Updating user password
+exports.updatePassword = async (req, res) => {
+  const { email, currentPassword, newPassword } = req.body;
+
+  // Checking if email, currentPassword, and newPassword were filled
+  if (!email || !currentPassword || !newPassword) {
+    return res.status(400).json({
+      message: "Email, current password, and new password are required!",
+    });
+  }
+
+  try {
+    // Checking for existing user
+    const existingUser = await users.findOne({ email: email });
+    if (!existingUser) {
+      return res.status(400).json({
+        message: "User not found!",
+      });
+    }
+
+    // Verifying current password
+    const isMatch = await bcrypt.compare(
+      currentPassword,
+      existingUser.password
+    );
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Current password is incorrect!",
+      });
+    }
+
+    // Updating password
+    existingUser.password = newPassword;
+    await existingUser.save();
+
+    return res.status(200).json({
+      message: "Password updated successfully!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error connecting to db!",
+      error: error,
+    });
   }
 };

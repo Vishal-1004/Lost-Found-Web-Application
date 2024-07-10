@@ -5,6 +5,10 @@ import ItemCarousel from "./ItemCarousel";
 import TeamCard from "./TeamCard";
 import FormPopup from "./FormPopup";
 import CustomChart from "./Chart";
+import DeleteAccount from "./EditProfile/DeleteAccount";
+import UpdateHostelerDayScholarForm from "./EditProfile/UpdateHostelerDayScholarForm";
+import UpdatePasswordForm from "./EditProfile/UpdatePasswordForm";
+import UpdatePhoneNumberForm from "./EditProfile/UpdatePhoneNumberForm";
 
 export {
   Navbar,
@@ -14,4 +18,8 @@ export {
   TeamCard,
   FormPopup,
   CustomChart,
+  DeleteAccount,
+  UpdateHostelerDayScholarForm,
+  UpdatePasswordForm,
+  UpdatePhoneNumberForm,
 };
