@@ -4,7 +4,7 @@ const { users } = require("../models");
 // getting all user data
 exports.getAllUsers = async (req, res) => {
   const { email } = req.body;
-  const { page = 1, search = "" } = req.query;
+  const { page = 1, search = "", limit = 5 } = req.query;
 
   try {
     // Check if the user is an admin
@@ -14,7 +14,6 @@ exports.getAllUsers = async (req, res) => {
     }
 
     // Set pagination variables
-    const limit = 2;
     const skip = (page - 1) * limit;
 
     // Create the search filter
@@ -39,6 +38,7 @@ exports.getAllUsers = async (req, res) => {
       getUsers,
       totalPages: Math.ceil(totalUsers / limit),
       currentPage: page,
+      limit: limit,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

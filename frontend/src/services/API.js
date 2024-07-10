@@ -96,10 +96,15 @@ export const createFoundItemPost = async (data) => {
 };
 
 // getting all users data for admin function
-export const getAllUsersFunction =async (email, page = 1, search = "") => {
+export const getAllUsersFunction = async (
+  email,
+  page = 1,
+  search = "",
+  limit = 5
+) => {
   return await commonrequest(
     "POST",
-    `${BACKEND_URL}/api/v1/get-all-users?page=${page}&search=${search}`,
+    `${BACKEND_URL}/api/v1/get-all-users?page=${page}&search=${search}&limit=${limit}`,
     { email }
   );
 };

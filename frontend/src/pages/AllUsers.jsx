@@ -10,6 +10,7 @@ const AllUsers = () => {
   const [pageInfo, setPageInfo] = useState({
     currentPage: 1,
     totalPages: null,
+    limit: 5,
   });
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -26,13 +27,15 @@ const AllUsers = () => {
         const response = await getAllUsersFunction(
           userEmail,
           pageInfo.currentPage,
-          debouncedSearch
+          debouncedSearch,
+          pageInfo.limit
         );
         if (response.status === 200) {
           setAllUsers(response.data.getUsers);
           setPageInfo({
             currentPage: parseInt(response.data.currentPage, 10),
             totalPages: parseInt(response.data.totalPages, 10),
+            limit: parseInt(response.data.limit, 10),
           });
           ToastMsg("All users data achieved", "success");
         } else {
@@ -50,7 +53,7 @@ const AllUsers = () => {
     if (userEmail) {
       gettingAllUsersFunction();
     }
-  }, [pageInfo.currentPage, debouncedSearch, userEmail]);
+  }, [pageInfo.currentPage, debouncedSearch, userEmail, pageInfo.limit]);
 
   // Debounce mechanism
   useEffect(() => {
@@ -77,6 +80,13 @@ const AllUsers = () => {
     }));
   };
 
+  const handleLimitBtnClick = (limit) => {
+    setPageInfo((prevState) => ({
+      ...prevState,
+      limit: parseInt(limit),
+    }));
+  };
+
   // handle action button click
   const handleActionClick = (username) => {
     console.log(`User: ${username}`);
@@ -84,7 +94,9 @@ const AllUsers = () => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-center md:text-left text-3xl md:text-4xl font-semibold mb-4">All Users</h1>
+      <h1 className="text-center md:text-left text-3xl md:text-4xl font-semibold mb-4">
+        All Users
+      </h1>
       {formLoading ? (
         <div className="flex items-center">
           <FaSpinner className="mr-3 animate-spin" />
@@ -100,6 +112,28 @@ const AllUsers = () => {
               placeholder="Search users..."
               className="p-2 border rounded w-full sm:w-1/2"
             />
+          </div>
+          {/* No of users to show */}
+          <div className="mb-3 w-full md:w-1/2">
+            <label
+              className="text-sm font-medium text-gray-700 flex items-center"
+              htmlFor="limit"
+            >
+              No. of users:
+            </label>
+            <select
+              className="form-control"
+              name="Hosteller/Day Scholar"
+              id="limit"
+              value={pageInfo.limit}
+              onChange={(e) => handleLimitBtnClick(e.target.value)}
+            >
+              <option value="">Select an option</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="25">25</option>
+            </select>
           </div>
           <div className="overflow-x-auto xl:overflow-x-visible">
             <table className="min-w-full bg-white border border-gray-200">
@@ -120,8 +154,12 @@ const AllUsers = () => {
                 {allUsers.map((user, index) => (
                   <tr key={user._id}>
                     <td className="py-2 px-4 border-b">{user.name}</td>
-                    <td className="py-2 px-4 border-b max-w-[300px] break-words whitespace-normal">{user.email}</td>
-                    <td className="py-2 px-4 border-b">{user.registrationNo}</td>
+                    <td className="py-2 px-4 border-b max-w-[300px] break-words whitespace-normal">
+                      {user.email}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {user.registrationNo}
+                    </td>
                     <td className="py-2 px-4 border-b">
                       {user.phoneNumber || "N/A"}
                     </td>
@@ -134,7 +172,7 @@ const AllUsers = () => {
                     <td className="py-2 px-4 border-b">
                       {user.lostItemsID.length}
                     </td>
-                    <td className="py-2 px-4 border-b">example</td>
+                    <td className="py-2 px-4 border-b">{user.status}</td>
                     <td className="py-2 px-4 border-b">
                       <button
                         className="btnSubmit bg-blue-500 text-white p-2 rounded"
@@ -146,7 +184,7 @@ const AllUsers = () => {
                   </tr>
                 ))}
               </tbody>
-          </table>
+            </table>
           </div>
 
           <div className="flex justify-between mt-4">
