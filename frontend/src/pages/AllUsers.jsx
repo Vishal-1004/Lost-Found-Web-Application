@@ -105,7 +105,6 @@ const AllUsers = () => {
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
                 <tr>
-                  <th className="py-2 px-2 border-b">ID</th>
                   <th className="py-2 px-4 border-b">Name</th>
                   <th className="py-2 px-4 border-b">Email</th>
                   <th className="py-2 px-4 border-b">Registration No</th>
@@ -120,7 +119,6 @@ const AllUsers = () => {
               <tbody>
                 {allUsers.map((user, index) => (
                   <tr key={user._id}>
-                    <td className="py-2 px-2 border-b max-w-[100px] truncate">{user._id}</td>
                     <td className="py-2 px-4 border-b">{user.name}</td>
                     <td className="py-2 px-4 border-b max-w-[300px] break-words whitespace-normal">{user.email}</td>
                     <td className="py-2 px-4 border-b">{user.registrationNo}</td>
