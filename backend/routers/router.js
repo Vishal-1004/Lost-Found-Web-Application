@@ -90,4 +90,9 @@ router.post("/api/v1/update-password", userControllers.updatePassword);
 router.post("/api/v1/account-delete", userControllers.deleteAccount);
 
 router.get("/api/v1/get-found-items-user", userControllers.getFoundItemsByUser);
+
+//Update user/admin/blocked status only by admins!
+router.post("/api/v1/changeStatus",adminControllers.changeStatus)
+
 module.exports = router;
+
