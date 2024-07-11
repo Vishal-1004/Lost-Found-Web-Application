@@ -311,7 +311,10 @@ exports.fetchFoundItems = async (req, res) => {
       if (isNaN(countValue)) {
         return res.status(400).json({ message: "Invalid count value" });
       }
-      const foundItemsCount = await foundItems.find().sort({ createdAt: -1 }).limit(countValue);
+      const foundItemsCount = await foundItems
+        .find()
+        .sort({ createdAt: -1 })
+        .limit(countValue);
       return res.status(200).json({
         message: "All Found Post Fetched Successfully!",
         data: foundItemsCount,
@@ -485,6 +488,57 @@ exports.updatePassword = async (req, res) => {
     return res.status(500).json({
       message: "Error connecting to db!",
       error: error,
+    });
+  }
+};
+
+// Getting Found Items By User
+exports.getFoundItemsByUser = async (req, res) => {
+  const { email, registrationNumber } = req.body;
+
+  if (!email && !registrationNumber) {
+    return res.status(400).json({
+      message: "Email or Registration Number is required!",
+    });
+  }
+
+  try {
+    let user;
+    if (email) {
+      user = await users.findOne({ email: email });
+    } else if (registrationNumber) {
+      user = await users.findOne({ registrationNo: registrationNumber });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found in the DB",
+      });
+    }
+
+    const foundItemsList = await foundItems
+      .find({
+        personEmail: user.email,
+      })
+      .sort({ createdAt: -1 });
+
+    if (foundItemsList.length === 0) {
+      return res.status(404).json({
+        message: "No found items posted by this user",
+        metaData: "0",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Found items fetched successfully",
+      data: foundItemsList,
+      metaData: foundItemsList.length,
+    });
+  } catch (error) {
+    console.error("Error fetching found items:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
