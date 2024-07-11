@@ -1,4 +1,5 @@
-import vishal from "./OurTeam/vishalKrYadav.jpg";
+import vishal from "./AboutUs/vishalKrYadav.jpg";
 import ourTeamBackgound from "./ourTeamBackground.svg";
+import AboutUsVideo from "./AboutUs/AboutUsVideo.mp4";
 
-export { vishal, ourTeamBackgound };
+export { vishal, ourTeamBackgound, AboutUsVideo };

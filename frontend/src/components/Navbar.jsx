@@ -117,10 +117,10 @@ const Navbar = () => {
           </div>
           <div className="mx-2 block">
             <Link
-              to="/our-team"
+              to="/about-us"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
-              <button>Our Team</button>
+              <button>About Us</button>
             </Link>
           </div>
           {userToken ? (
@@ -262,10 +262,10 @@ const Navbar = () => {
           </div>
           <div className="mx-2 block">
             <Link
-              to="/our-team"
+              to="/about-us"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
             >
-              <button>Our Team</button>
+              <button>About Us</button>
             </Link>
           </div>
           {userToken ? (

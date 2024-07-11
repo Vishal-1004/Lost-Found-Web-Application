@@ -37,6 +37,16 @@ function FoundItemForm({ onClose }) {
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   // *****************************************************
 
+  const [isChecked, setIsChecked] = useState(!!userPhoneNumber);
+
+  useEffect(() => {
+    setIsChecked(!!userPhoneNumber);
+  }, [userPhoneNumber]);
+
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
   const [formLoading, setFormLoading] = useState(false);
   const [customLocation, setCustomLocation] = useState(false);
   const {
@@ -290,8 +300,7 @@ function FoundItemForm({ onClose }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="founderName"
           >
-            Name:{" "}
-            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Name: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-500 ${
@@ -351,8 +360,7 @@ function FoundItemForm({ onClose }) {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="founderEmail"
         >
-          Email:{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          Email: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <input
           className={`form-control text-gray-500 ${
@@ -415,17 +423,42 @@ function FoundItemForm({ onClose }) {
             className="text-sm font-medium text-gray-700"
             htmlFor="founderPhone"
           >
-            Phone Number: (optional)
+            <span>Phone Number: (optional)</span>
+            <input
+              type="checkbox"
+              className="ml-2"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
           </label>
           <input
-            className="form-control text-gray-500"
+            className={`form-control ${
+              !isChecked ? "text-gray-300" : "text-gray-500"
+            } ${errors.founderPhone ? "border-red-500" : ""}`}
             name="founderPhone"
-            type="text"
+            type="number"
             id="founderPhone"
-            value={userPhoneNumber ? userPhoneNumber : null}
+            value={
+              isChecked && userPhoneNumber
+                ? userPhoneNumber
+                : !isChecked
+                ? ""
+                : null
+            }
             placeholder="ex: 70221*****"
-            {...register("founderPhone")}
+            {...register("founderPhone", {
+              maxLength: {
+                value: 10,
+                message: "Phone number should be 10 digits",
+              },
+            })}
+            disabled={!isChecked}
           />
+          {errors.founderPhone && (
+            <div className="invalid-feedback">
+              {errors.founderPhone.message}
+            </div>
+          )}
         </div>
       </div>
 

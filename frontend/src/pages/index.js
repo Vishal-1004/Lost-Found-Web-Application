@@ -4,7 +4,7 @@ import SignUp from "./SignUp";
 import VerifyEmail from "./ForgotPassword/VerifyEmail";
 import VerifyOTP from "./ForgotPassword/VerifyOTP";
 import ResetPassword from "./ForgotPassword/ResetPassword";
-import OurTeam from "./OurTeam";
+import AboutUs from "./AboutUs";
 import Profile from "./Profile";
 import AllUsers from "./AllUsers";
 
@@ -15,7 +15,7 @@ export {
   VerifyEmail,
   VerifyOTP,
   ResetPassword,
-  OurTeam,
+  AboutUs,
   Profile,
   AllUsers,
 };

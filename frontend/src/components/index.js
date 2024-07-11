@@ -9,6 +9,7 @@ import DeleteAccount from "./EditProfile/DeleteAccount";
 import UpdateHostelerDayScholarForm from "./EditProfile/UpdateHostelerDayScholarForm";
 import UpdatePasswordForm from "./EditProfile/UpdatePasswordForm";
 import UpdatePhoneNumberForm from "./EditProfile/UpdatePhoneNumberForm";
+import AboutUsVideo from "./AboutUsVideo";
 
 export {
   Navbar,
@@ -22,4 +23,5 @@ export {
   UpdateHostelerDayScholarForm,
   UpdatePasswordForm,
   UpdatePhoneNumberForm,
+  AboutUsVideo,
 };

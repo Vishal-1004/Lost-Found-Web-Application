@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 import {
   Home,
   LoginPage,
-  OurTeam,
   ResetPassword,
   SignUp,
   VerifyEmail,
   VerifyOTP,
   Profile,
   AllUsers,
+  AboutUs,
 } from "./pages";
 import { BackToTop, Footer, Navbar } from "./components";
 import EditProfile from "./pages/EditProfile";
@@ -150,7 +150,7 @@ const App = () => {
           }
         />
 
-        <Route path="/our-team" element={<OurTeam />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
