@@ -117,10 +117,10 @@ const Navbar = () => {
           </div>
           <div className="mx-2 block">
             <Link
-              to="/our-team"
+              to="/about-us"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
-              <button>Our Team</button>
+              <button>About Us</button>
             </Link>
           </div>
           {userToken ? (
@@ -133,7 +133,7 @@ const Navbar = () => {
               >
                 <button className="flex items-center">
                   <FaUserCircle size={"32px"} className="mx-1" /> Hello{" "}
-                  {userName.split(" ")[0] ? userName.split(" ")[0] : userName}
+                  {userToken && userName ? userName.split(" ")[0] : userName}
                 </button>
               </div>
               <div
