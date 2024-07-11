@@ -92,7 +92,10 @@ router.post("/api/v1/account-delete", userControllers.deleteAccount);
 router.get("/api/v1/get-found-items-user", userControllers.getFoundItemsByUser);
 
 //Update user/admin/blocked status only by admins!
-router.post("/api/v1/changeStatus",adminControllers.changeStatus)
+router.post("/api/v1/changeStatus", adminControllers.changeStatus);
+
+router.put("/api/v1/edit-found-items", userControllers.editFoundItem);
+
+router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
 
 module.exports = router;
-

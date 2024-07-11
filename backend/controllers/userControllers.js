@@ -542,3 +542,125 @@ exports.getFoundItemsByUser = async (req, res) => {
     });
   }
 };
+
+async function isAdmin(email) {
+  const user = await users.findOne({ email: email });
+  return user && user.status === "ADMIN";
+}
+
+exports.editFoundItem = async (req, res) => {
+  const { email, foundItemId, ...updateFields } = req.body;
+
+  if (!email || !foundItemId) {
+    return res.status(400).json({
+      message: "Email and foundItemId are required!",
+    });
+  }
+
+  try {
+    const userIsAdmin = await isAdmin(email);
+
+    let foundItem;
+    if (!userIsAdmin) {
+      foundItem = await foundItems.findOne({
+        _id: foundItemId,
+        personEmail: email,
+      });
+      if (!foundItem) {
+        return res.status(403).json({
+          message: "You do not have permission to edit this found item.",
+        });
+      }
+    } else {
+      foundItem = await foundItems.findById(foundItemId);
+      if (!foundItem) {
+        return res.status(404).json({
+          message: "Found item not found.",
+        });
+      }
+    }
+
+    if (req.file) {
+      const upload = await cloudinary.uploader.upload(req.file.path);
+      updateFields.itemImage = upload.secure_url;
+    }
+
+    const allowedFields = [
+      "title",
+      "description",
+      "date",
+      "location",
+      "itemImage",
+      "personDayScholarORhosteler",
+    ];
+    const updateData = {};
+    allowedFields.forEach((field) => {
+      if (updateFields[field] !== undefined) {
+        updateData[field] = updateFields[field];
+      }
+    });
+
+    await foundItems.updateOne({ _id: foundItemId }, { $set: updateData });
+
+    return res.status(200).json({
+      message: "Found item updated successfully.",
+    });
+  } catch (error) {
+    console.error("Error updating found item:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteFoundItem = async (req, res) => {
+  const { email, foundItemId } = req.body;
+
+  if (!email || !foundItemId) {
+    return res.status(400).json({
+      message: "Email and foundItemId are required!",
+    });
+  }
+
+  try {
+    const userIsAdmin = await isAdmin(email);
+
+    let foundItem;
+    if (!userIsAdmin) {
+      foundItem = await foundItems.findOne({
+        _id: foundItemId,
+        personEmail: email,
+      });
+      if (!foundItem) {
+        return res.status(403).json({
+          message: "You do not have permission to delete this found item.",
+        });
+      }
+    } else {
+      foundItem = await foundItems.findById(foundItemId);
+      if (!foundItem) {
+        return res.status(404).json({
+          message: "Found item not found.",
+        });
+      }
+    }
+
+    await foundItems.deleteOne({ _id: foundItemId });
+
+    await users.updateOne(
+      { email: email },
+      { $pull: { foundItemsID: new mongoose.Types.ObjectId(foundItemId) } }
+    );
+
+    return res.status(200).json({
+      message: "Found item deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error deleting found item:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
