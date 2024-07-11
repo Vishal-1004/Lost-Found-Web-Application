@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import ItemCarousel from "./ItemCarousel";
 import TeamCard from "./TeamCard";
 import FormPopup from "./FormPopup";
-import CustomChart from "./Chart";
+import ColumnsWithChart from "./ColumnsWithChart";
 import DeleteAccount from "./EditProfile/DeleteAccount";
 import UpdateHostelerDayScholarForm from "./EditProfile/UpdateHostelerDayScholarForm";
 import UpdatePasswordForm from "./EditProfile/UpdatePasswordForm";
@@ -18,7 +18,7 @@ export {
   ItemCarousel,
   TeamCard,
   FormPopup,
-  CustomChart,
+  ColumnsWithChart,
   DeleteAccount,
   UpdateHostelerDayScholarForm,
   UpdatePasswordForm,
