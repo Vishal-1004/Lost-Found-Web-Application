@@ -48,7 +48,7 @@ const foundItemSchema = new mongoose.Schema({
     default: "USER",
   },
   personNumber: {
-    type: String,
+    type: Number,
   },
   createdAt: {
     type: Date,
