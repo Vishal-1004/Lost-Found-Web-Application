@@ -2,6 +2,7 @@ const { cloudinary } = require("../utilities/cloudinaryUpload");
 const { users, foundItems, nonRegisteredUser } = require("../models");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
+const jwt=require("jsonwebtoken")
 
 async function createFoundItemPost({
   title,
@@ -34,7 +35,6 @@ async function createFoundItemPost({
 
 exports.createFoundPost = async (req, res) => {
   const upload = await cloudinary.uploader.upload(req.file.path);
-
   const {
     itemTitle,
     itemDescription,
@@ -68,7 +68,7 @@ exports.createFoundPost = async (req, res) => {
       registrationNo: founderRegistrationNumber,
     });
     if (existingUser) {
-      console.log(existingUser);
+      // console.log(existingUser);
       if(existingUser.status==="BLOCKED"){
         return res.status(400).json({
           message : "User Blocked by Admin!"
@@ -670,3 +670,84 @@ exports.deleteFoundItem = async (req, res) => {
     });
   }
 };
+
+exports.getProfileData = async (req,res)=>{
+  const {authToken} = req.body
+  if(!authToken){
+    return res.status(400).json({
+      message : "Auth token not provided!"
+    })
+  }
+  try{
+    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+    if(!decoded){
+      return res.status(400).json({
+        message : "Unable to decode"
+      })
+    }
+    const userId=decoded._id
+    const existingUser=await users.findById(userId)
+    if(!existingUser){
+      return res.status(400).json({
+        message : "User not found!"
+      })
+    }
+    res.status(200).json({
+      profile : existingUser
+    })
+  }catch(err){
+    return res.status(400).json({
+      error: err
+    })
+  }
+}
+
+exports.getProfileGraphData = async(req,res)=>{
+  const {authToken} = req.body
+  if(!authToken){
+    return res.status(400).json({
+      message : "Auth token not provided!"
+    })
+  }
+  try{
+    console.log("inside try")
+    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+    console.log(decoded)
+    if(!decoded){
+      return res.status(400).json({
+        message : "Unable to decode"
+      })
+    }
+    const userId=decoded._id
+    const existingUser=await users.findById(userId)
+    console.log(existingUser)
+    if(!existingUser){
+      return res.status(400).json({
+        message : "User not found!"
+      })
+    }
+    const postsByAdmins=await foundItems.find({personStatus:"ADMIN"})
+    const totalFoundPosts=(await foundItems.find()).length
+    const postsByOtherUsers=totalFoundPosts-postsByAdmins.length
+    // console.log(postsByAdmins.length)
+    return res.status(200).json({
+      allPostsData:{
+        noOfLostPosts :0,
+        noOfFoundPosts:totalFoundPosts
+      },
+      foundPostsData:{
+        currentUserFoundPosts:existingUser.foundItemsID.length,
+        adminFoundPosts:postsByAdmins.length,
+        otherUsersFoundPost:postsByOtherUsers
+      },
+      // lostPostsData:{
+      //   currentUserLostPosts:existingUser.lostItemsID.length,
+      //   otherUsersLostPost:allLostPosts-existingUser.lostItemsID.length
+      // }
+    })
+  }catch(err){
+    return res.status(400).json({
+      error: err
+    })
+  }
+}

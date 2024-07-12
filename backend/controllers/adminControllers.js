@@ -1,5 +1,5 @@
 // Importing models/schemas
-const { users } = require("../models");
+const { users, nonRegisteredUser } = require("../models");
 const jwt=require("jsonwebtoken")
 
 // getting all user data
@@ -46,7 +46,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-
+//change status for registered users
 exports.changeStatus = async (req,res)=>{
   const {userId,authToken,newStatus} = req.body
   try{
@@ -105,6 +105,100 @@ exports.changeStatus = async (req,res)=>{
     return res.status(400).json({
       message : 'Invalid admin token',
       error : err
+    })
+  }
+}
+
+//change status for nonRegistered users
+exports.changeNonRegisteredUserStatus = async(req,res)=>{
+  const {nonRegisteredUserId,authToken,newStatus} = req.body
+  try{
+    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+
+    //Checking if admin exists
+    const existingAdmin=await users.findById(decoded._id)
+    if(!existingAdmin || existingAdmin.status!=="ADMIN"){
+      return res.status(400).json({
+        message : "Admin not found!"
+      })
+    }
+
+    //Checking if user exists
+    const existingNonRegisteredUser=await nonRegisteredUser.findById(nonRegisteredUserId)
+    if(!existingNonRegisteredUser){
+      return res.status(400).json({
+        message:"User not found!"
+      })
+    }
+
+    //Checking if user's email is admin's email
+    if(existingAdmin.email==existingNonRegisteredUser.email){
+      return res.status(400).json({
+        message:"Cannot perform operation on self"
+      })
+    }
+
+    //Checking newStatus
+    if(newStatus!=="USER" && newStatus!=="BLOCKED"){
+      return res.status(400).json({
+        message : "Status provided is wrong!"
+      })
+    }
+
+    //changing status of user
+    try{
+      const updatingStatus=await nonRegisteredUser.updateOne({_id:nonRegisteredUserId},{status:newStatus})
+      if(updatingStatus.acknowledged){
+        return res.status(200).json({
+          message : "Updated Successfully!"
+        })
+      }else{
+        return res.status(400).json({
+          message:"Unable to update in DB!",
+        })
+      }
+    }catch(err){
+      return res.status(400).json({
+        message:"Unable to update in DB!",
+        error: err
+      })
+    }
+  }
+  catch(err){
+    return res.status(400).json({
+      message : 'Invalid admin token',
+      error : err
+    })
+  }
+}
+
+//getAll nonregistered users
+exports.allNonRegisteredUsers = async(req,res)=>{
+  const {authToken}=req.body
+  try{
+    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+
+    //Checking if admin exists
+    const existingAdmin=await users.findById(decoded._id)
+    console.log(existingAdmin.status)
+    if(!existingAdmin || existingAdmin.status!=="ADMIN"){
+      return res.status(400).json({
+        message : "Admin not found!"
+      })
+    }
+    const nonRegisteredUsers=await nonRegisteredUser.find()
+    if(!nonRegisteredUsers){
+      return res.status(400).json({
+        message : "Error fetching data!"
+      })
+    }
+    return res.status(200).json({
+      message : "Data fetched successfully!",
+      nonRegisteredUsers:nonRegisteredUsers
+    })
+  }catch(err){
+    return res.status(400).json({
+      message : "Error"
     })
   }
 }

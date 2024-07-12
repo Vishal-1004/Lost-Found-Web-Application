@@ -73,9 +73,9 @@ function FoundItemForm({ onClose }) {
       moment(formData.date).format("DD-MM-YYYY")
     );
     formDataToSend.append("itemLocation", formData.itemLocation);
-    formDataToSend.append("founderName", userName);
-    formDataToSend.append("founderRegistrationNumber", userRegistrationNo);
-    formDataToSend.append("founderEmail", userEmail);
+    formDataToSend.append("founderName", userName || formData.founderName);
+    formDataToSend.append("founderRegistrationNumber", userRegistrationNo || formData.founderRegNo);
+    formDataToSend.append("founderEmail", userEmail || formData.founderEmail);
     formDataToSend.append(
       "founderDayScholarORhosteler",
       formData.dayScholarORhosteler

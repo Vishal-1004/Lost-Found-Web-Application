@@ -13,6 +13,12 @@ const nonRegisteredUserSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  status: {
+    type: String,
+    enum: ["USER", "BLOCKED"],
+    default: "USER",
+    required: true,
+  },
 });
 
 // creating model
