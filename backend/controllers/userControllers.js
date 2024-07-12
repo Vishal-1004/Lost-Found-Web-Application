@@ -710,9 +710,9 @@ exports.getProfileGraphData = async(req,res)=>{
     })
   }
   try{
-    console.log("inside try")
+    // console.log("inside try")
     const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
-    console.log(decoded)
+    // console.log(decoded)
     if(!decoded){
       return res.status(400).json({
         message : "Unable to decode"
