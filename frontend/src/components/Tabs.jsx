@@ -1,62 +1,100 @@
 // src/components/Tabs.js
-import { useState } from 'react';
-// import ItemCarousel from './ItemCarousel';
-// import UserFoundation from './UserFound';
-import ItemCard from './ItemCard';
+import { useState, useEffect } from "react";
+import ToastMsg from "../constants/ToastMsg";
+import ItemCard from "./ItemCard";
+import { useSelector } from "react-redux";
+import { getFoundItemsPostByUserFunction } from "../services/API";
+import moment from "moment";
 function Tabs() {
-  const [activeTab, setActiveTab] = useState('Lost');
+  const [activeTab, setActiveTab] = useState("Lost");
+  const [loading, setLoading] = useState(false);
+  const [foundPostsData, setFoundPostsData] = useState([]);
+
+  // Getting user registration number from localstorage
+  const userRegistrationNo = useSelector(
+    (state) => state.storedUserData.userData.userRegistrationNo
+  );
+  // Getting user phone number from localstorage
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
+  // getting user token from localstorage
+  const userToken = useSelector((state) => state.storedUserData.userToken);
+
+  const getFoundPostsData = async () => {
+    setLoading(true);
+    try {
+      const response = await getFoundItemsPostByUserFunction(
+        userEmail,
+        userRegistrationNo
+      );
+      //console.log(response);
+      if (response.status == 200) {
+        //ToastMsg("Found posts data fetched successfully", "success");
+        setFoundPostsData(response.data.data);
+      }
+    } catch (error) {
+      ToastMsg("Internal Server Error! Please Try Later", "error");
+      console.error("Error: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userToken) {
+      getFoundPostsData();
+    }
+  }, []);
 
   return (
     <div className="w-full mt-10">
       <div className="w-full border-gray-200">
         <nav className="flex justify-center">
           <button
-            className={`w-full max-w-xs py-4 text-center border-b-2 font-medium text-sm ${activeTab === 'Lost' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
-            onClick={() => setActiveTab('Lost')}
+            className={`w-full max-w-xs py-4 text-center border-b-2 font-medium text-sm ${
+              activeTab === "Lost"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+            onClick={() => setActiveTab("Lost")}
           >
             Lost
           </button>
           <button
-            className={`w-full max-w-xs py-4 text-center border-b-2 font-medium text-sm ${activeTab === 'Found' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
-            onClick={() => setActiveTab('Found')}
+            className={`w-full max-w-xs py-4 text-center border-b-2 font-medium text-sm ${
+              activeTab === "Found"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+            onClick={() => setActiveTab("Found")}
           >
             Found
           </button>
         </nav>
       </div>
       <div className="mt-4">
-        {activeTab === 'Lost' && (
+        {activeTab === "Lost" && (
           <div>
             {/* Lost content goes here */}
             <p>Lost Items</p>
           </div>
         )}
-        {activeTab === 'Found' && (
-          <div className='flex flex-wrap overflow-hidden py-4 justify-center'>
+        {activeTab === "Found" && (
+          <div className="flex flex-wrap overflow-hidden py-4 justify-center">
             {/* Found content goes here */}
             {/* <p>Found Items</p> */}
-            <ItemCard url = {"https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg"} 
-            title= {"Sample Card"}
-            date ={"2024-07-07"}
-            about={"Lorem Ipsum Lorem Ipsum"}
-            location={"AB3"}/>
-             <ItemCard url = {"https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg"} 
-            title= {"Sample Card"}
-            date ={"2024-07-07"}
-            about={"Lorem Ipsum Lorem Ipsum"}
-            location={"AB3"}/>
-             <ItemCard url = {"https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg"} 
-            title= {"Sample Card"}
-            date ={"2024-07-07"}
-            about={"Lorem Ipsum Lorem Ipsum"}
-            location={"AB3"}/>
-             <ItemCard url = {"https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg"} 
-            title= {"Sample Card"}
-            date ={"2024-07-07"}
-            about={"Lorem Ipsum Lorem Ipsum"}
-            location={"AB3"}/>
+            {foundPostsData?.map((element, index) => (
+              <ItemCard
+                key={index}
+                url={element.itemImage}
+                title={element.title}
+                date={moment(element.date).format("DD-MM-YYYY")}
+                about={element.description}
+                location={element.location}
+              />
+            ))}
           </div>
-          
         )}
       </div>
     </div>

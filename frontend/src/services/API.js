@@ -123,11 +123,29 @@ export const changeStatusOfRegisteredUsersFunction = async (userId,userToken,new
   );
 }
 
+// Get user profile data
+export const getProfileDataFunction = async (authToken) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/get-profile-data`,
+    { authToken}
+  );
+}
+
 // Get  user profile graph data
 export const getProfileGraphFunction = async (authToken) => {
   return await commonrequest(
     "POST",
     `${BACKEND_URL}/api/v1/get-graph-data`,
     { authToken}
+  );
+}
+
+// Get all found items posted by a user
+export const getFoundItemsPostByUserFunction = async (email, registrationNumber) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/get-found-items-user`,
+    { email, registrationNumber}
   );
 }

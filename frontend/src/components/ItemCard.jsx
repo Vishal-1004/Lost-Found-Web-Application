@@ -6,11 +6,11 @@ import { format } from 'date-fns';
 function ItemCard({ url, title, date, about, location, }) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const formattedDate = format(new Date(date), 'EEEE, d MMM yyyy');
-
   const cardStyle = {
-    transition: 'box-shadow 0.25s ease-in-out',
-    boxShadow: isHovered ? '0 4px 8px rgba(0, 0, 0, 0.2)' : '0 4px 12px rgba(207, 216, 220, 0.4)',
+    transition: "box-shadow 0.25s ease-in-out",
+    boxShadow: isHovered
+      ? "0 4px 8px rgba(0, 0, 0, 0.2)"
+      : "0 4px 12px rgba(207, 216, 220, 0.4)",
   };
 
   const shortAbout =
@@ -47,7 +47,7 @@ function ItemCard({ url, title, date, about, location, }) {
 
         <div className="mt-4 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
           <AiFillCalendar className="mr-1" size={"20px"} />
-          {formattedDate}
+          {date}
         </div>
       </div>
     </div>

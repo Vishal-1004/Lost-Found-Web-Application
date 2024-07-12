@@ -518,7 +518,7 @@ exports.getFoundItemsByUser = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "User not found in the DB",
+        message: "User not found in the Database",
       });
     }
 
@@ -530,7 +530,7 @@ exports.getFoundItemsByUser = async (req, res) => {
 
     if (foundItemsList.length === 0) {
       return res.status(404).json({
-        message: "No found items posted by this user",
+        message: "No found items posted by user",
         metaData: "0",
       });
     }
@@ -672,36 +672,36 @@ exports.deleteFoundItem = async (req, res) => {
 };
 
 // getting profile data
-exports.getProfileData = async (req,res)=>{
-  const {authToken} = req.body
-  if(!authToken){
+exports.getProfileData = async (req, res) => {
+  const { authToken } = req.body;
+  if (!authToken) {
     return res.status(400).json({
-      message : "Auth token not provided!"
-    })
+      message: "Auth token not provided!",
+    });
   }
-  try{
-    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
-    if(!decoded){
+  try {
+    const decoded = await jwt.verify(authToken, process.env.JWT_SECRET_KEY);
+    if (!decoded) {
       return res.status(400).json({
-        message : "Unable to decode"
-      })
+        message: "Invalid auth token",
+      });
     }
-    const userId=decoded._id
-    const existingUser=await users.findById(userId)
-    if(!existingUser){
+    const userId = decoded._id;
+    const existingUser = await users.findById(userId);
+    if (!existingUser) {
       return res.status(400).json({
-        message : "User not found!"
-      })
+        message: "User not found!",
+      });
     }
     res.status(200).json({
-      profile : existingUser
-    })
-  }catch(err){
+      profile: existingUser,
+    });
+  } catch (err) {
     return res.status(400).json({
-      error: err
-    })
+      error: err,
+    });
   }
-}
+};
 
 // Getting profile graph
 exports.getProfileGraphData = async(req,res)=>{

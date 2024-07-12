@@ -89,7 +89,8 @@ router.post("/api/v1/update-password", userControllers.updatePassword);
 
 router.post("/api/v1/account-delete", userControllers.deleteAccount);
 
-router.get("/api/v1/get-found-items-user", userControllers.getFoundItemsByUser);
+// Get all found items posted by a user
+router.post("/api/v1/get-found-items-user", userControllers.getFoundItemsByUser);
 
 //Update user/admin/blocked status of registered  users only by admins
 router.post("/api/v1/change-user-status", adminControllers.changeStatus);
@@ -104,7 +105,7 @@ router.put("/api/v1/edit-found-items", userControllers.editFoundItem);
 router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
 
 // Get user profile data
-router.get("/api/v1/get-profile-data",userControllers.getProfileData)
+router.post("/api/v1/get-profile-data", userControllers.getProfileData);
 
 // Get user profile graph
 router.post("/api/v1/get-graph-data",userControllers.getProfileGraphData)

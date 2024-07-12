@@ -151,7 +151,10 @@ const App = () => {
         />
 
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={userToken ? <Profile /> : <LoginPage />}
+        />
       </Routes>
       <Footer />
       <BackToTop />
