@@ -720,7 +720,7 @@ exports.getProfileGraphData = async(req,res)=>{
     }
     const userId=decoded._id
     const existingUser=await users.findById(userId)
-    console.log(existingUser)
+    // console.log(existingUser)
     if(!existingUser){
       return res.status(400).json({
         message : "User not found!"
