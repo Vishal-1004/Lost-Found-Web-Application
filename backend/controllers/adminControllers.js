@@ -182,27 +182,51 @@ exports.changeNonRegisteredUserStatus = async(req,res)=>{
 //getAll nonregistered users
 exports.allNonRegisteredUsers = async(req,res)=>{
   const {authToken}=req.body
+  const{page=1,search="",limit=5}=req.query
   try{
     const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
 
     //Checking if admin exists
     const existingAdmin=await users.findById(decoded._id)
-    console.log(existingAdmin.status)
+
     if(!existingAdmin || existingAdmin.status!=="ADMIN"){
       return res.status(400).json({
         message : "Admin not found!"
       })
     }
-    const nonRegisteredUsers=await nonRegisteredUser.find()
+
+    //set pagination variables
+    const skip=(page-1)*limit
+
+     // Create the search filter
+     const searchFilter = {
+      $or: [
+        { name: new RegExp(search, "i") },
+        { email: new RegExp(search, "i") },
+      ],
+    };
+
+    // Find users with pagination and search
+    const nonRegisteredUsers = await nonRegisteredUser
+    .find(searchFilter)
+    .skip(skip)
+    .limit(limit)
+
+    // Get total user count for pagination
+    const totalUsers = await nonRegisteredUser.countDocuments(searchFilter);
     if(!nonRegisteredUsers){
       return res.status(400).json({
         message : "Error fetching data!"
       })
     }
+
     return res.status(200).json({
       message : "Data fetched successfully!",
-      nonRegisteredUsers:nonRegisteredUsers
-    })
+      nonRegisteredUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+      currentPage: page,
+      limit: limit,
+    });
   }catch(err){
     return res.status(400).json({
       message : "Error"
