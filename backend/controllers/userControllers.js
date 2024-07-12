@@ -68,6 +68,11 @@ exports.createFoundPost = async (req, res) => {
       registrationNo: founderRegistrationNumber,
     });
     if (existingUser) {
+      if(existingUser.status==="BLOCKED"){
+        return res.status(400).json({
+          message : "User Blocked by Admin!"
+        })
+      }
       // User already existing in our database
       try {
         //Creating new post in found Items
