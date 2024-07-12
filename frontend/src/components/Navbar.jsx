@@ -163,7 +163,7 @@ const Navbar = () => {
                 </Link>
                 {userStatus == "ADMIN" ? (
                   <Link
-                    to="/all-users"
+                    to="/registered-users"
                     onClick={() => {
                       setEventsClicked(!eventsClicked);
                     }}

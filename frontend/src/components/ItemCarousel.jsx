@@ -126,7 +126,7 @@ function ItemCarousel({ heading }) {
         const all = 0;
         const count = 6;
         const response = await getFoundItemsFunction(all, count);
-        console.log(response);
+        //console.log(response);
         setPostData(response.data.data);
       } catch (error) {
         ToastMsg("Server error! please try later", "error");

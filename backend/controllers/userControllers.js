@@ -671,6 +671,7 @@ exports.deleteFoundItem = async (req, res) => {
   }
 };
 
+// getting profile data
 exports.getProfileData = async (req,res)=>{
   const {authToken} = req.body
   if(!authToken){
@@ -702,6 +703,7 @@ exports.getProfileData = async (req,res)=>{
   }
 }
 
+// Getting profile graph
 exports.getProfileGraphData = async(req,res)=>{
   const {authToken} = req.body
   if(!authToken){

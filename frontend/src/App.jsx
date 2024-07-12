@@ -76,7 +76,7 @@ const App = () => {
           }
         />
         <Route
-          path="/all-users"
+          path="/registered-users"
           element={userToken && userStatus == "ADMIN" ? <AllUsers /> : <Home />}
         />
         <Route

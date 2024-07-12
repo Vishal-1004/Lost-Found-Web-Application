@@ -13,22 +13,16 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-const DoughnutChart = () => {
+  
+const DoughnutChart = ({ labels, dataSet, backgroundColor, borderColor }) => {
   const data = {
-    labels: ['Lost Items', 'Found Items'],
+    labels: labels,
     datasets: [
       {
-        label: 'Items',
-        data: [30, 18], 
-        backgroundColor: [
-          'rgba(66, 165, 245, 0.2)',
-          'rgba(255, 183, 77, 0.2)',
-        ],
-        borderColor: [
-          'rgba(66, 165, 245, 1)',
-          'rgba(255, 183, 77, 1)',
-        ],
+        label: "Items",
+        data: dataSet,
+        backgroundColor: backgroundColor,
+        borderColor: borderColor,
         borderWidth: 1,
       },
     ],
@@ -40,15 +34,15 @@ const DoughnutChart = () => {
     plugins: {
       legend: {
         labels: {
-          color: '#000000',
+          color: "#000000",
         },
       },
       tooltip: {
         callbacks: {
           label: function (context) {
-            let label = context.dataset.label || '';
+            let label = context.dataset.label || "";
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             label += context.raw;
             return label;
@@ -61,7 +55,7 @@ const DoughnutChart = () => {
   return (
     <div className="w-full p-4 bg-blue-50">
       <h2 className="text-center text-lg mb-4 font-bold">All Stats</h2>
-      <div className="relative" style={{ height: '200px' }}>
+      <div className="relative" style={{ height: "200px" }}>
         <Doughnut data={data} options={options} />
       </div>
     </div>

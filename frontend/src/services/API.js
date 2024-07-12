@@ -113,3 +113,21 @@ export const getAllUsersFunction = async (
     { email }
   );
 };
+
+// change status of registered users by admin
+export const changeStatusOfRegisteredUsersFunction = async (userId,userToken,newStatus) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/change-user-status`,
+    { userId, userToken, newStatus}
+  );
+}
+
+// Get  user profile graph data
+export const getProfileGraphFunction = async (authToken) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/get-graph-data`,
+    { authToken}
+  );
+}

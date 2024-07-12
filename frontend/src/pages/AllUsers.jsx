@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import ToastMsg from "../constants/ToastMsg";
-import { getAllUsersFunction } from "../services/API";
+import {
+  changeStatusOfRegisteredUsersFunction,
+  getAllUsersFunction,
+} from "../services/API";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 
 const AllUsers = () => {
+  const [actionLoading, setActionLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [pageInfo, setPageInfo] = useState({
@@ -20,35 +24,38 @@ const AllUsers = () => {
     (state) => state.storedUserData.userData.userEmail
   );
 
-  useEffect(() => {
-    const gettingAllUsersFunction = async () => {
-      setFormLoading(true);
-      try {
-        const response = await getAllUsersFunction(
-          userEmail,
-          pageInfo.currentPage,
-          debouncedSearch,
-          pageInfo.limit
-        );
-        if (response.status === 200) {
-          setAllUsers(response.data.getUsers);
-          setPageInfo({
-            currentPage: parseInt(response.data.currentPage, 10),
-            totalPages: parseInt(response.data.totalPages, 10),
-            limit: parseInt(response.data.limit, 10),
-          });
-          ToastMsg("All users data achieved", "success");
-        } else {
-          ToastMsg(response.response.data.message, "error");
-        }
-      } catch (error) {
-        ToastMsg("Server error! please try later", "error");
-        console.error("Internal Server Error:", error);
-      } finally {
-        setFormLoading(false);
-      }
-    };
+  // Getting user token from localstorage
+  const userToken = useSelector((state) => state.storedUserData.userToken);
 
+  const gettingAllUsersFunction = async () => {
+    setFormLoading(true);
+    try {
+      const response = await getAllUsersFunction(
+        userEmail,
+        pageInfo.currentPage,
+        debouncedSearch,
+        pageInfo.limit
+      );
+      if (response.status === 200) {
+        setAllUsers(response.data.getUsers);
+        setPageInfo({
+          currentPage: parseInt(response.data.currentPage, 10),
+          totalPages: parseInt(response.data.totalPages, 10),
+          limit: parseInt(response.data.limit, 10),
+        });
+        ToastMsg("All users data achieved", "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.error("Internal Server Error:", error);
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  useEffect(() => {
     // To avoid multiple calls, you can add a check if userEmail is available
     if (userEmail) {
       gettingAllUsersFunction();
@@ -88,8 +95,28 @@ const AllUsers = () => {
   };
 
   // handle action button click
-  const handleActionClick = (username) => {
-    console.log(`User: ${username}`);
+  const handleActionSelect = async (newStatus, userId) => {
+    setActionLoading(true);
+    if (newStatus != "0") {
+      try {
+        const response = await changeStatusOfRegisteredUsersFunction(
+          userId,
+          userToken,
+          newStatus
+        );
+        //console.log(response);
+        if (response.status == 200) {
+          ToastMsg(response.data.message, "success");
+        } else {
+          ToastMsg(response.response.data.message, "error");
+        }
+        gettingAllUsersFunction();
+      } catch (error) {
+        console.log("Some error occured:", error);
+      } finally {
+        setActionLoading(false);
+      }
+    }
   };
 
   return (
@@ -174,12 +201,25 @@ const AllUsers = () => {
                     </td>
                     <td className="py-2 px-4 border-b">{user.status}</td>
                     <td className="py-2 px-4 border-b">
-                      <button
-                        className="btnSubmit bg-blue-500 text-white p-2 rounded"
-                        onClick={() => handleActionClick(user.name)}
-                      >
-                        Action
-                      </button>
+                      {actionLoading ? (
+                        <>
+                          <FaSpinner className="mr-3 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <select
+                          className="p-2 rounded bg-blue-500 text-white"
+                          onChange={(e) =>
+                            handleActionSelect(e.target.value, user._id)
+                          }
+                        >
+                          <option value="0">Select Action</option>
+                          <option value="BLOCKED">Block</option>
+                          <option value="USER">UnBlock</option>
+                          <option value="ADMIN">Promote Admin</option>
+                          <option value="USER">Demote Admin</option>}
+                        </select>
+                      )}
                     </td>
                   </tr>
                 ))}

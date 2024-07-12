@@ -34,7 +34,7 @@ const handleLogin = async (formData) => {
   try {
     const { registrationNo, password } = formData;
     const response = await loginFunction(registrationNo, password);
-    //console.log(response);
+    console.log(response);
 
     if (response.status === 200) {
       const userToken = response.data.userToken;
