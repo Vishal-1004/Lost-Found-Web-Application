@@ -89,7 +89,7 @@ function FoundItemForm({ onClose }) {
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
       } else {
-        ToastMsg(response.data.message, "error");
+        ToastMsg(response.response.data.message, "error");
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
