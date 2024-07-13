@@ -5,14 +5,23 @@ import {FaSearch } from 'react-icons/fa';
 import FormPopup from './FormPopup';
 
 const HeroSection = () => {
-  const [showPopup, setShowPopup] = useState(false);
+  const [showFoundPopup, setShowFoundPopup] = useState(false);
+  const [showLostPopup, setShowLostPopup] = useState(false);
 
-  const handleOpenPopup = () => {
-    setShowPopup(true);
+  const handleOpenFoundPopup = () => {
+    setShowFoundPopup(true);
+  };
+  
+  const handleOpenLostPopup = () => {
+    setShowLostPopup(true);
   };
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
+  const handleCloseFoundPopup = () => {
+    setShowFoundPopup(false);
+  };
+
+  const handleCloseLostPopup = () => {
+    setShowLostPopup(false);
   };
 
   return (
@@ -28,7 +37,9 @@ const HeroSection = () => {
       </p>
       <div className="flex flex-wrap justify-center space-x-0 space-y-4 md:space-x-4 md:space-y-0">
         <div className="flex items-center bg-white text-[#0D47A1] px-4 py-2 rounded shadow w-full md:w-auto">
-          <span>I lost </span>
+          <Link onClick={handleOpenLostPopup}>
+            I lost
+          </Link>
           <input
             type="text"
             placeholder="my belonging"
@@ -39,14 +50,15 @@ const HeroSection = () => {
         <div className="flex w-full md:w-auto">
           <Link
             className="bg-white text-[#0D47A1] px-4 py-2 rounded shadow w-full md:w-auto hover:bg-gray-200 transition"
-            onClick={handleOpenPopup}
+            onClick={handleOpenFoundPopup}
           >
             I Found Something
           </Link>
         </div>
       </div>
     </div>
-    <FormPopup isOpen={showPopup} onClose={handleClosePopup} />
+    <FormPopup isOpen={showFoundPopup} onClose={handleCloseFoundPopup} type="found" />
+    <FormPopup isOpen={showLostPopup} onClose={handleCloseLostPopup} type="lost" />
   </div>
   );
 };

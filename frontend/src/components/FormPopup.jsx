@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import FoundItemForm from "./FoundItemForm";
+import LostItemForm from "./LostItemForm";
 
-function FoundPopup({ isOpen, onClose }) {
+function FormPopup({ isOpen, onClose, type }) {
   const popupRef = useRef(null);
 
   const handleCloseOnOutsideClick = (e) => {
@@ -57,13 +58,22 @@ function FoundPopup({ isOpen, onClose }) {
         >
           <FaTimes />
         </button>
-        {/* popup heading */}
-        <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Add Found Item</h2>
-        {/* form component */}
-        <FoundItemForm onClose={onClose} />
+        {/* found popup heading */}
+        {type==="found" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Add Found Item</h2>}
+        
+        {/* lost item heading */}
+        {type==="lost" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Add Lost Item</h2>}
+
+        {/* form components */}
+        {type==="found" && 
+          <FoundItemForm onClose={onClose} />
+        }
+        {type==="lost" && 
+          <LostItemForm onClose={onClose} />
+        }
       </div>
     </div>
   );
 };
 
-export default FoundPopup;
+export default FormPopup;
