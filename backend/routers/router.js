@@ -98,7 +98,8 @@ router.post("/api/v1/change-user-status", adminControllers.changeStatus);
 //Update user/blocked status of non registered users only by admin
 router.post("/api/v1/change-non-registered-user-status",adminControllers.changeNonRegisteredUserStatus)
 
-router.get("/api/v1/get-all-non-registered-users",adminControllers.allNonRegisteredUsers)
+// Getting all non registered user data
+router.post("/api/v1/get-all-non-registered-users",adminControllers.allNonRegisteredUsers)
 
 router.put("/api/v1/edit-found-items", userControllers.editFoundItem);
 
