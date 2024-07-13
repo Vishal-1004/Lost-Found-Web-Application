@@ -1,15 +1,15 @@
-import { ourTeamBackgound, vishal, akkilesh, adityaP, surya } from "../assets";
+import { ourTeamBackgound, vishal, shashank, akkilesh, adityaP, surya } from "../assets";
 import { AboutUsVideo, TeamCard } from "../components";
 
 const AboutUs = () => {
   return (
     <>
       <AboutUsVideo />
-      <div className="max-w-[1000px] mx-auto mb-5">
-        <h1 className="text-[32px] text-left font-bold uppercase text-gray-700 pb-2">
+      <div className="max-w-5xl mx-auto mb-10 p-8 bg-white shadow-lg rounded-xl">
+        <h1 className="text-4xl font-bold text-gray-800 pb-6 border-b border-gray-300">
           Problem Statement
         </h1>
-        <p className="pb-8">
+        <p className="pt-6 pb-10 text-gray-600 leading-loose">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut facere ea,
           rerum quo sunt cum pariatur consectetur voluptatibus ratione
           voluptatem voluptates, perferendis quaerat vero? Obcaecati, in quidem?
@@ -17,10 +17,10 @@ const AboutUs = () => {
           consectetur quod enim veniam, aspernatur nulla dolores maxime dicta!
           Porro voluptates molestias impedit incidunt natus!
         </p>
-        <h1 className="text-[32px] text-left font-bold uppercase text-gray-700 pb-2">
-          How we are solving the problem?
+        <h1 className="text-4xl font-bold text-gray-800 pb-6 border-b border-gray-300">
+          How We Are Solving the Problem?
         </h1>
-        <p className="pb-8">
+        <p className="pt-6 pb-10 text-gray-600 leading-loose">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum sunt,
           nemo repellat tempora asperiores pariatur quasi consequuntur ipsam
           fugiat facilis quia illum, enim impedit ea sit ipsa? Totam illum non
@@ -29,75 +29,75 @@ const AboutUs = () => {
           officia quo excepturi.
         </p>
         <div>
-          <h1 className="text-[32px] text-left font-bold uppercase text-gray-700 pb-2">
+          <h1 className="text-4xl font-bold text-gray-800 pb-6 border-b border-gray-300">
             Tech Stack Used
           </h1>
-          <div className="flex justify-around">
+          <div className="flex justify-around mt-8">
             <div>
-              <h1 className="text-[24px] text-left font-bold uppercase text-gray-700 pd-8">
+              <h2 className="text-2xl font-semibold text-gray-800 pb-4">
                 Frontend
-              </h1>
-              <ul>
-                <li className="flex items-center">
+              </h2>
+              <ul className="space-y-4">
+                <li className="flex items-center space-x-4">
                   <img
                     width="32"
                     height="32"
                     src="https://img.icons8.com/color/48/tailwind_css.png"
-                    alt="tailwind_css"
+                    alt="Tailwind CSS"
                   />
-                  Tailwind CSS
+                  <span className="text-gray-700">Tailwind CSS</span>
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center space-x-4">
                   <img
                     width="32"
                     height="32"
                     src="https://img.icons8.com/external-tal-revivo-color-tal-revivo/24/external-react-a-javascript-library-for-building-user-interfaces-logo-color-tal-revivo.png"
-                    alt="external-react-a-javascript-library-for-building-user-interfaces-logo-color-tal-revivo"
+                    alt="React JS"
                   />
-                  React Js
+                  <span className="text-gray-700">React Js</span>
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center space-x-4">
                   <img
                     width="32"
                     height="32"
                     src="https://img.icons8.com/color/48/redux.png"
-                    alt="redux"
+                    alt="Redux"
                   />
-                  Redux
+                  <span className="text-gray-700">Redux</span>
                 </li>
               </ul>
             </div>
             <div>
-              <h1 className="text-[24px] text-left font-bold uppercase text-gray-700 pd-8">
+              <h2 className="text-2xl font-semibold text-gray-800 pb-4">
                 Backend
-              </h1>
-              <ul>
-                <li className="flex items-center">
+              </h2>
+              <ul className="space-y-4">
+                <li className="flex items-center space-x-4">
                   <img
                     width="32"
                     height="32"
                     src="https://img.icons8.com/color/48/nodejs.png"
-                    alt="nodejs"
+                    alt="Node JS"
                   />
-                  Node Js
+                  <span className="text-gray-700">Node Js</span>
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center space-x-4">
                   <img
                     width="32"
                     height="32"
                     src="https://img.icons8.com/ios/50/express-js.png"
-                    alt="express-js"
+                    alt="Express JS"
                   />
-                  Express Js
+                  <span className="text-gray-700">Express Js</span>
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center space-x-4">
                   <img
                     width="32"
                     height="32"
                     src="https://img.icons8.com/color/48/mongo-db.png"
-                    alt="mongo-db"
+                    alt="MongoDB"
                   />
-                  MongoDB
+                  <span className="text-gray-700">MongoDB</span>
                 </li>
               </ul>
             </div>
@@ -129,14 +129,14 @@ const AboutUs = () => {
         </div>
         <div className="flex flex-col md:scale-110 md:py-10 lg:scale-100 lg:flex-row justify-evenly items-center lg:items-end ">
           <div className="inline-block items-bottom">
-            <h3 className="text-24 text-center font-bold text-gray-700 py-2">
+            <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
               Frontend Developers
             </h3>
             <div className="flex">
               <TeamCard
                 name="Shashank Sharma"
-                image={vishal}
-                link="https://www.linkedin.com/in/vishal-kumar-yadav-8085a3232/"
+                image={shashank}
+                link="https://www.linkedin.com/in/shashank-sharma-733ba126b/"
               />
               <TeamCard
                 name="Surya M.U"
@@ -146,7 +146,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className="inline-block items-bottom">
-            <h3 className="text-24 text-center font-bold text-gray-700 py-2">
+            <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
               Web Designer
             </h3>
             <div className="flex">
@@ -158,7 +158,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className="inline-block items-bottom">
-            <h3 className="text-24 text-center font-bold text-gray-700 py-2">
+            <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
               Backend Developers
             </h3>
             <div className="flex">
