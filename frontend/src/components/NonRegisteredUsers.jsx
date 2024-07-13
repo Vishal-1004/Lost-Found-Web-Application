@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import ToastMsg from "../constants/ToastMsg";
 import {
-  changeStatusOfRegisteredUsersFunction,
-  getAllUsersFunction,
+  changeStatusOfNonRegisteredUserFunction,
+  getAllNonRegisteredUserData,
 } from "../services/API";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
@@ -30,14 +30,14 @@ const NonRegisteredUsers = () => {
   const gettingAllUsersFunction = async () => {
     setFormLoading(true);
     try {
-      const response = await getAllUsersFunction(
-        userEmail,
+      const response = await getAllNonRegisteredUserData(
+        userToken,
         pageInfo.currentPage,
         debouncedSearch,
         pageInfo.limit
       );
       if (response.status === 200) {
-        setAllUsers(response.data.getUsers);
+        setAllUsers(response.data.nonRegisteredUsers);
         setPageInfo({
           currentPage: parseInt(response.data.currentPage, 10),
           totalPages: parseInt(response.data.totalPages, 10),
@@ -99,7 +99,7 @@ const NonRegisteredUsers = () => {
     setActionLoading(true);
     if (newStatus != "0") {
       try {
-        const response = await changeStatusOfRegisteredUsersFunction(
+        const response = await changeStatusOfNonRegisteredUserFunction(
           userId,
           userToken,
           newStatus
@@ -166,21 +166,16 @@ const NonRegisteredUsers = () => {
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
                 <tr>
-                  <th className="py-2 px-4 border-b">Name</th>
                   <th className="py-2 px-4 border-b">Email</th>
                   <th className="py-2 px-4 border-b">Registration No</th>
-                  <th className="py-2 px-4 border-b">Phone Number</th>
-                  <th className="py-2 px-4 border-b">Day Scholar/Hosteler</th>
                   <th className="py-2 px-4 border-b">Total Found Posts</th>
-                  <th className="py-2 px-4 border-b">Total Lost Posts</th>
                   <th className="py-2 px-4 border-b">Role</th>
                   <th className="py-2 px-4 border-b">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {allUsers.map((user, index) => (
+                {allUsers?.map((user, index) => (
                   <tr key={user._id}>
-                    <td className="py-2 px-4 border-b">{user.name}</td>
                     <td className="py-2 px-4 border-b max-w-[300px] break-words whitespace-normal">
                       {user.email}
                     </td>
@@ -188,16 +183,7 @@ const NonRegisteredUsers = () => {
                       {user.registrationNo}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {user.phoneNumber || "N/A"}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.dayScholarORhosteler}
-                    </td>
-                    <td className="py-2 px-4 border-b">
                       {user.foundItemsID.length}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.lostItemsID.length}
                     </td>
                     <td className="py-2 px-4 border-b">{user.status}</td>
                     <td className="py-2 px-4 border-b">
@@ -216,8 +202,6 @@ const NonRegisteredUsers = () => {
                           <option value="0">Select Action</option>
                           <option value="BLOCKED">Block</option>
                           <option value="USER">UnBlock</option>
-                          <option value="ADMIN">Promote Admin</option>
-                          <option value="USER">Demote Admin</option>
                         </select>
                       )}
                     </td>

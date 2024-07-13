@@ -69,10 +69,10 @@ exports.createFoundPost = async (req, res) => {
     });
     if (existingUser) {
       // console.log(existingUser);
-      if(existingUser.status==="BLOCKED"){
+      if (existingUser.status === "BLOCKED") {
         return res.status(400).json({
-          message : "User Blocked by Admin!"
-        })
+          message: "You are Blocked by Admin!",
+        });
       }
       // User already existing in our database
       try {
@@ -115,72 +115,85 @@ exports.createFoundPost = async (req, res) => {
       //User not in our database
       const existingNonRegisteredUser = await nonRegisteredUser.findOne({
         email: founderEmail,
-        registrationNumber: founderRegistrationNumber,
+        registrationNo: founderRegistrationNumber,
       });
       try {
-        //Creating new post in found Items
-        const newFoundItem = await createFoundItemPost({
-          title: itemTitle,
-          itemImage: upload.secure_url,
-          date: itemFoundDate,
-          location: itemLocation,
-          description: itemDescription,
-          personName: founderName,
-          personRegistrationNumber: founderRegistrationNumber,
-          personEmail: founderEmail,
-          personDayScholarORhosteler: founderDayScholarORhosteler,
-          personStatus: founderStatus,
-          personNumber: founderPhoneNumber,
-        });
-
-        if (newFoundItem) {
-          //Adding new post id to users foundItemsID array
-          //console.log(existingNonRegisteredUser);
-          if (existingNonRegisteredUser) {
-            //User in nonRegisteredUser already
-            const newFoundItemPost = await nonRegisteredUser.updateOne(
-              {
-                email: existingNonRegisteredUser.email,
-                registrationNumber:
-                  existingNonRegisteredUser.registrationNumber,
-              },
-              {
-                foundItemsIds: [
-                  ...existingNonRegisteredUser.foundItemsIds,
-                  newFoundItem._id,
-                ],
-              }
-            );
-            if (newFoundItemPost) {
-              return res.status(200).json({
-                message: "Found Post Created Successful!",
-                registered: false,
-              });
+        //Adding new post id to an existing non registered users foundItemsID array
+        if (existingNonRegisteredUser) {
+          if (existingNonRegisteredUser.status === "BLOCKED") {
+            return res.status(400).json({
+              message: "You are Blocked by Admin!",
+            });
+          }
+          //Creating new post in found Items
+          const newFoundItem = await createFoundItemPost({
+            title: itemTitle,
+            itemImage: upload.secure_url,
+            date: itemFoundDate,
+            location: itemLocation,
+            description: itemDescription,
+            personName: founderName,
+            personRegistrationNumber: founderRegistrationNumber,
+            personEmail: founderEmail,
+            personDayScholarORhosteler: founderDayScholarORhosteler,
+            personStatus: founderStatus,
+            personNumber: founderPhoneNumber,
+          });
+          const newFoundItemPost = await nonRegisteredUser.updateOne(
+            {
+              email: existingNonRegisteredUser.email,
+              registrationNo: existingNonRegisteredUser.registrationNo,
+            },
+            {
+              foundItemsID: [
+                ...existingNonRegisteredUser.foundItemsID,
+                newFoundItem._id,
+              ],
             }
-          } else {
-            //User NOT in nonRegisteredUser
-            const newFoundItemPostwithNonRegisteredUser =
-              await nonRegisteredUser.create({
-                email: founderEmail,
-                registrationNumber: founderRegistrationNumber,
-                foundItemsIds: [newFoundItem._id],
-              });
-            if (newFoundItemPostwithNonRegisteredUser) {
-              return res.status(200).json({
-                message: "Found Post Created Successful!",
-                registered: false,
-              });
-            }
+          );
+          if (newFoundItemPost) {
+            return res.status(200).json({
+              message: "Found Post Created Successful!",
+              registered: false,
+            });
+          }
+        } else {
+          //Creating new post in found Items
+          const newFoundItem = await createFoundItemPost({
+            title: itemTitle,
+            itemImage: upload.secure_url,
+            date: itemFoundDate,
+            location: itemLocation,
+            description: itemDescription,
+            personName: founderName,
+            personRegistrationNumber: founderRegistrationNumber,
+            personEmail: founderEmail,
+            personDayScholarORhosteler: founderDayScholarORhosteler,
+            personStatus: founderStatus,
+            personNumber: founderPhoneNumber,
+          });
+          //User NOT in nonRegisteredUser
+          const newFoundItemPostwithNonRegisteredUser =
+            await nonRegisteredUser.create({
+              email: founderEmail,
+              registrationNo: founderRegistrationNumber,
+              foundItemsID: [newFoundItem._id],
+            });
+          if (newFoundItemPostwithNonRegisteredUser) {
+            return res.status(200).json({
+              message: "Found Post Created Successful!",
+              registered: false,
+            });
           }
         }
-      } catch (err) {
+      } catch (error) {
         return res.status(500).json({
           message: "Found Post Creation Failed!",
           error: error.message,
         });
       }
     }
-  } catch (err) {
+  } catch (error) {
     return res.status(500).json({
       message: "Found Post Creation Failed!",
       error: error.message,

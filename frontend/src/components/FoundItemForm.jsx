@@ -56,7 +56,15 @@ function FoundItemForm({ onClose }) {
     watch,
     setValue,
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      founderName: userName || "",
+      founderRegNo: userRegistrationNo || "",
+      founderEmail: userEmail || "",
+      dayScholarORhosteler: userDayScholarORhosteler || "",
+      founderPhone: userPhoneNumber || "",
+    },
+  });
 
   // handling the image file which the user gives
   const [file, setFile] = useState(null);
@@ -68,13 +76,13 @@ function FoundItemForm({ onClose }) {
     formDataToSend.append("photo", file);
     formDataToSend.append("itemTitle", formData.itemTitle);
     formDataToSend.append("itemDescription", formData.itemDescription);
-    formDataToSend.append(
-      "itemFoundDate",
-      moment(formData.date).format("DD-MM-YYYY")
-    );
+    formDataToSend.append("itemFoundDate", formData.date);
     formDataToSend.append("itemLocation", formData.itemLocation);
     formDataToSend.append("founderName", userName || formData.founderName);
-    formDataToSend.append("founderRegistrationNumber", userRegistrationNo || formData.founderRegNo);
+    formDataToSend.append(
+      "founderRegistrationNumber",
+      userRegistrationNo || formData.founderRegNo
+    );
     formDataToSend.append("founderEmail", userEmail || formData.founderEmail);
     formDataToSend.append(
       "founderDayScholarORhosteler",
@@ -93,10 +101,10 @@ function FoundItemForm({ onClose }) {
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
-      //console.error("Error: ", error);
+      console.error("Error: ", error);
     } finally {
       setFormLoading(false);
-      reset();
+      //reset();
       onClose();
     }
   };
@@ -309,7 +317,6 @@ function FoundItemForm({ onClose }) {
             name="founderName"
             type="text"
             id="founderName"
-            value={userName ? userName : null}
             placeholder="ex: Shashank Sharma"
             {...register("founderName", {
               required: "Founder name is required",
@@ -337,7 +344,6 @@ function FoundItemForm({ onClose }) {
             type="text"
             id="founderRegNo"
             placeholder="ex: 22BCE1411"
-            value={userRegistrationNo ? userRegistrationNo : null}
             {...register("founderRegNo", {
               required: "Founder registration number is required",
               pattern: {
@@ -369,7 +375,6 @@ function FoundItemForm({ onClose }) {
           name="founderEmail"
           type="email"
           id="founderEmail"
-          value={userEmail ? userEmail : null}
           placeholder="ex: shashank.sharma2022@vitstudent.ac.in"
           {...register("founderEmail", {
             required: "Founder email is required",
@@ -401,7 +406,6 @@ function FoundItemForm({ onClose }) {
             }`}
             name="Hosteller/Day Scholar"
             id="dayScholarORhosteler"
-            value={userDayScholarORhosteler}
             {...register("dayScholarORhosteler", {
               required: "This field is required",
             })}
@@ -438,13 +442,6 @@ function FoundItemForm({ onClose }) {
             name="founderPhone"
             type="number"
             id="founderPhone"
-            value={
-              isChecked && userPhoneNumber
-                ? userPhoneNumber
-                : !isChecked
-                ? ""
-                : null
-            }
             placeholder="ex: 70221*****"
             {...register("founderPhone", {
               maxLength: {

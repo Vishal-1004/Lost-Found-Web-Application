@@ -151,19 +151,28 @@ export const getFoundItemsPostByUserFunction = async (email, registrationNumber)
 }
 
 // Get all non registered user data
-export const getAllNonRegisteredUserData = async (authToken) =>{
+export const getAllNonRegisteredUserData = async (
+  authToken,
+  page = 1,
+  search = "",
+  limit = 5
+) => {
   return await commonrequest(
     "POST",
-    `${BACKEND_URL}/api/v1/get-all-non-registered-users`,
-    { authToken}
+    `${BACKEND_URL}/api/v1/get-all-non-registered-users?page=${page}&search=${search}&limit=${limit}`,
+    { authToken }
   );
-}
+};
 
 // Update status for a non registered user by admin
-export const updateStatusOfNonRegisteredUserFunction = async (nonRegisteredUserId, authToken, newStatus) => {
+export const changeStatusOfNonRegisteredUserFunction = async (
+  nonRegisteredUserId,
+  authToken,
+  newStatus
+) => {
   return await commonrequest(
     "POST",
     `${BACKEND_URL}/api/v1/change-non-registered-user-status`,
-    { nonRegisteredUserId, authToken, newStatus}
+    { nonRegisteredUserId, authToken, newStatus }
   );
-}
+};

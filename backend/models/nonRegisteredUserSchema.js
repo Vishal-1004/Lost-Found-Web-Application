@@ -5,11 +5,11 @@ const nonRegisteredUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  registrationNumber: {
+  registrationNo: {
     type: String,
     required: true,
   },
-  foundItemsIds: {
+  foundItemsID: {
     type: [String],
     default: [],
   },
