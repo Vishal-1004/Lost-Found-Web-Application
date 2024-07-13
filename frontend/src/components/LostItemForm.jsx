@@ -294,7 +294,7 @@ function LostItemForm({ onClose }) {
       <p className="text-gray-500 text-[18px] font-semibold mb-2">Posted by:</p>
 
       <div className="flex flex-wrap sm:flex-nowrap sm:gap-4">
-        {/* Founder name */}
+        {/* name */}
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700 flex items-center"
@@ -320,7 +320,7 @@ function LostItemForm({ onClose }) {
           )}
         </div>
 
-        {/* Founder reg no */}
+        {/* reg no */}
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700 flex items-center"
@@ -354,7 +354,7 @@ function LostItemForm({ onClose }) {
         </div>
       </div>
 
-      {/* Founder mail id */}
+      {/* mail id */}
       <div className="mb-3">
         <label
           className="text-sm font-medium text-gray-700 flex items-center"
@@ -417,7 +417,7 @@ function LostItemForm({ onClose }) {
           )}
         </div>
 
-        {/* Founder phone number */}
+        {/* phone number */}
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700"
