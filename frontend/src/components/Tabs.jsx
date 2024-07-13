@@ -29,7 +29,7 @@ function Tabs() {
         userEmail,
         userRegistrationNo
       );
-      //console.log(response);
+      console.log(response);
       if (response.status == 200) {
         //ToastMsg("Found posts data fetched successfully", "success");
         setFoundPostsData(response.data.data);

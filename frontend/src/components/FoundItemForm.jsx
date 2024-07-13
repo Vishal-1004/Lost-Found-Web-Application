@@ -4,7 +4,6 @@ import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
-import moment from "moment";
 
 // default locations available
 const locations = [
@@ -62,7 +61,7 @@ function FoundItemForm({ onClose }) {
       founderRegNo: userRegistrationNo || "",
       founderEmail: userEmail || "",
       dayScholarORhosteler: userDayScholarORhosteler || "",
-      founderPhone: userPhoneNumber || "",
+      founderPhoneNumber: userPhoneNumber || "",
     },
   });
 
@@ -89,7 +88,10 @@ function FoundItemForm({ onClose }) {
       formData.dayScholarORhosteler
     );
     formDataToSend.append("founderStatus", userStatus ? userStatus : "USER");
-    formDataToSend.append("founderPhoneNumber", userPhoneNumber);
+    formDataToSend.append(
+      "founderPhoneNumber",
+      userPhoneNumber || formData.founderPhoneNumber
+    );
 
     try {
       const response = await createFoundItemPost(formDataToSend);
@@ -104,7 +106,7 @@ function FoundItemForm({ onClose }) {
       console.error("Error: ", error);
     } finally {
       setFormLoading(false);
-      //reset();
+      reset();
       onClose();
     }
   };
@@ -425,7 +427,7 @@ function FoundItemForm({ onClose }) {
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700"
-            htmlFor="founderPhone"
+            htmlFor="founderPhoneNumber"
           >
             <span>Phone Number: (optional)</span>
             <input
@@ -439,9 +441,9 @@ function FoundItemForm({ onClose }) {
             className={`form-control ${
               !isChecked ? "text-gray-300" : "text-gray-500"
             } ${errors.founderPhone ? "border-red-500" : ""}`}
-            name="founderPhone"
+            name="founderPhoneNumber"
             type="number"
-            id="founderPhone"
+            id="founderPhoneNumber"
             placeholder="ex: 70221*****"
             {...register("founderPhone", {
               maxLength: {
@@ -451,9 +453,9 @@ function FoundItemForm({ onClose }) {
             })}
             disabled={!isChecked}
           />
-          {errors.founderPhone && (
+          {errors.founderPhoneNumber && (
             <div className="invalid-feedback">
-              {errors.founderPhone.message}
+              {errors.founderPhoneNumber.message}
             </div>
           )}
         </div>

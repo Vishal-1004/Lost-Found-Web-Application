@@ -142,13 +142,18 @@ export const getProfileGraphFunction = async (authToken) => {
 }
 
 // Get all found items posted by a user
-export const getFoundItemsPostByUserFunction = async (email, registrationNumber) => {
+export const getFoundItemsPostByUserFunction = async (
+  email,
+  registrationNumber,
+  sortingOrder = -1,
+  search = ""
+) => {
   return await commonrequest(
     "POST",
-    `${BACKEND_URL}/api/v1/get-found-items-user`,
-    { email, registrationNumber}
+    `${BACKEND_URL}/api/v1/get-found-items-user?&search=${search}`,
+    { email, registrationNumber, sortingOrder }
   );
-}
+};
 
 // Get all non registered user data
 export const getAllNonRegisteredUserData = async (
