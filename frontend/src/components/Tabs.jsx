@@ -5,6 +5,7 @@ import ItemCard from "./ItemCard";
 import { useSelector } from "react-redux";
 import { getFoundItemsPostByUserFunction } from "../services/API";
 import moment from "moment";
+
 function Tabs() {
   const [activeTab, setActiveTab] = useState("Lost");
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ function Tabs() {
   }, []);
 
   return (
-    <div className="w-full mt-10 md:ms-10">
+    <div className="w-full mt-10">
       <div className="w-full border-gray-200">
         <nav className="flex justify-center">
           <button

@@ -6,13 +6,13 @@ import Tabs from '../components/Tabs'
 function Profile() {
   return (
     <div>
-    <div className='py-2  flex flex-col md:flex-row '>
-        <Info/>
-        <Stats/>
-    </div>
-    <div>
-      <Tabs/>
-    </div>
+      <div className='py-2 flex flex-col md:flex-row justify-center'>
+          <Info/>
+          <Stats/>
+      </div>
+      <div>
+        <Tabs/>
+      </div>
     </div>
   )
 }
