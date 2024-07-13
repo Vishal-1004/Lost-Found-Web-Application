@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { format } from "date-fns";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { AiFillCalendar } from "react-icons/ai";
 import { useSelector } from "react-redux";
@@ -10,8 +9,6 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
 
   // use this variable for on-hover actions
   const [isHovered, setIsHovered] = useState(false);
-
-  const formattedDate = format(new Date(date), "EEEE, d MMM yyyy");
 
   const shortAbout =
     about.length > 250 ? `${about.substring(0, 250)}...` : about;
@@ -54,7 +51,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
           {/* Date */}
           <p className="mb-1.5 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
             <AiFillCalendar className="mr-1" size={"20px"} />
-            {formattedDate}
+            {date}
           </p>
 
           {/* Location */}
