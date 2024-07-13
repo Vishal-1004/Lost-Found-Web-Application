@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import DetailedView from "./DetailedView";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 const DetailedViewPopup = ({ item, onClose }) => {
   const {
@@ -68,7 +69,7 @@ const DetailedViewPopup = ({ item, onClose }) => {
         <DetailedView
           url={itemImage}
           title={title}
-          date={date}
+          date={moment(item.date).format("dddd, D MMM YYYY")}
           about={description}
           location={location}
           founder={founder}
