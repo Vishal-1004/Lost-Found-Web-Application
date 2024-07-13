@@ -76,7 +76,12 @@ function FoundItemForm({ onClose }) {
     formDataToSend.append("itemTitle", formData.itemTitle);
     formDataToSend.append("itemDescription", formData.itemDescription);
     formDataToSend.append("itemFoundDate", formData.date);
-    formDataToSend.append("itemLocation", formData.itemLocation);
+    formDataToSend.append(
+      "itemLocation",
+      formData.itemLocation == "Custom"
+        ? formData.customLocation
+        : formData.itemLocation
+    );
     formDataToSend.append("founderName", userName || formData.founderName);
     formDataToSend.append(
       "founderRegistrationNumber",
@@ -262,6 +267,7 @@ function FoundItemForm({ onClose }) {
               errors.customLocation ? "border-red-500" : ""
             }`}
             name="customLocation"
+            id="customLocation"
             type="text"
             placeholder="ex: North Square"
             {...register("customLocation", {

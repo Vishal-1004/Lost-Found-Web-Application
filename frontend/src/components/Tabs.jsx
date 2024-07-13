@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ToastMsg from "../constants/ToastMsg";
 import ItemCard from "./ItemCard";
 import FormPopup from "./FormPopup";
+import DetailedViewPopup from "./DetailedViewPopup";
 import { useSelector } from "react-redux";
 import { getFoundItemsPostByUserFunction } from "../services/API";
 import moment from "moment";
@@ -49,20 +50,34 @@ function Tabs() {
     }
   }, []);
 
+  // search bar handling
   const [search, setSearch] = useState("");
+  // *************************
 
   // item popup form
   const [showFoundPopup, setShowFoundPopup] = useState(false);
   const [showLostPopup, setShowLostPopup] = useState(false);
 
-  const handleOpenPopup = () => {
+  const handleOpenFormPopup = () => {
     setShowFoundPopup(true);
     setShowLostPopup(true);
   };
 
-  const handleClosePopup = () => {
+  const handleCloseFormPopup = () => {
     setShowFoundPopup(false);
     setShowLostPopup(false);
+  };
+  // *************************
+
+  // detailed view
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleCardClick = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleClosePopup = () => {
+    setSelectedItem(null);
   };
   // *************************
 
@@ -123,7 +138,7 @@ function Tabs() {
           <div className="flex items-center justify-center md:px-2">
             <Link 
               className="btnSubmit"
-              onClick={handleOpenPopup}
+              onClick={handleOpenFormPopup}
             >
               Create a post
             </Link>
@@ -133,19 +148,25 @@ function Tabs() {
         {/* Lost tab section */}
         {activeTab === "Lost" && (
           <div>
-            {/* Lost content goes here */}
+            {/* lost content goes here */}
             <p>Lost Items</p>
-            <FormPopup isOpen={showLostPopup} onClose={handleClosePopup} type="lost" />
+
+            {/* lost item form popup */}
+            <FormPopup isOpen={showLostPopup} onClose={handleCloseFormPopup} type="lost" />
           </div>
         )}
 
         {/* Fund tab section */}
         {activeTab === "Found" && (
           <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
+            {/* found content goes here */}
             {foundPostsData?.map((element, index) => (
-              <div className="md:px-1 py-1 md:mx-2" key="index">
+              <div 
+                className="md:px-1 py-1 md:mx-2" 
+                key={index} 
+                onClick={() => handleCardClick(element)}
+              >
                 <ItemCard
-                  key={index}
                   url={element.itemImage}
                   title={element.title}
                   date={moment(element.date).format("ddd, D MMM YYYY")}
@@ -154,7 +175,14 @@ function Tabs() {
                 />
               </div>
             ))}
-            <FormPopup isOpen={showFoundPopup} onClose={handleClosePopup} type="found" />
+
+            {/* found item form popup */}
+            <FormPopup isOpen={showFoundPopup} onClose={handleCloseFormPopup} type="found" />
+
+            {/* detailed view popup */}
+            {selectedItem && (
+              <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+            )}
           </div>
         )}
       </div>
