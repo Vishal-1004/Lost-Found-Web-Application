@@ -48,7 +48,7 @@ function Tabs() {
   }, []);
 
   return (
-    <div className="w-full mt-10">
+    <div className="w-full mt-10 md:ms-10">
       <div className="w-full border-gray-200">
         <nav className="flex justify-center">
           <button
@@ -81,10 +81,11 @@ function Tabs() {
           </div>
         )}
         {activeTab === "Found" && (
-          <div className="flex flex-wrap overflow-hidden py-4 justify-center">
+          <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
             {/* Found content goes here */}
             {/* <p>Found Items</p> */}
             {foundPostsData?.map((element, index) => (
+              <div className="px-1 py-1 mx-2" key="index">
               <ItemCard
                 key={index}
                 url={element.itemImage}
@@ -93,6 +94,7 @@ function Tabs() {
                 about={element.description}
                 location={element.location}
               />
+              </div>
             ))}
           </div>
         )}
