@@ -10,6 +10,8 @@ import UpdateHostelerDayScholarForm from "./EditProfile/UpdateHostelerDayScholar
 import UpdatePasswordForm from "./EditProfile/UpdatePasswordForm";
 import UpdatePhoneNumberForm from "./EditProfile/UpdatePhoneNumberForm";
 import AboutUsVideo from "./AboutUsVideo";
+import RegisteredUsers from "./RegisteredUsers";
+import NonRegisteredUsers from "./NonRegisteredUsers";
 
 export {
   Navbar,
@@ -24,4 +26,6 @@ export {
   UpdatePasswordForm,
   UpdatePhoneNumberForm,
   AboutUsVideo,
+  RegisteredUsers,
+  NonRegisteredUsers,
 };

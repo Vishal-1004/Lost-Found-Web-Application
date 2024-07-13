@@ -36,16 +36,13 @@ const HeroSection = () => {
         Connecting you with your belongings.
       </p>
       <div className="flex flex-wrap justify-center space-x-0 space-y-4 md:space-x-4 md:space-y-0">
-        <div className="flex items-center bg-white text-[#0D47A1] px-4 py-2 rounded shadow w-full md:w-auto">
-          <Link onClick={handleOpenLostPopup}>
-            I lost
+        <div className="flex w-full md:w-auto">
+          <Link
+            className="bg-white text-[#0D47A1] px-4 py-2 rounded shadow w-full md:w-auto hover:bg-gray-200 transition"
+            onClick={handleOpenLostPopup}
+          >
+            I Lost Something
           </Link>
-          <input
-            type="text"
-            placeholder="my belonging"
-            className="ml-2 border-0 outline-none flex-1"
-          />
-          <FaSearch className="ml-2" />
         </div>
         <div className="flex w-full md:w-auto">
           <Link
