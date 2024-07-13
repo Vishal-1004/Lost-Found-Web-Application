@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 const DetailedView = ({ url, title, date, about, location, founder }) => {
   const userToken = useSelector((state) => state.storedUserData.userToken);
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
 
   // use this variable for on-hover actions
   const [isHovered, setIsHovered] = useState(false);
@@ -135,7 +138,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
           ""
         )}
 
-        {userStatus==="ADMIN" && 
+        {(userStatus==="ADMIN" || userEmail===founder.email) && 
           <div className="w-full flex justify-between">
             <button 
               className="btnSubmit bg-blue-400 hover:bg-blue-600 rounded"
