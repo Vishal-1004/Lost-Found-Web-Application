@@ -121,7 +121,7 @@ exports.signup = async (req, res) => {
     } else {
       // Check if the user has previously created found item posts
       const nonexistingUser = await nonRegisteredUser.findOne({
-        $or: [{ email }, { registrationNumber: registrationNo }],
+        $or: [{ email }, { registrationNo: registrationNo }],
       });
 
       if (nonexistingUser) {
@@ -138,7 +138,7 @@ exports.signup = async (req, res) => {
         dayScholarORhosteler,
         password,
         status: "USER",
-        foundItemsID: nonexistingUser ? nonexistingUser.foundItemsIds : [],
+        foundItemsID: nonexistingUser ? nonexistingUser.foundItemsID : [],
       });
 
       await registerUser.save();
