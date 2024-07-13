@@ -6,7 +6,7 @@ function AllUsers() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="w-full mt-10 md:ms-10">
+    <div className="w-full mt-10">
       <div className="w-full border-gray-200">
         <nav className="flex justify-center">
           <button

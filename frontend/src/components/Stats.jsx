@@ -43,7 +43,7 @@ function Stats() {
   }, [userToken]);
 
   return (
-    <div className="w-full md:w-5/12 bg-blue-100 p-4 mt-4 md:mt-0">
+    <div className="w-full md:w-5/12 bg-blue-100 p-4 rounded-tr-lg rounded-br-lg">
       <h2 className="text-lg font-semibold"></h2>
       <div className="w-full">
         <nav className="flex justify-center py-2 ">
