@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiFillCalendar } from 'react-icons/ai';
-import { format } from 'date-fns';
 
 function ItemCard({ url, title, date, about, location, }) {
   const [isHovered, setIsHovered] = useState(false);

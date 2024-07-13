@@ -163,7 +163,7 @@ function ItemCarousel({ heading }) {
             <ItemCard
               url={item.itemImage}
               title={item.title}
-              date={moment(item.date).format("DD-MM-YYYY")}
+              date={moment(item.date).format("ddd, D MMM YYYY")}
               about={item.description}
               location={item.location}
             />
