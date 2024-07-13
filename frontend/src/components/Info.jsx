@@ -57,55 +57,39 @@ export default function Info() {
           Loading...
         </>
       ) : (
-        <div className="w-full md:w-1/2 bg-gray-100 py-4 md:ms-10 flex flex-wrap md:flex-nowrap">
-          <div className="w-full md:w-1/4  md:mb-4 md:mb-0">
-            {/* <h2 className="text-lg font-semibold">Image</h2> */}
-            <div className="w-32 h-32 bg-gray-300 md:ms-4 md:mt-6" ><img alt="profilepic" src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1720887419~exp=1720891019~hmac=be15c5244f21af8a9bbd2230a8b9c9eb69a8a80d8b96fb9786cc2eebf07dc43d&w=740"/></div>
+        <div className="w-full md:w-1/2 bg-white py-6 px-4 md:px-10 rounded-lg shadow-md flex flex-wrap lg:flex-nowrap md:flex-col lg:flex-row md:items-center lg:items-start">
+          <div className="w-full lg:w-1/4 md:mb-0 flex justify-center md:justify-start mb-4">
+            <div 
+              className="w-32 h-32 rounded-full overflow-hidden border-gray-400">
+              <img
+                alt="profilepic"
+                src="https://i1.wp.com/cdn130.picsart.com/344993131001211.png"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
-          <div className="w-full md:w-1/2 md:py-5 sm:p-3">
+          <div className="w-full lg:w-3/4 md:py-5 px-4 md:px-6">
             <div className="mb-4">
-              <h2 className="text-base md:text-lg font-semibold">
-                Name:{" "}
-                <span className="text-gray-600 text-sm md:text-base">
-                  {userData.name}
-                </span>
-              </h2>
+              <h2 className="text-lg font-bold text-indigo-600">Name:</h2>
+              <p className="text-gray-700 text-base">{userData.name}</p>
             </div>
             <div className="mb-4">
-              <h2 className="text-base md:text-lg font-semibold">
-                Email:{" "}
-                <span className="text-gray-600 text-sm md:text-base">
-                  {userData.email}
-                </span>
-              </h2>
+              <h2 className="text-lg font-bold text-indigo-600">Email:</h2>
+              <p className="text-gray-700 text-base break-words">{userData.email}</p>
             </div>
             <div className="mb-4">
-              <h2 className="text-base md:text-lg font-semibold">
-                Registration Number:{" "}
-                <span className="text-gray-600 text-sm md:text-base">
-                  {userData.registrationNo}
-                </span>
-              </h2>
+              <h2 className="text-lg font-bold text-indigo-600">Registration Number:</h2>
+              <p className="text-gray-700 text-base">{userData.registrationNo}</p>
             </div>
             <div className="mb-4">
-              <h2 className="text-base md:text-lg font-semibold">
-                Day Scholar/ Hosteler:{" "}
-                <span className="text-gray-600 text-sm md:text-base">
-                  {userData.dayScholarOrHosteler}
-                </span>
-              </h2>
+              <h2 className="text-lg font-bold text-indigo-600">Day Scholar/ Hosteler:</h2>
+              <p className="text-gray-700 text-base">{userData.dayScholarOrHosteler}</p>
             </div>
-            {userData.phoneNumber ? (
+            {userData.phoneNumber && (
               <div className="mb-4">
-                <h2 className="text-base md:text-lg font-semibold">
-                  Phone number:{" "}
-                  <span className="text-gray-600 text-sm md:text-base">
-                    {userData.phoneNumber}
-                  </span>
-                </h2>
+                <h2 className="text-lg font-bold text-indigo-600">Phone Number:</h2>
+                <p className="text-gray-700 text-base">{userData.phoneNumber}</p>
               </div>
-            ) : (
-              ""
             )}
           </div>
         </div>
