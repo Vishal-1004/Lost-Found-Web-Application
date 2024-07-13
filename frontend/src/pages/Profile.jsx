@@ -6,7 +6,7 @@ import Tabs from '../components/Tabs'
 function Profile() {
   return (
     <div>
-    <div className='p-4 flex flex-col md:flex-row '>
+    <div className='py-2  flex flex-col md:flex-row '>
         <Info/>
         <Stats/>
     </div>

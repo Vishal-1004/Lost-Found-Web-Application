@@ -57,12 +57,12 @@ export default function Info() {
           Loading...
         </>
       ) : (
-        <div className="w-full md:w-1/2 bg-gray-100 p-4 flex flex-wrap md:flex-nowrap">
-          <div className="w-full md:w-1/3 mr-0 md:mr-4 mb-4 md:mb-0">
-            <h2 className="text-lg font-semibold">Image</h2>
-            <div className="w-32 h-32 bg-gray-300" />
+        <div className="w-full md:w-1/2 bg-gray-100 py-4 md:ms-10 flex flex-wrap md:flex-nowrap">
+          <div className="w-full md:w-1/4  md:mb-4 md:mb-0">
+            {/* <h2 className="text-lg font-semibold">Image</h2> */}
+            <div className="w-32 h-32 bg-gray-300 md:ms-4 md:mt-6" ><img alt="profilepic" src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1720887419~exp=1720891019~hmac=be15c5244f21af8a9bbd2230a8b9c9eb69a8a80d8b96fb9786cc2eebf07dc43d&w=740"/></div>
           </div>
-          <div className="w-full md:w-2/3 md:p-8 sm:p-3">
+          <div className="w-full md:w-1/2 md:py-5 sm:p-3">
             <div className="mb-4">
               <h2 className="text-base md:text-lg font-semibold">
                 Name:{" "}
