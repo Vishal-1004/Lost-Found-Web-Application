@@ -217,7 +217,7 @@ const AllUsers = () => {
                           <option value="BLOCKED">Block</option>
                           <option value="USER">UnBlock</option>
                           <option value="ADMIN">Promote Admin</option>
-                          <option value="USER">Demote Admin</option>}
+                          <option value="USER">Demote Admin</option>
                         </select>
                       )}
                     </td>
