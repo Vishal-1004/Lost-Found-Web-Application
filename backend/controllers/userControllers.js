@@ -33,6 +33,7 @@ async function createFoundItemPost({
   return newFoundItemPost;
 }
 
+// Creating found post API
 exports.createFoundPost = async (req, res) => {
   const upload = await cloudinary.uploader.upload(req.file.path);
   const {
@@ -513,7 +514,8 @@ exports.updatePassword = async (req, res) => {
 
 // Getting Found Items By User
 exports.getFoundItemsByUser = async (req, res) => {
-  const { email, registrationNumber } = req.body;
+  const { email, registrationNumber, sortingOrder } = req.body;
+  const { search = "" } = req.query;
 
   if (!email && !registrationNumber) {
     return res.status(400).json({
@@ -535,11 +537,17 @@ exports.getFoundItemsByUser = async (req, res) => {
       });
     }
 
+    const searchFilter = {
+      personEmail: user.email,
+      $or: [
+        { title: new RegExp(search, "i") },
+        { description: new RegExp(search, "i") },
+      ],
+    };
+
     const foundItemsList = await foundItems
-      .find({
-        personEmail: user.email,
-      })
-      .sort({ createdAt: -1 });
+      .find(searchFilter)
+      .sort({ createdAt: parseInt(sortingOrder, 10) });
 
     if (foundItemsList.length === 0) {
       return res.status(404).json({
@@ -561,6 +569,7 @@ exports.getFoundItemsByUser = async (req, res) => {
     });
   }
 };
+
 
 async function isAdmin(email) {
   const user = await users.findOne({ email: email });
