@@ -7,157 +7,48 @@ import ToastMsg from "../constants/ToastMsg";
 import { getFoundItemsFunction } from "../services/API";
 import { FaSpinner } from "react-icons/fa";
 
-const mockData = [
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-07-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-08-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-09-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-10-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-11-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-12-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-  {
-    url: "https://www.sunglassculture.net/wp-content/uploads/Ray-Ban-Sunglass-RB3701-002-71-black-green-aviator-metal-square-driving-fishing-fashion-style-trending-mens-sunglass-culture-side.jpg",
-    title: "Sunglasses",
-    date: "07-13-2024",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa porro eaque odit necessitatibus accusantium animi, sed quo harum? Maxime deserunt commodi consectetur necessitatibus qui explicabo eos placeat officiis, blanditiis quidem!",
-    location: "Clock Court",
-    founder: {
-      name: "someone",
-      regNo: "22BCEXXXX",
-      email: "abc.xyz@vitstudent.ac.in",
-      dayScholarORhosteler: "Day Scholar",
-      number: "9876543210",
-    },
-  },
-];
+function ItemCarousel({heading}) {
+    const [postData, setPostData] = useState([]);
+    const [formLoading, setFormLoading] = useState(false);
 
-function ItemCarousel({ heading }) {
-  const [postData, setPostData] = useState([]);
-  const [formLoading, setFormLoading] = useState(false);
+    useEffect(() => {
+      const getRecentFoundPost = async () => {
+        setFormLoading(true);
+        try {
+          const all = 0;
+          const count = 6;
+          const response = await getFoundItemsFunction(all, count);
+          setPostData(response.data.data);
+        } catch (error) {
+          ToastMsg("Server error! please try later", "error");
+          console.log("Internal Server Error: ", error);
+        } finally {
+          setFormLoading(false);
+        }
+      };
 
-  useEffect(() => {
-    const getRecentFoundPost = async () => {
-      setFormLoading(true);
-      try {
-        const all = 0;
-        const count = 6;
-        const response = await getFoundItemsFunction(all, count);
-        //console.log(response);
-        setPostData(response.data.data);
-      } catch (error) {
-        ToastMsg("Server error! please try later", "error");
-        console.log("Internal Server Error: ", error);
-      } finally {
-        setFormLoading(false);
-      }
-    };
+      getRecentFoundPost();
+    }, []);
 
-    getRecentFoundPost();
-  }, []);
-
-  // auto-scrolling *******************************************
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
 
+  // auto-scrolling
   useEffect(() => {
     const container = containerRef.current;
     intervalRef.current = setInterval(() => {
-      if (container && !container.classList.contains("hovering")) {
+      if (container && !container.classList.contains('hovering')) {
         const { scrollLeft, scrollWidth, clientWidth } = container;
         let newScrollLeft = scrollLeft + 316;
-        if (newScrollLeft + clientWidth >= scrollWidth + 316) {
+        if (newScrollLeft + clientWidth >= (scrollWidth + 316)) {
           newScrollLeft = 0;
         }
         container.scrollTo({
           left: newScrollLeft,
-          behavior: "smooth",
+          behavior: 'smooth'
         });
       }
     }, 3000);
@@ -174,13 +65,11 @@ function ItemCarousel({ heading }) {
 
       const handleScroll = () => {
         setShowLeftButton(container.scrollLeft > 0);
-        setShowRightButton(
-          container.scrollLeft < container.scrollWidth - container.clientWidth
-        );
+        setShowRightButton(container.scrollLeft < container.scrollWidth - container.clientWidth);
       };
 
-      container.addEventListener("scroll", handleScroll);
-      return () => container.removeEventListener("scroll", handleScroll);
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
 
@@ -190,7 +79,7 @@ function ItemCarousel({ heading }) {
       clearInterval(intervalRef.current);
       container.scrollTo({
         left: container.scrollLeft - 316,
-        behavior: "smooth",
+        behavior: 'smooth'
       });
       startAutoScroll();
     }
@@ -202,7 +91,7 @@ function ItemCarousel({ heading }) {
       clearInterval(intervalRef.current);
       container.scrollTo({
         left: container.scrollLeft + 316,
-        behavior: "smooth",
+        behavior: 'smooth'
       });
       startAutoScroll();
     }
@@ -211,15 +100,15 @@ function ItemCarousel({ heading }) {
   const startAutoScroll = () => {
     intervalRef.current = setInterval(() => {
       const container = containerRef.current;
-      if (container && !container.classList.contains("hovering")) {
+      if (container && !container.classList.contains('hovering')) {
         const { scrollLeft, scrollWidth, clientWidth } = container;
         let newScrollLeft = scrollLeft + 316;
-        if (newScrollLeft + clientWidth >= scrollWidth + 316) {
+        if (newScrollLeft + clientWidth >= (scrollWidth + 316)) {
           newScrollLeft = 0;
         }
         container.scrollTo({
           left: newScrollLeft,
-          behavior: "smooth",
+          behavior: 'smooth'
         });
       }
     }, 3000);
@@ -228,17 +117,16 @@ function ItemCarousel({ heading }) {
   const handleMouseEnter = () => {
     const container = containerRef.current;
     if (container) {
-      container.classList.add("hovering");
+      container.classList.add('hovering');
     }
   };
 
   const handleMouseLeave = () => {
     const container = containerRef.current;
     if (container) {
-      container.classList.remove("hovering");
+      container.classList.remove('hovering');
     }
   };
-  // *******************************************************
 
   const handleCardClick = (item) => {
     setSelectedItem(item);
@@ -249,73 +137,91 @@ function ItemCarousel({ heading }) {
   };
 
   return (
-    <>
-      <div className="relative px-4 mb-5 sm:px-12">
-        <style>
-          {`
+    <div className="relative px-4 mb-5 sm:px-12">
+      <style>
+        {`
           #carouselContainer {
               scrollbar-width: none;
           }
         `}
-        </style>
-        <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
-          {heading}
-        </h2>
-        {formLoading ? (
-          <>
-            <FaSpinner className="mr-3 animate-spin" />
-            Loading...
-          </>
-        ) : (
-          <div
-            ref={containerRef}
-            id="carouselContainer"
-            className="flex overflow-x-scroll space-x-4 sm:p-4 transition-all duration-300"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {postData?.map((item, index) => (
-              <div key={index} onClick={() => handleCardClick(item)}>
-                <ItemCard
-                  url={item.itemImage}
-                  title={item.title}
-                  date={item.date}
-                  about={item.description}
-                  location={item.location}
-                />
-              </div>
-            ))}
+      </style>
+      <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
+        {heading}
+      </h2>
+      <div
+        ref={containerRef}
+        id="carouselContainer"
+        className="flex overflow-x-scroll space-x-4 sm:p-4 transition-all duration-300"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {postData.map((item, index) => (
+          <div key={index} onClick={() => handleCardClick(item)}>
+            <ItemCard
+              url={item.itemImage}
+              title={item.title}
+              date={item.date}
+              about={item.description}
+              location={item.location}
+            />
           </div>
-        )}
-
-        {showLeftButton && (
-          <button
-            className="absolute top-1/2 left-2 sm:left-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
-            onClick={scrollLeft}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <FiChevronLeft size={24} />
-          </button>
-        )}
-
-        {showRightButton && (
-          <button
-            className="absolute top-1/2 right-2 sm:right-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
-            onClick={scrollRight}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <FiChevronRight size={24} />
-          </button>
-        )}
-
-        {selectedItem && (
-          <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
-        )}
+        ))}
       </div>
-    </>
+
+      {showLeftButton && (
+        <button
+          className="absolute top-1/2 left-2 sm:left-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
+          onClick={scrollLeft}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <FiChevronLeft size={24} />
+        </button>
+      )}
+
+      {showRightButton && (
+        <button
+          className="absolute top-1/2 right-2 sm:right-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
+          onClick={scrollRight}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <FiChevronRight size={24} />
+        </button>
+      )}
+
+      {selectedItem && (
+        <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+      )}
+    </div>
   );
 }
 
 export default ItemCarousel;
+
+  //  {formLoading ? (
+  //           <>
+  //             <FaSpinner className="mr-3 animate-spin" />
+  //             Loading...
+  //           </>
+  //         ) : (
+  //           <div
+  //             ref={containerRef}
+  //             id="carouselContainer"
+  //             className="flex overflow-x-scroll space-x-4 sm:p-4 transition-all duration-300"
+  //             onMouseEnter={handleMouseEnter}
+  //             onMouseLeave={handleMouseLeave}
+  //           >
+  //             {postData?.map((item, index) => (
+  //               <div key={index} onClick={() => handleCardClick(item)}>
+  //                 <ItemCard
+  //                   url={item.itemImage}
+  //                   title={item.title}
+  //                   date={item.date}
+  //                   about={item.description}
+  //                   location={item.location}
+  //                 />
+  //               </div>
+  //             ))}
+  //           </div>
+  //         )}

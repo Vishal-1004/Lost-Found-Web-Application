@@ -67,7 +67,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
 
       <div className="flex flex-col gap-4 sm:gap-8 md:gap-2 justify-between text-gray-600">
         {/* Description */}
-        <p className="text-[14px] sm:text-[16px] md:text-[17px]">
+        <p className="text-[14px] sm:text-[16px] md:text-[17px] break-words">
           {shortAbout}
         </p>
 
@@ -144,7 +144,7 @@ DetailedView.propTypes = {
     regNo: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     dayScholarORhosteler: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    // number: PropTypes.string.isRequired,
   }).isRequired,
 };
 
