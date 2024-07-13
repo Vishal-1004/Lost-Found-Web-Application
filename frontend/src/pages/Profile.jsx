@@ -1,4 +1,3 @@
-// import React from 'react'
 import Info from '../components/Info'
 import Stats from '../components/Stats'
 import Tabs from '../components/Tabs'

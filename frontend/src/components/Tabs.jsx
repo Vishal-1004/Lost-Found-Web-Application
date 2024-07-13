@@ -1,7 +1,8 @@
-// src/components/Tabs.js
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import ToastMsg from "../constants/ToastMsg";
 import ItemCard from "./ItemCard";
+import FormPopup from "./FormPopup";
 import { useSelector } from "react-redux";
 import { getFoundItemsPostByUserFunction } from "../services/API";
 import moment from "moment";
@@ -48,6 +49,23 @@ function Tabs() {
     }
   }, []);
 
+  const [search, setSearch] = useState("");
+
+  // item popup form
+  const [showFoundPopup, setShowFoundPopup] = useState(false);
+  const [showLostPopup, setShowLostPopup] = useState(false);
+
+  const handleOpenPopup = () => {
+    setShowFoundPopup(true);
+    setShowLostPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowFoundPopup(false);
+    setShowLostPopup(false);
+  };
+  // *************************
+
   return (
     <div className="w-full mt-10">
       <div className="w-full border-gray-200">
@@ -74,29 +92,69 @@ function Tabs() {
           </button>
         </nav>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 px-8">
+        <div className="md:ml-16 mb-4">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search items..."
+            className="p-2 border border-gray-300 rounded w-full sm:w-1/2"
+          />
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between px-0 md:px-4">
+          <div className="md:ml-10 mb-4 w-full sm:w-1/2 md:p-2">
+            <label
+              className="text-sm font-medium text-gray-700 flex items-center"
+              htmlFor="sortBy"
+            >
+              Sort by:{" "}
+            </label>
+            <select
+              className={`form-control text-gray-600`}
+              name="sortBy"
+              id="sortBy"
+            >
+              <option value="-1">Z-A</option>
+              <option value="1">A-Z</option>
+            </select>
+          </div>
+          <div className="flex items-center justify-center md:px-2">
+            <Link 
+              className="btnSubmit"
+              onClick={handleOpenPopup}
+            >
+              Create a post
+            </Link>
+          </div>
+        </div>
+        
+        {/* Lost tab section */}
         {activeTab === "Lost" && (
           <div>
             {/* Lost content goes here */}
             <p>Lost Items</p>
+            <FormPopup isOpen={showLostPopup} onClose={handleClosePopup} type="lost" />
           </div>
         )}
+
+        {/* Fund tab section */}
         {activeTab === "Found" && (
           <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
-            {/* Found content goes here */}
-            {/* <p>Found Items</p> */}
             {foundPostsData?.map((element, index) => (
-              <div className="px-1 py-1 mx-2" key="index">
-              <ItemCard
-                key={index}
-                url={element.itemImage}
-                title={element.title}
-                date={moment(element.date).format("DD-MM-YYYY")}
-                about={element.description}
-                location={element.location}
-              />
+              <div className="md:px-1 py-1 md:mx-2" key="index">
+                <ItemCard
+                  key={index}
+                  url={element.itemImage}
+                  title={element.title}
+                  date={moment(element.date).format("ddd, D MMM YYYY")}
+                  about={element.description}
+                  location={element.location}
+                />
               </div>
             ))}
+            <FormPopup isOpen={showFoundPopup} onClose={handleClosePopup} type="found" />
           </div>
         )}
       </div>
