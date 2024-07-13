@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const DetailedView = ({ url, title, date, about, location, founder }) => {
   const userToken = useSelector((state) => state.storedUserData.userToken);
+  const userStatus = useSelector((state) => state.storedUserData.userStatus);
 
   // use this variable for on-hover actions
   const [isHovered, setIsHovered] = useState(false);
@@ -13,6 +14,14 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
   const shortAbout =
     about.length > 250 ? `${about.substring(0, 250)}...` : about;
   const shortTitle = title.length > 25 ? `${title.substring(0, 25)}...` : title;
+
+  const handleEdit = () => {
+    console.log("EDIT THIS ITEM CARD");
+  }
+
+  const handleDelete = () => {
+    console.log("DELETE THIS ITEM CARD");
+  }
 
   return (
     <div
@@ -83,7 +92,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
           <p className="text-[15px] font-semibold">Posted by:</p>
 
           {/* Name */}
-          <p className="text-[14px]">
+          <p className="text-[14px] break-words">
             <span className="font-semibold text-[13px] mr-2">Name:</span>
             {userToken ? founder.name : ""}
           </p>
@@ -97,7 +106,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
           </p>
 
           {/* Email */}
-          <p className="text-[14px]">
+          <p className="text-[14px] break-words">
             <span className="font-semibold text-[13px] mr-2">Email:</span>
             {userToken ? founder.email : ""}
           </p>
@@ -125,6 +134,23 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
         ) : (
           ""
         )}
+
+        {userStatus==="ADMIN" && 
+          <div className="w-full flex justify-between">
+            <button 
+              className="btnSubmit bg-blue-400 hover:bg-blue-600 rounded"
+              onClick={handleEdit}
+            >
+              Edit
+            </button>
+            <button 
+              className="btnSubmit bg-red-400 hover:bg-red-600 rounded"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          </div>
+        }
       </div>
     </div>
   );
