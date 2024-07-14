@@ -148,7 +148,9 @@ const Found = () => {
   return (
     <div className="p-4 max-w-7xl mx-auto">
       <h1 className="text-center text-2xl md:text-3xl font-semibold mb-4 md:mb-8 text-blue-400 hover:text-blue-600">
-        All <span className="text-gray-500 text-3xl md:text-4xl font-bold">Found</span> Item Posts
+        All
+        <span className="text-gray-500 text-3xl md:text-4xl font-bold">Found</span>
+        Item Posts
       </h1>
       {formLoading ? (
         <div className="flex items-center">
