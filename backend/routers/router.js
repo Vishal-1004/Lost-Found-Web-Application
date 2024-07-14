@@ -90,16 +90,25 @@ router.post("/api/v1/update-password", userControllers.updatePassword);
 router.post("/api/v1/account-delete", userControllers.deleteAccount);
 
 // Get all found items posted by a user
-router.post("/api/v1/get-found-items-user", userControllers.getFoundItemsByUser);
+router.post(
+  "/api/v1/get-found-items-user",
+  userControllers.getFoundItemsByUser
+);
 
 //Update user/admin/blocked status of registered  users only by admins
 router.post("/api/v1/change-user-status", adminControllers.changeStatus);
 
 //Update user/blocked status of non registered users only by admin
-router.post("/api/v1/change-non-registered-user-status",adminControllers.changeNonRegisteredUserStatus)
+router.post(
+  "/api/v1/change-non-registered-user-status",
+  adminControllers.changeNonRegisteredUserStatus
+);
 
 // Getting all non registered user data
-router.post("/api/v1/get-all-non-registered-users",adminControllers.allNonRegisteredUsers)
+router.post(
+  "/api/v1/get-all-non-registered-users",
+  adminControllers.allNonRegisteredUsers
+);
 
 router.put("/api/v1/edit-found-items", userControllers.editFoundItem);
 
@@ -110,6 +119,8 @@ router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
 router.post("/api/v1/get-profile-data", userControllers.getProfileData);
 
 // Get user profile graph
-router.post("/api/v1/get-graph-data",userControllers.getProfileGraphData)
+router.post("/api/v1/get-graph-data", userControllers.getProfileGraphData);
+
+router.post("/api/v1/get-user-graph-data", userControllers.getUserGraphData);
 
 module.exports = router;

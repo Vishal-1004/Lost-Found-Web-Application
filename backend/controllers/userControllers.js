@@ -725,52 +725,100 @@ exports.getProfileData = async (req, res) => {
 };
 
 // Getting profile graph
-exports.getProfileGraphData = async(req,res)=>{
-  const {authToken} = req.body
-  if(!authToken){
+exports.getProfileGraphData = async (req, res) => {
+  const { authToken } = req.body;
+  if (!authToken) {
     return res.status(400).json({
-      message : "Auth token not provided!"
-    })
+      message: "Auth token not provided!",
+    });
   }
-  try{
+  try {
     // console.log("inside try")
-    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+    const decoded = await jwt.verify(authToken, process.env.JWT_SECRET_KEY);
     // console.log(decoded)
-    if(!decoded){
+    if (!decoded) {
       return res.status(400).json({
-        message : "Unable to decode"
-      })
+        message: "Unable to decode",
+      });
     }
-    const userId=decoded._id
-    const existingUser=await users.findById(userId)
+    const userId = decoded._id;
+    const existingUser = await users.findById(userId);
     // console.log(existingUser)
-    if(!existingUser){
+    if (!existingUser) {
       return res.status(400).json({
-        message : "User not found!"
-      })
+        message: "User not found!",
+      });
     }
-    const postsByAdmins=await foundItems.find({personStatus:"ADMIN"})
-    const totalFoundPosts=(await foundItems.find()).length
-    const postsByOtherUsers=totalFoundPosts-postsByAdmins.length
+    const postsByAdmins = await foundItems.find({ personStatus: "ADMIN" });
+    const totalFoundPosts = (await foundItems.find()).length;
+    const postsByOtherUsers = totalFoundPosts - postsByAdmins.length;
     // console.log(postsByAdmins.length)
     return res.status(200).json({
-      allPostsData:{
-        noOfLostPosts :0,
-        noOfFoundPosts:totalFoundPosts
+      allPostsData: {
+        noOfLostPosts: 0,
+        noOfFoundPosts: totalFoundPosts,
       },
-      foundPostsData:{
-        currentUserFoundPosts:existingUser.foundItemsID.length,
-        adminFoundPosts:postsByAdmins.length,
-        otherUsersFoundPost:postsByOtherUsers
+      foundPostsData: {
+        currentUserFoundPosts: existingUser.foundItemsID.length,
+        adminFoundPosts: postsByAdmins.length,
+        otherUsersFoundPost: postsByOtherUsers,
       },
       // lostPostsData:{
       //   currentUserLostPosts:existingUser.lostItemsID.length,
       //   otherUsersLostPost:allLostPosts-existingUser.lostItemsID.length
       // }
-    })
-  }catch(err){
+    });
+  } catch (err) {
     return res.status(400).json({
-      error: err
-    })
+      error: err,
+    });
   }
-}
+};
+
+exports.getUserGraphData = async (req, res) => {
+  const { authToken } = req.body;
+
+  if (!authToken) {
+    return res.status(400).json({
+      message: "Auth token not provided!",
+    });
+  }
+
+  try {
+    const decoded = await jwt.verify(authToken, process.env.JWT_SECRET_KEY);
+
+    if (!decoded) {
+      return res.status(400).json({
+        message: "Unable to decode",
+      });
+    }
+
+    const userId = decoded._id;
+    const existingUser = await users.findById(userId);
+
+    if (!existingUser) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
+
+    const totalRegisteredUsers = await users.countDocuments();
+    const totalNonRegisteredUsers = await nonRegisteredUser.countDocuments();
+    const totalFoundPosts = await foundItems.countDocuments();
+
+    return res.status(200).json({
+      allUsersData: {
+        noOfRegisteredUsers: totalRegisteredUsers,
+        noOfNonRegisteredUsers: totalNonRegisteredUsers,
+      },
+      foundPostsData: {
+        noOfLostPosts: 0,
+        noOfFoundPosts: totalFoundPosts,
+      },
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: err,
+    });
+  }
+};
