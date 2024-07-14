@@ -50,14 +50,18 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
 
   return (
     <div
-      className="bg-white p-2 rounded-[16px] grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 md:gap-[30px] max-w-[800px]"
+      className="detailedCardPopup bg-white p-2 rounded-[16px] grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 md:gap-[30px] max-w-[800px] h-[500px] overflow-scroll md:h-auto"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <style>
         {`
             .btnSubmit {
-                @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+              @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+            }
+            
+            .detailedCardPopup{
+              scrollbar-width: none;
             }
           `}
       </style>
