@@ -79,7 +79,6 @@ const FoundTab = () => {
   const [showFoundPopup, setShowFoundPopup] = useState(false);
 
   const handleOpenFormPopup = () => {
-    console.log("Creat post popup clicked");
     setShowFoundPopup(true);
   };
 
@@ -99,6 +98,7 @@ const FoundTab = () => {
     setSelectedItem(null);
   };
   // *************************
+  
   return (
     <div className="mt-4 px-8">
       <div className="md:ml-16 mb-4">
@@ -130,7 +130,10 @@ const FoundTab = () => {
           </select>
         </div>
         <div className="flex items-center justify-center md:px-2">
-          <Link className="btnSubmit" onClick={handleOpenFormPopup}>
+          <Link
+            className="btnSubmit"
+            onClick={handleOpenFormPopup}
+          >
             Create a post
           </Link>
         </div>
