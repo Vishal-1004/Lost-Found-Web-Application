@@ -10,7 +10,7 @@ import moment from "moment";
 import { ErrorComponent, NoDataComponent } from "../utility";
 
 function Tabs() {
-  const [activeTab, setActiveTab] = useState("Lost");
+  const [activeTab, setActiveTab] = useState("Found");
   const [loading, setLoading] = useState(false);
   const [foundPostsData, setFoundPostsData] = useState([]);
 
@@ -169,7 +169,7 @@ function Tabs() {
         {activeTab === "Lost" && (
           <div>
             {/* lost content goes here */}
-            <p>Lost Items</p>
+            {/* <p>Lost Items</p> */}
 
             {/* lost item form popup */}
             <FormPopup

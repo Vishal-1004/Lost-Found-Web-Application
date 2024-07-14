@@ -7,6 +7,7 @@ import ResetPassword from "./ForgotPassword/ResetPassword";
 import AboutUs from "./AboutUs";
 import Profile from "./Profile";
 import AllUsers from "./AllUsers";
+import Lost from "./Lost";
 
 export {
   Home,
@@ -18,4 +19,5 @@ export {
   AboutUs,
   Profile,
   AllUsers,
+  Lost,
 };

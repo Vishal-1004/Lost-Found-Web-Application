@@ -11,6 +11,7 @@ import {
   Profile,
   AllUsers,
   AboutUs,
+  Lost
 } from "./pages";
 import { BackToTop, Footer, Navbar } from "./components";
 import EditProfile from "./pages/EditProfile";
@@ -154,7 +155,10 @@ const App = () => {
         <Route
           path="/profile"
           element={userToken ? <Profile /> : <LoginPage />}
+          
         />
+        <Route path="/lost"
+        element={<Lost/>}/>
       </Routes>
       <Footer />
       <BackToTop />
