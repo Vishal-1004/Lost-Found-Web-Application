@@ -1,9 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import FormPopup from "./FormPopup";
 import { FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import { AiFillCalendar } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
+import moment from "moment";
 import { deleteFoundItemPostByUserFunction } from "../services/API";
 
 const DetailedView = ({ id, url, title, date, about, location, founder }) => {
@@ -21,9 +23,17 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
     about.length > 250 ? `${about.substring(0, 250)}...` : about;
   const shortTitle = title.length > 25 ? `${title.substring(0, 25)}...` : title;
 
-  const handleEdit = () => {
-    console.log("EDIT THIS ITEM CARD");
+  // edit form popup
+  const [showEditPopup, setShowEditPopup] = useState(false);
+
+  const handleOpenEditPopup = () => {
+    setShowEditPopup(true);
   };
+
+  const handleCloseEditPopup = () => {
+    setShowEditPopup(false);
+  };
+  // ****************************
 
   const handleDelete = async () => {
     console.log(founder.email, " and id: ", id);
@@ -47,6 +57,16 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
       window.location.reload();
     }
   };
+
+  const editData = {
+    id,
+    url,
+    title,
+    date,
+    about,
+    location,
+    founder,
+  }
 
   return (
     <div
@@ -89,7 +109,7 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
           {/* Date */}
           <p className="mb-1.5 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
             <AiFillCalendar className="mr-1" size={"20px"} />
-            {date}
+            {moment(date).format("dddd, D MMM YYYY")}
           </p>
 
           {/* Location */}
@@ -168,7 +188,7 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
           <div className="w-full flex justify-between">
             <button
               className="btnSubmit bg-blue-400 hover:bg-blue-600 rounded"
-              onClick={handleEdit}
+              onClick={handleOpenEditPopup}
             >
               Edit
             </button>
@@ -188,6 +208,7 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
           </div>
         )}
       </div>
+      <FormPopup isOpen={showEditPopup} onClose={handleCloseEditPopup} type="edit" editData={editData} />
     </div>
   );
 };

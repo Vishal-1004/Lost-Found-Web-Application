@@ -71,7 +71,7 @@ const DetailedViewPopup = ({ item, onClose }) => {
           id={_id}
           url={itemImage}
           title={title}
-          date={moment(item.date).format("dddd, D MMM YYYY")}
+          date={date}
           about={description}
           location={location}
           founder={founder}

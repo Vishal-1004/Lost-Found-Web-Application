@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import FoundItemForm from "./FoundItemForm";
 import LostItemForm from "./LostItemForm";
+import EditForm from "./EditForm";
 
-function FormPopup({ isOpen, onClose, type }) {
+function FormPopup({ isOpen, onClose, type, editData }) {
   const popupRef = useRef(null);
 
   const handleCloseOnOutsideClick = (e) => {
@@ -63,6 +64,9 @@ function FormPopup({ isOpen, onClose, type }) {
         
         {/* lost item heading */}
         {type==="lost" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Add Lost Item</h2>}
+        
+        {/* edit item heading */}
+        {type==="edit" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Edit Item</h2>}
 
         {/* form components */}
         {type==="found" && 
@@ -70,6 +74,9 @@ function FormPopup({ isOpen, onClose, type }) {
         }
         {type==="lost" && 
           <LostItemForm onClose={onClose} />
+        }
+        {type==="edit" && 
+          <EditForm onClose={onClose} editData={editData} />
         }
       </div>
     </div>
