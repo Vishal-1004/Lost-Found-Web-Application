@@ -7,6 +7,7 @@ import DetailedViewPopup from "./DetailedViewPopup";
 import { useSelector } from "react-redux";
 import { getFoundItemsPostByUserFunction } from "../services/API";
 import moment from "moment";
+import { ErrorComponent, NoDataComponent } from "../utility";
 
 function Tabs() {
   const [activeTab, setActiveTab] = useState("Lost");
@@ -27,6 +28,8 @@ function Tabs() {
   const [sortingOrder, setSortingOrder] = useState(-1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [error, setError] = useState(false);
+  const [noData, setNoData] = useState(false);
 
   const getFoundPostsData = async () => {
     setLoading(true);
@@ -41,10 +44,14 @@ function Tabs() {
       if (response.status == 200) {
         //ToastMsg("Found posts data fetched successfully", "success");
         setFoundPostsData(response.data.data);
+        setNoData(false);
+      } else if (response.response.data.metaData == 0) {
+        setNoData(true);
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
       console.error("Error: ", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -174,40 +181,46 @@ function Tabs() {
         )}
 
         {/* Fund tab section */}
-        {activeTab === "Found" && (
-          <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
-            {/* found content goes here */}
-            {foundPostsData?.map((element, index) => (
-              <div
-                className="md:px-1 py-1 md:mx-2"
-                key={index}
-                onClick={() => handleCardClick(element)}
-              >
-                <ItemCard
-                  url={element.itemImage}
-                  title={element.title}
-                  date={moment(element.date).format("ddd, D MMM YYYY")}
-                  about={element.description}
-                  location={element.location}
-                />
-              </div>
-            ))}
+        {error ? (
+          <ErrorComponent />
+        ) : noData ? (
+          <NoDataComponent />
+        ) : (
+          activeTab === "Found" && (
+            <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
+              {/* found content goes here */}
+              {foundPostsData?.map((element, index) => (
+                <div
+                  className="md:px-1 py-1 md:mx-2"
+                  key={index}
+                  onClick={() => handleCardClick(element)}
+                >
+                  <ItemCard
+                    url={element.itemImage}
+                    title={element.title}
+                    date={moment(element.date).format("ddd, D MMM YYYY")}
+                    about={element.description}
+                    location={element.location}
+                  />
+                </div>
+              ))}
 
-            {/* found item form popup */}
-            <FormPopup
-              isOpen={showFoundPopup}
-              onClose={handleCloseFormPopup}
-              type="found"
-            />
-
-            {/* detailed view popup */}
-            {selectedItem && (
-              <DetailedViewPopup
-                item={selectedItem}
-                onClose={handleClosePopup}
+              {/* found item form popup */}
+              <FormPopup
+                isOpen={showFoundPopup}
+                onClose={handleCloseFormPopup}
+                type="found"
               />
-            )}
-          </div>
+
+              {/* detailed view popup */}
+              {selectedItem && (
+                <DetailedViewPopup
+                  item={selectedItem}
+                  onClose={handleClosePopup}
+                />
+              )}
+            </div>
+          )
         )}
       </div>
     </div>

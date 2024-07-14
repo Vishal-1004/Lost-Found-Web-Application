@@ -641,6 +641,7 @@ exports.editFoundItem = async (req, res) => {
   }
 };
 
+// Delete a found item post by a user
 exports.deleteFoundItem = async (req, res) => {
   const { email, foundItemId } = req.body;
 

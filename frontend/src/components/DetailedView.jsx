@@ -43,7 +43,8 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
       ToastMsg("Server error! please try later", "error");
       console.log("Internal Server Error: ", error);
     } finally {
-      setLoading(true);
+      setLoading(false);
+      window.location.reload();
     }
   };
 
