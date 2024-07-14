@@ -36,14 +36,11 @@ function FoundItemForm({ onClose }) {
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   // *****************************************************
 
-  const [isChecked, setIsChecked] = useState(!!userPhoneNumber);
+  const [isChecked, setIsChecked] = useState(userPhoneNumber ? true : false);
+  //console.log(userPhoneNumber);
 
-  useEffect(() => {
-    setIsChecked(!!userPhoneNumber);
-  }, [userPhoneNumber]);
-
-  const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
+  const handleCheckboxChange = () => {
+    setIsChecked((prevState) => !prevState);
   };
 
   const [formLoading, setFormLoading] = useState(false);
@@ -61,7 +58,7 @@ function FoundItemForm({ onClose }) {
       founderRegNo: userRegistrationNo || "",
       founderEmail: userEmail || "",
       dayScholarORhosteler: userDayScholarORhosteler || "",
-      founderPhoneNumber: userPhoneNumber || "",
+      founderPhoneNumber: userPhoneNumber || 0,
     },
   });
 
@@ -95,7 +92,7 @@ function FoundItemForm({ onClose }) {
     formDataToSend.append("founderStatus", userStatus ? userStatus : "USER");
     formDataToSend.append(
       "founderPhoneNumber",
-      userPhoneNumber || formData.founderPhoneNumber
+      parseInt(userPhoneNumber, 10) || formData.founderPhoneNumber
     );
 
     try {
@@ -444,14 +441,14 @@ function FoundItemForm({ onClose }) {
             />
           </label>
           <input
-            className={`form-control ${
-              !isChecked ? "text-gray-300" : "text-gray-500"
-            } ${errors.founderPhone ? "border-red-500" : ""}`}
+            className={`form-control text-gray-500 ${
+              errors.founderPhoneNumber ? "border-red-500" : ""
+            }`}
             name="founderPhoneNumber"
             type="number"
             id="founderPhoneNumber"
             placeholder="ex: 70221*****"
-            {...register("founderPhone", {
+            {...register("founderPhoneNumber", {
               maxLength: {
                 value: 10,
                 message: "Phone number should be 10 digits",

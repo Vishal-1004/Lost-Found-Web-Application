@@ -16,6 +16,7 @@ const DetailedViewPopup = ({ item, onClose }) => {
     personName,
     personNumber,
     personRegistrationNumber,
+    _id,
   } = item;
   const founder = {
     name: personName,
@@ -67,6 +68,7 @@ const DetailedViewPopup = ({ item, onClose }) => {
 
         {/* Detailed view card component */}
         <DetailedView
+          id={_id}
           url={itemImage}
           title={title}
           date={moment(item.date).format("dddd, D MMM YYYY")}

@@ -24,14 +24,20 @@ function Tabs() {
   // getting user token from localstorage
   const userToken = useSelector((state) => state.storedUserData.userToken);
 
+  const [sortingOrder, setSortingOrder] = useState(-1);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
   const getFoundPostsData = async () => {
     setLoading(true);
     try {
       const response = await getFoundItemsPostByUserFunction(
         userEmail,
-        userRegistrationNo
+        userRegistrationNo,
+        sortingOrder,
+        debouncedSearch
       );
-      console.log(response);
+      //console.log(response);
       if (response.status == 200) {
         //ToastMsg("Found posts data fetched successfully", "success");
         setFoundPostsData(response.data.data);
@@ -48,10 +54,19 @@ function Tabs() {
     if (userToken) {
       getFoundPostsData();
     }
-  }, []);
+  }, [debouncedSearch, sortingOrder]);
 
-  // search bar handling
-  const [search, setSearch] = useState("");
+  // Debounce mechanism
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000); // 1s debounce time
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search]);
+
   // *************************
 
   // item popup form
@@ -130,21 +145,19 @@ function Tabs() {
               className={`form-control text-gray-600`}
               name="sortBy"
               id="sortBy"
+              onChange={(e) => setSortingOrder(parseInt(e.target.value, 10))}
             >
               <option value="-1">Z-A</option>
               <option value="1">A-Z</option>
             </select>
           </div>
           <div className="flex items-center justify-center md:px-2">
-            <Link 
-              className="btnSubmit"
-              onClick={handleOpenFormPopup}
-            >
+            <Link className="btnSubmit" onClick={handleOpenFormPopup}>
               Create a post
             </Link>
           </div>
         </div>
-        
+
         {/* Lost tab section */}
         {activeTab === "Lost" && (
           <div>
@@ -152,7 +165,11 @@ function Tabs() {
             <p>Lost Items</p>
 
             {/* lost item form popup */}
-            <FormPopup isOpen={showLostPopup} onClose={handleCloseFormPopup} type="lost" />
+            <FormPopup
+              isOpen={showLostPopup}
+              onClose={handleCloseFormPopup}
+              type="lost"
+            />
           </div>
         )}
 
@@ -161,9 +178,9 @@ function Tabs() {
           <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
             {/* found content goes here */}
             {foundPostsData?.map((element, index) => (
-              <div 
-                className="md:px-1 py-1 md:mx-2" 
-                key={index} 
+              <div
+                className="md:px-1 py-1 md:mx-2"
+                key={index}
                 onClick={() => handleCardClick(element)}
               >
                 <ItemCard
@@ -177,11 +194,18 @@ function Tabs() {
             ))}
 
             {/* found item form popup */}
-            <FormPopup isOpen={showFoundPopup} onClose={handleCloseFormPopup} type="found" />
+            <FormPopup
+              isOpen={showFoundPopup}
+              onClose={handleCloseFormPopup}
+              type="found"
+            />
 
             {/* detailed view popup */}
             {selectedItem && (
-              <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+              <DetailedViewPopup
+                item={selectedItem}
+                onClose={handleClosePopup}
+              />
             )}
           </div>
         )}

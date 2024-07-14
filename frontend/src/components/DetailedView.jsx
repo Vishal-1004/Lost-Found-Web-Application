@@ -1,10 +1,12 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import { AiFillCalendar } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import ToastMsg from "../constants/ToastMsg";
+import { deleteFoundItemPostByUserFunction } from "../services/API";
 
-const DetailedView = ({ url, title, date, about, location, founder }) => {
+const DetailedView = ({ id, url, title, date, about, location, founder }) => {
   const userToken = useSelector((state) => state.storedUserData.userToken);
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   const userEmail = useSelector(
@@ -13,6 +15,7 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
 
   // use this variable for on-hover actions
   const [isHovered, setIsHovered] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const shortAbout =
     about.length > 250 ? `${about.substring(0, 250)}...` : about;
@@ -20,11 +23,29 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
 
   const handleEdit = () => {
     console.log("EDIT THIS ITEM CARD");
-  }
+  };
 
-  const handleDelete = () => {
-    console.log("DELETE THIS ITEM CARD");
-  }
+  const handleDelete = async () => {
+    console.log(founder.email, " and id: ", id);
+    setLoading(true);
+    try {
+      const response = await deleteFoundItemPostByUserFunction(
+        founder.email,
+        id
+      );
+      console.log(response);
+      if (response.status == 200) {
+        ToastMsg(response.data.message, "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
+      setLoading(true);
+    }
+  };
 
   return (
     <div
@@ -138,22 +159,29 @@ const DetailedView = ({ url, title, date, about, location, founder }) => {
           ""
         )}
 
-        {(userStatus==="ADMIN" || userEmail===founder.email) && 
+        {(userStatus === "ADMIN" || userEmail === founder.email) && (
           <div className="w-full flex justify-between">
-            <button 
+            <button
               className="btnSubmit bg-blue-400 hover:bg-blue-600 rounded"
               onClick={handleEdit}
             >
               Edit
             </button>
-            <button 
+            <button
               className="btnSubmit bg-red-400 hover:bg-red-600 rounded"
               onClick={handleDelete}
             >
-              Delete
+              {loading ? (
+                <>
+                  <FaSpinner className="mr-3 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Delete"
+              )}
             </button>
           </div>
-        }
+        )}
       </div>
     </div>
   );

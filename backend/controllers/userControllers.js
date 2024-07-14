@@ -1,8 +1,8 @@
 const { cloudinary } = require("../utilities/cloudinaryUpload");
 const { users, foundItems, nonRegisteredUser } = require("../models");
 const bcrypt = require("bcryptjs");
-const multer = require("multer");
-const jwt=require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { default: mongoose } = require("mongoose");
 
 async function createFoundItemPost({
   title,
@@ -570,7 +570,6 @@ exports.getFoundItemsByUser = async (req, res) => {
   }
 };
 
-
 async function isAdmin(email) {
   const user = await users.findOne({ email: email });
   return user && user.status === "ADMIN";
@@ -654,22 +653,21 @@ exports.deleteFoundItem = async (req, res) => {
   try {
     const userIsAdmin = await isAdmin(email);
 
-    let foundItem;
     if (!userIsAdmin) {
-      foundItem = await foundItems.findOne({
+      const foundItem = await foundItems.findOne({
         _id: foundItemId,
         personEmail: email,
       });
       if (!foundItem) {
         return res.status(403).json({
-          message: "You do not have permission to delete this found item.",
+          message: "No such found post exist",
         });
       }
     } else {
-      foundItem = await foundItems.findById(foundItemId);
+      const foundItem = await foundItems.findOne({ _id: foundItemId });
       if (!foundItem) {
         return res.status(404).json({
-          message: "Found item not found.",
+          message: "Found post not found.",
         });
       }
     }

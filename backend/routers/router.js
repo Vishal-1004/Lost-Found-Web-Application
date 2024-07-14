@@ -103,6 +103,7 @@ router.post("/api/v1/get-all-non-registered-users",adminControllers.allNonRegist
 
 router.put("/api/v1/edit-found-items", userControllers.editFoundItem);
 
+// delete a found item post of a user
 router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
 
 // Get user profile data
