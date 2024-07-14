@@ -1,4 +1,12 @@
-import { ourTeamBackgound, vishal, shashank, akkilesh, adityaP, surya } from "../assets";
+import {
+  ourTeamBackgound,
+  vishal,
+  shashank,
+  akkilesh,
+  adityaP,
+  surya,
+  adithya,
+} from "../assets";
 import { AboutUsVideo, TeamCard } from "../components";
 
 const AboutUs = () => {
@@ -168,9 +176,9 @@ const AboutUs = () => {
                 link="https://www.linkedin.com/in/akkilesh-a-620561275/"
               />
               <TeamCard
-                name="Aditya"
-                image={vishal}
-                link="https://www.linkedin.com/in/vishal-kumar-yadav-8085a3232/"
+                name="A.Adithya"
+                image={adithya}
+                link="https://www.linkedin.com/in/adithya-aravindan-06a760279/"
               />
             </div>
           </div>
