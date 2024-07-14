@@ -138,7 +138,15 @@ const FoundTab = () => {
       {error ? (
         <ErrorComponent />
       ) : noData ? (
-        <NoDataComponent />
+        <>
+          <NoDataComponent />
+          {/* found item form popup */}
+          <FormPopup
+            isOpen={showFoundPopup}
+            onClose={handleCloseFormPopup}
+            type="found"
+          />
+        </>
       ) : (
         <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
           {/* found content goes here */}
