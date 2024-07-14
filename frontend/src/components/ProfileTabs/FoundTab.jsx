@@ -148,7 +148,7 @@ const FoundTab = () => {
           />
         </>
       ) : (
-        <div className="flex flex-wrap overflow-hidden py-4 justify-start md:mx-10">
+        <div className="flex flex-wrap overflow-hidden py-4 justify-evenly md:mx-10">
           {/* found content goes here */}
           {foundPostsData?.map((element, index) => (
             <div
