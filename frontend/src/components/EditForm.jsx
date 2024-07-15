@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FaAsterisk, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
@@ -20,22 +20,22 @@ function EditForm({ onClose, editData }) {
   // console.log(editData);
 
   // getting user data from localstorage****************
-  // const userName = useSelector(
-  //   (state) => state.storedUserData.userData.userName
-  // );
-  // const userRegistrationNo = useSelector(
-  //   (state) => state.storedUserData.userData.userRegistrationNo
-  // );
-  // const userPhoneNumber = useSelector(
-  //   (state) => state.storedUserData.userData.userPhoneNumber
-  // );
-  // const userEmail = useSelector(
-  //   (state) => state.storedUserData.userData.userEmail
-  // );
-  // const userDayScholarORhosteler = useSelector(
-  //   (state) => state.storedUserData.userData.userDayScholarORhosteler
-  // );
-  // const userStatus = useSelector((state) => state.storedUserData.userStatus);
+  const userName = useSelector(
+    (state) => state.storedUserData.userData.userName
+  );
+  const userRegistrationNo = useSelector(
+    (state) => state.storedUserData.userData.userRegistrationNo
+  );
+  const userPhoneNumber = useSelector(
+    (state) => state.storedUserData.userData.userPhoneNumber
+  );
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
+  const userDayScholarORhosteler = useSelector(
+    (state) => state.storedUserData.userData.userDayScholarORhosteler
+  );
+  const userStatus = useSelector((state) => state.storedUserData.userStatus);
   // *****************************************************
 
   const [isChecked, setIsChecked] = useState(true);
@@ -60,62 +60,19 @@ function EditForm({ onClose, editData }) {
       founderRegNo: editData.founder.regNo || "",
       founderEmail: editData.founder.email || "",
       founderPhoneNumber: editData.founder.number || 0,
+      itemLocation: editData.location || "",
+      dayScholarORhosteler: editData.founder.dayScholarORhosteler || "",
     },
   });
 
   // handling the image file which the user gives
   const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState(editData.url || "");
+  // **************************************
 
   // on submit
-  // const handleFormSubmit = async (formData) => {
-  //   setFormLoading(true);
-  //   const formDataToSend = new FormData();
-  //   formDataToSend.append("photo", file);
-  //   formDataToSend.append("itemTitle", formData.itemTitle);
-  //   formDataToSend.append("itemDescription", formData.itemDescription);
-  //   formDataToSend.append("itemFoundDate", formData.date);
-  //   formDataToSend.append(
-  //     "itemLocation",
-  //     formData.itemLocation == "Custom"
-  //       ? formData.customLocation
-  //       : formData.itemLocation
-  //   );
-  //   formDataToSend.append("founderName", userName || formData.founderName);
-  //   formDataToSend.append(
-  //     "founderRegistrationNumber",
-  //     userRegistrationNo || formData.founderRegNo
-  //   );
-  //   formDataToSend.append("founderEmail", userEmail || formData.founderEmail);
-  //   formDataToSend.append(
-  //     "founderDayScholarORhosteler",
-  //     formData.dayScholarORhosteler
-  //   );
-  //   formDataToSend.append("founderStatus", userStatus ? userStatus : "USER");
-  //   formDataToSend.append(
-  //     "founderPhoneNumber",
-  //     parseInt(userPhoneNumber, 10) || formData.founderPhoneNumber
-  //   );
-
-  //   try {
-  //     const response = await createFoundItemPost(formDataToSend);
-  //     //console.log(response);
-  //     if (response.status === 200) {
-  //       ToastMsg(response.data.message, "success");
-  //     } else {
-  //       ToastMsg(response.response.data.message, "error");
-  //     }
-  //   } catch (error) {
-  //     ToastMsg("Internal Server Error! Please Try Later", "error");
-  //     console.error("Error: ", error);
-  //   } finally {
-  //     setFormLoading(false);
-  //     reset();
-  //     onClose();
-  //   }
-  // };
-
-  const handleFormSubmit = () => {
-    console.log("Edit the form")
+  const handleFormSubmit = (formData) => {
+    console.log("Edit the form", formData);
   }
 
   // handle custom input field for location
@@ -155,7 +112,6 @@ function EditForm({ onClose, editData }) {
             htmlFor="itemTitle"
           >
             Item Title:{" "}
-            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-500 ${
@@ -179,7 +135,7 @@ function EditForm({ onClose, editData }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="date"
           >
-            Date: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Date:
           </label>
           <input
             className={`form-control text-gray-400 ${
@@ -206,7 +162,6 @@ function EditForm({ onClose, editData }) {
           htmlFor="itemDescription"
         >
           Item Description:{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <textarea
           className={`form-control text-gray-500 ${
@@ -243,7 +198,6 @@ function EditForm({ onClose, editData }) {
           htmlFor="itemLocation"
         >
           Item Found/Lost Location:{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <select
           className={`form-control text-gray-500 ${
@@ -255,6 +209,7 @@ function EditForm({ onClose, editData }) {
             required: "Item location is required",
           })}
           onChange={handleLocationChange}
+          defaultValue={editData.location || ""}
         >
           <option value="">Select a location</option>
           {locations.map((location, index) => (
@@ -290,7 +245,7 @@ function EditForm({ onClose, editData }) {
           htmlFor="itemImage"
         >
           Item Image (jpg, png, jpeg):{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          {/* <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" /> */}
         </label>
         <input
           className={`form-control text-gray-500 ${
@@ -300,10 +255,10 @@ function EditForm({ onClose, editData }) {
           type="file"
           id="itemImage"
           accept=".jpg,.png,.jpeg"
-          {...register("itemImage", { required: "Item image is required" })}
+          {...register("itemImage")}
           onChange={(e) => {
             setFile(e.target.files[0]);
-            //console.log(e.target.files[0]);
+            setImageUrl(URL.createObjectURL(e.target.files[0]));
           }}
         />
         {errors.itemImage && (
@@ -323,7 +278,7 @@ function EditForm({ onClose, editData }) {
               className="text-sm font-medium text-gray-700 flex items-center"
               htmlFor="founderName"
             >
-              Name: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+              Name:
             </label>
             <input
               className={`form-control text-gray-500`}
@@ -331,6 +286,7 @@ function EditForm({ onClose, editData }) {
               type="text"
               id="founderName"
               placeholder="ex: Shashank Sharma"
+              readOnly
               {...register("founderName", {
                 required: "Founder name is required",
               })}
@@ -347,7 +303,6 @@ function EditForm({ onClose, editData }) {
               htmlFor="founderRegNo"
             >
               Registration Number:{" "}
-              <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               className={`form-control text-gray-500`}
@@ -355,6 +310,7 @@ function EditForm({ onClose, editData }) {
               type="text"
               id="founderRegNo"
               placeholder="ex: 22BCE1411"
+              readOnly
               {...register("founderRegNo", {
                 required: "Founder registration number is required",
                 pattern: {
@@ -377,7 +333,7 @@ function EditForm({ onClose, editData }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="founderEmail"
           >
-            Email: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Email:
           </label>
           <input
             className={`form-control text-gray-500`}
@@ -385,6 +341,7 @@ function EditForm({ onClose, editData }) {
             type="email"
             id="founderEmail"
             placeholder="ex: shashank.sharma2022@vitstudent.ac.in"
+            readOnly
             {...register("founderEmail", {
               required: "Founder email is required",
               pattern: {
@@ -407,12 +364,13 @@ function EditForm({ onClose, editData }) {
               htmlFor="dayScholarORhosteler"
             >
               Hosteller/Day Scholar:{" "}
-              <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <select
               className={`form-control text-gray-500`}
               name="Hosteller/Day Scholar"
               id="dayScholarORhosteler"
+              defaultValue={editData.founder.dayScholarORhosteler || ""}
+              disabled
               {...register("dayScholarORhosteler", {
                 required: "This field is required",
               })}
