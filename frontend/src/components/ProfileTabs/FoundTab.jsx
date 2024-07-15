@@ -153,18 +153,18 @@ const FoundTab = () => {
       ) : (
         <div className="flex flex-wrap overflow-hidden py-4 justify-evenly md:mx-10">
           {/* found content goes here */}
-          {foundPostsData?.map((element, index) => (
+          {foundPostsData?.map((item, index) => (
             <div
               className="md:px-1 py-1 md:mx-2"
               key={index}
-              onClick={() => handleCardClick(element)}
+              onClick={() => handleCardClick(item)}
             >
               <ItemCard
-                url={element.itemImage}
-                title={element.title}
-                date={moment(element.date).format("ddd, D MMM YYYY")}
-                about={element.description}
-                location={element.location}
+                url={item.itemImage}
+                title={item.title}
+                date={moment(item.date).format("ddd, D MMM YYYY")}
+                about={item.description}
+                location={item.location}
               />
             </div>
           ))}

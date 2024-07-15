@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ToastMsg from "../constants/ToastMsg";
 import { getFoundItemsFunction } from "../services/API";
-import { FormPopup } from "../components";
+import { ItemCard, FormPopup, DetailedViewPopup } from "../components";
+import moment from "moment";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 
@@ -123,9 +124,9 @@ const Found = () => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-center text-2xl md:text-3xl font-semibold mb-4 md:mb-8 text-blue-400 hover:text-blue-600">
+      <h1 className="text-center text-3xl md:text-4xl font-semibold mb-4 md:mb-8 text-blue-400 hover:text-blue-600">
         All
-        <span className="text-gray-500 text-3xl md:text-4xl font-bold mx-2">
+        <span className="text-gray-500 text-4xl md:text-5xl font-bold mx-2">
           Found
         </span>
         Item Posts
@@ -179,11 +180,20 @@ const Found = () => {
             />
           </div>
 
-          <div className="overflow-x-auto xl:overflow-x-visible">
-            {allFoundPosts?.map((element, index) => (
-              <div key={index} className="mb-5">
-                <p>{element.title}</p>
-                <p>{element.description}</p>
+          <div className="flex flex-wrap overflow-hidden py-4 justify-evenly md:mx-10">
+            {allFoundPosts?.map((item, index) => (
+              <div
+                className="mb-4 md:px-1 py-1 md:mx-2"
+                key={index}
+                onClick={() => handleCardClick(item)}
+              >
+                <ItemCard
+                  url={item.itemImage}
+                  title={item.title}
+                  date={moment(item.date).format("ddd, D MMM YYYY")}
+                  about={item.description}
+                  location={item.location}
+                />
                 <hr />
               </div>
             ))}
@@ -214,6 +224,10 @@ const Found = () => {
               Page {pageInfo.currentPage} of {pageInfo.totalPages}
             </span>
           </div>
+          {/* detailed view popup */}
+          {selectedItem && (
+            <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+          )}
         </>
       )}
     </div>
