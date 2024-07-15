@@ -35,7 +35,7 @@ function Tabs() {
         {activeTab === "Lost" && (
           <div>
             {/* lost content goes here */}
-            <p>Lost Items</p>
+            <p></p>
           </div>
         )}
 
