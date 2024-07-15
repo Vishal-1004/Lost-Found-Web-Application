@@ -80,7 +80,7 @@ router.post(
 );
 
 // Getting all found items
-router.get("/api/v1/get-found-items", userControllers.fetchFoundItems);
+router.post("/api/v1/get-found-items", userControllers.fetchFoundItems);
 
 // Get all users for admin to show
 router.post("/api/v1/get-all-users", adminControllers.getAllUsers);

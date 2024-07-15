@@ -316,14 +316,44 @@ exports.updatePhoneNumber = async (req, res) => {
 // getting all found items
 exports.fetchFoundItems = async (req, res) => {
   try {
-    const { all, count } = req.query;
+    const {
+      all,
+      count,
+      page = 1,
+      search = "",
+      sortOder = -1,
+      limit = 6,
+    } = req.query;
 
     if (all === "true" || all === "1") {
+      // Set pagination variables
+      const skip = (page - 1) * limit;
+
+      // Create the search filter
+      const searchFilter = {
+        $or: [
+          { title: new RegExp(search, "i") },
+          { description: new RegExp(search, "i") },
+        ],
+      };
+
       // Handle request for all found items
-      const foundItemsAll = await foundItems.find().sort({ createdAt: -1 });
+      const foundItemsAll = await foundItems
+        .find(searchFilter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: parseInt(sortOder, 10) });
+
+      // Count total found item post after search filter
+      const totalFoundItemsPost = await foundItems.countDocuments(searchFilter);
+
       return res.status(200).json({
         message: "All Found Post Fetched Successfully!",
         data: foundItemsAll,
+        totalPages: Math.ceil(totalFoundItemsPost / limit),
+        currentPage: page,
+        limit: limit,
+        sortOrder: sortOder,
       });
     } else if (count) {
       // Handle request for a specific number of found items

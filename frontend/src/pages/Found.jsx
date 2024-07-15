@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ToastMsg from "../constants/ToastMsg";
-import {
-  changeStatusOfRegisteredUsersFunction,
-  getAllUsersFunction,
-} from "../services/API";
+import { getFoundItemsFunction } from "../services/API";
 import { FormPopup } from "../components";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 
 const Found = () => {
-  const [actionLoading, setActionLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
+  const [allFoundPosts, setAllFoundPosts] = useState([]);
   const [pageInfo, setPageInfo] = useState({
     currentPage: 1,
     totalPages: null,
-    limit: 5,
+    limit: 6,
   });
+  const [sortOrder, setSortOrder] = useState(-1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
@@ -26,26 +23,27 @@ const Found = () => {
     (state) => state.storedUserData.userData.userEmail
   );
 
-  // Getting user token from localstorage
-  const userToken = useSelector((state) => state.storedUserData.userToken);
-
-  const gettingAllUsersFunction = async () => {
+  const gettingAllFoundPostFunction = async () => {
     setFormLoading(true);
     try {
-      const response = await getAllUsersFunction(
-        userEmail,
+      const response = await getFoundItemsFunction(
+        "1",
+        0,
         pageInfo.currentPage,
         debouncedSearch,
-        pageInfo.limit
+        6, // limit of posts we want to show in one page
+        sortOrder
       );
+      console.log(response);
       if (response.status === 200) {
-        setAllUsers(response.data.getUsers);
+        setAllFoundPosts(response.data.data);
         setPageInfo({
           currentPage: parseInt(response.data.currentPage, 10),
           totalPages: parseInt(response.data.totalPages, 10),
           limit: parseInt(response.data.limit, 10),
         });
-        ToastMsg("All users data achieved", "success");
+        setSortOrder(response.data.sortOrder);
+        //ToastMsg("All Found posts data achieved", "success");
       } else {
         ToastMsg(response.response.data.message, "error");
       }
@@ -60,9 +58,10 @@ const Found = () => {
   useEffect(() => {
     // To avoid multiple calls, you can add a check if userEmail is available
     if (userEmail) {
-      gettingAllUsersFunction();
+      gettingAllFoundPostFunction();
+      console.log(pageInfo);
     }
-  }, [pageInfo.currentPage, debouncedSearch, userEmail, pageInfo.limit]);
+  }, [pageInfo.currentPage, debouncedSearch, pageInfo.limit, sortOrder]);
 
   // Debounce mechanism
   useEffect(() => {
@@ -89,35 +88,12 @@ const Found = () => {
     }));
   };
 
-  const handleLimitBtnClick = (limit) => {
-    setPageInfo((prevState) => ({
-      ...prevState,
-      limit: parseInt(limit),
-    }));
-  };
-
-  // handle action button click
-  const handleActionSelect = async (newStatus, userId) => {
-    setActionLoading(true);
-    if (newStatus != "0") {
-      try {
-        const response = await changeStatusOfRegisteredUsersFunction(
-          userId,
-          userToken,
-          newStatus
-        );
-        //console.log(response);
-        if (response.status == 200) {
-          ToastMsg(response.data.message, "success");
-        } else {
-          ToastMsg(response.response.data.message, "error");
-        }
-        gettingAllUsersFunction();
-      } catch (error) {
-        console.log("Some error occured:", error);
-      } finally {
-        setActionLoading(false);
-      }
+  // handle sort btn click
+  const handleSortOrderBtnClick = (value) => {
+    if (value == "-1") {
+      setSortOrder(-1);
+    } else {
+      setSortOrder(1);
     }
   };
 
@@ -149,7 +125,9 @@ const Found = () => {
     <div className="p-4 max-w-7xl mx-auto">
       <h1 className="text-center text-2xl md:text-3xl font-semibold mb-4 md:mb-8 text-blue-400 hover:text-blue-600">
         All
-        <span className="text-gray-500 text-3xl md:text-4xl font-bold mx-2">Found</span>
+        <span className="text-gray-500 text-3xl md:text-4xl font-bold mx-2">
+          Found
+        </span>
         Item Posts
       </h1>
       {formLoading ? (
@@ -175,27 +153,21 @@ const Found = () => {
                 className="text-sm font-medium text-gray-700 flex items-center"
                 htmlFor="limit"
               >
-                No. of users:
+                Sort Order:
               </label>
               <select
                 className="form-control"
                 name="Hosteller/Day Scholar"
-                id="limit"
-                value={pageInfo.limit}
-                onChange={(e) => handleLimitBtnClick(e.target.value)}
+                id="sortOrder"
+                value={sortOrder == -1 ? "-1" : "1"}
+                onChange={(e) => handleSortOrderBtnClick(e.target.value)}
               >
-                <option value="">Select an option</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="25">25</option>
+                <option value="-1">Z-A</option>
+                <option value="1">A-Z</option>
               </select>
             </div>
             <div className="flex items-center justify-center md:px-2">
-              <Link
-                className="btnSubmit"
-                onClick={handleOpenFormPopup}
-              >
+              <Link className="btnSubmit" onClick={handleOpenFormPopup}>
                 Create a post
               </Link>
             </div>
@@ -208,68 +180,13 @@ const Found = () => {
           </div>
 
           <div className="overflow-x-auto xl:overflow-x-visible">
-            <table className="min-w-full bg-white border border-gray-200">
-              <thead>
-                <tr>
-                  <th className="py-2 px-4 border-b">Name</th>
-                  <th className="py-2 px-4 border-b">Email</th>
-                  <th className="py-2 px-4 border-b">Registration No</th>
-                  <th className="py-2 px-4 border-b">Phone Number</th>
-                  <th className="py-2 px-4 border-b">Day Scholar/Hosteler</th>
-                  <th className="py-2 px-4 border-b">Total Found Posts</th>
-                  <th className="py-2 px-4 border-b">Total Lost Posts</th>
-                  <th className="py-2 px-4 border-b">Role</th>
-                  <th className="py-2 px-4 border-b">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allUsers.map((user, index) => (
-                  <tr key={user._id}>
-                    <td className="py-2 px-4 border-b">{user.name}</td>
-                    <td className="py-2 px-4 border-b max-w-[300px] break-words whitespace-normal">
-                      {user.email}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.registrationNo}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.phoneNumber || "N/A"}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.dayScholarORhosteler}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.foundItemsID.length}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {user.lostItemsID.length}
-                    </td>
-                    <td className="py-2 px-4 border-b">{user.status}</td>
-                    <td className="py-2 px-4 border-b">
-                      {actionLoading ? (
-                        <>
-                          <FaSpinner className="mr-3 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <select
-                          className="p-2 rounded bg-blue-500 text-white"
-                          onChange={(e) =>
-                            handleActionSelect(e.target.value, user._id)
-                          }
-                        >
-                          <option value="0">Select Action</option>
-                          <option value="BLOCKED">Block</option>
-                          <option value="USER">UnBlock</option>
-                          <option value="ADMIN">Promote Admin</option>
-                          <option value="USER">Demote Admin</option>
-                        </select>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {allFoundPosts?.map((element, index) => (
+              <div key={index} className="mb-5">
+                <p>{element.title}</p>
+                <p>{element.description}</p>
+                <hr />
+              </div>
+            ))}
           </div>
 
           <div className="flex justify-between mt-4">
