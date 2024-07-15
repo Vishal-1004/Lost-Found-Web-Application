@@ -1,8 +1,9 @@
 import React from 'react'
+import { WarningComponent } from '../utility'
 
 function Lost() {
   return (
-    <div>Lost</div>
+    <div><WarningComponent/></div>
   )
 }
 

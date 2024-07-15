@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
 import moment from "moment";
+import { WarningComponent } from "../utility";
 
 // default locations available
 const locations = [
@@ -47,6 +48,7 @@ function LostItemForm({ onClose }) {
     setIsChecked(e.target.checked);
   };
 
+  const [shouldRender,setShouldRender] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [customLocation, setCustomLocation] = useState(false);
   const {
@@ -124,7 +126,7 @@ function LostItemForm({ onClose }) {
   // *******************************************
 
   return (
-    <form
+   shouldRender ? <form
       className="w-full"
       onSubmit={handleSubmit(handleFormSubmit)}
       noValidate
@@ -482,7 +484,7 @@ function LostItemForm({ onClose }) {
         </button>
       </div>
     </form>
-  );
+  : (<WarningComponent/>) );
 }
 
 export default LostItemForm;
