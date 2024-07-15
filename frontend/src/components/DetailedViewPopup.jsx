@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import DetailedView from "./DetailedView";
 import PropTypes from "prop-types";
-import moment from "moment";
 
 const DetailedViewPopup = ({ item, onClose }) => {
   const {
