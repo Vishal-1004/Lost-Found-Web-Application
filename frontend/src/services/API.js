@@ -97,7 +97,7 @@ export const createFoundItemPost = async (data) => {
 
 // getting found items
 export const getFoundItemsFunction = async (
-  all = 0,
+  all = "0",
   count = 5,
   page = 1,
   search = "",

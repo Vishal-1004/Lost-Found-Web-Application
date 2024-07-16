@@ -19,11 +19,6 @@ const Found = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  // Getting user email from local storage
-  const userEmail = useSelector(
-    (state) => state.storedUserData.userData.userEmail
-  );
-
   const gettingAllFoundPostFunction = async () => {
     setFormLoading(true);
     try {
@@ -35,7 +30,7 @@ const Found = () => {
         6, // limit of posts we want to show in one page
         sortOrder
       );
-      console.log(response);
+      //console.log(response);
       if (response.status === 200) {
         setAllFoundPosts(response.data.data);
         setPageInfo({
@@ -57,11 +52,8 @@ const Found = () => {
   };
 
   useEffect(() => {
-    // To avoid multiple calls, you can add a check if userEmail is available
-    if (userEmail) {
-      gettingAllFoundPostFunction();
-      console.log(pageInfo);
-    }
+    gettingAllFoundPostFunction();
+    //console.log(pageInfo);
   }, [pageInfo.currentPage, debouncedSearch, pageInfo.limit, sortOrder]);
 
   // Debounce mechanism
