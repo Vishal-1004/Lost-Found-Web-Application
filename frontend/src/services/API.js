@@ -95,6 +95,13 @@ export const createFoundItemPost = async (data) => {
   });
 };
 
+// editing found items posts
+export const editFoundItemPost = async (data) => {
+  return await commonrequest("PUT", `${BACKEND_URL}/api/v1/edit-found-item`, data, {
+    "Content-Type": "multipart/form-data",
+  });
+}
+
 // getting found items
 export const getFoundItemsFunction = async (
   all = "0",

@@ -606,11 +606,29 @@ async function isAdmin(email) {
 }
 
 exports.editFoundItem = async (req, res) => {
-  const { email, foundItemId, ...updateFields } = req.body;
+  const {
+    email,
+    foundItemId,
+    title,
+    description,
+    date,
+    location,
+    founderPhoneNumber,
+  } = req.body;
+  const updateFields = {
+    title,
+    description,
+    date,
+    location,
+    founderPhoneNumber,
+    itemImage: null,
+  };
 
   if (!email || !foundItemId) {
     return res.status(400).json({
       message: "Email and foundItemId are required!",
+      givenEmail: email,
+      givenId: foundItemId,
     });
   }
 
@@ -648,7 +666,7 @@ exports.editFoundItem = async (req, res) => {
       "date",
       "location",
       "itemImage",
-      "personDayScholarORhosteler",
+      "personNumber",
     ];
     const updateData = {};
     allowedFields.forEach((field) => {

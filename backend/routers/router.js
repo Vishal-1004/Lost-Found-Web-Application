@@ -79,6 +79,9 @@ router.post(
   userControllers.createFoundPost
 );
 
+// editing found items posts
+router.put("/api/v1/edit-found-item", upload.single("photo"), userControllers.editFoundItem);
+
 // Getting all found items
 router.post("/api/v1/get-found-items", userControllers.fetchFoundItems);
 
@@ -110,7 +113,6 @@ router.post(
   adminControllers.allNonRegisteredUsers
 );
 
-router.put("/api/v1/edit-found-items", userControllers.editFoundItem);
 
 // delete a found item post of a user
 router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);

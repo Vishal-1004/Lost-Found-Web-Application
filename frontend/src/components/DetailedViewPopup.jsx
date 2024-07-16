@@ -90,7 +90,7 @@ DetailedViewPopup.propTypes = {
     personDayScholarORhosteler: PropTypes.string.isRequired,
     personEmail: PropTypes.string.isRequired,
     personName: PropTypes.string.isRequired,
-    // personNumber: PropTypes.string.isRequired,
+    personNumber: PropTypes.number.isRequired,
     personRegistrationNumber: PropTypes.string.isRequired,
   }).isRequired,
 };

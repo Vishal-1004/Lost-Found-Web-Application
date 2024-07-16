@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
-import { createFoundItemPost } from "../services/API";
+import { createFoundItemPost, editFoundItemPost } from "../services/API";
 
 // default locations available
 const locations = [
@@ -17,29 +17,12 @@ const locations = [
 ];
 
 function EditForm({ onClose, editData }) {
-  // console.log(editData);
-
-  // getting user data from localstorage****************
-  const userName = useSelector(
-    (state) => state.storedUserData.userData.userName
-  );
-  const userRegistrationNo = useSelector(
-    (state) => state.storedUserData.userData.userRegistrationNo
-  );
-  const userPhoneNumber = useSelector(
-    (state) => state.storedUserData.userData.userPhoneNumber
-  );
+  //console.log(editData);
   const userEmail = useSelector(
     (state) => state.storedUserData.userData.userEmail
   );
-  const userDayScholarORhosteler = useSelector(
-    (state) => state.storedUserData.userData.userDayScholarORhosteler
-  );
-  const userStatus = useSelector((state) => state.storedUserData.userStatus);
-  // *****************************************************
 
   const [isChecked, setIsChecked] = useState(true);
-  //console.log(userPhoneNumber);
 
   const handleCheckboxChange = () => {
     setIsChecked((prevState) => !prevState);
@@ -71,9 +54,43 @@ function EditForm({ onClose, editData }) {
   // **************************************
 
   // on submit
-  const handleFormSubmit = (formData) => {
+  const handleFormSubmit = async (formData) => {
+    setFormLoading(true);
     console.log("Edit the form", formData);
-  }
+    console.log("Editing post id: ", editData.id);
+    const formDataToSend = new FormData();
+
+    if (file) {
+      formDataToSend.append("photo", file);
+    }
+    formDataToSend.append("title", formData.itemTitle);
+    formDataToSend.append("description", formData.itemDescription);
+    formDataToSend.append("date", formData.date);
+    formDataToSend.append(
+      "location",
+      formData.itemLocation == "Custom"
+        ? formData.customLocation
+        : formData.itemLocation
+    );
+    formDataToSend.append("founderPhoneNumber", formData.founderPhoneNumber);
+    formDataToSend.append("email", userEmail || formData.founderEmail);
+    formDataToSend.append("foundItemId", editData.id); // prop validation missing
+    try {
+      const response = await editFoundItemPost(formDataToSend);
+      console.log(response);
+      if (response.status === 200) {
+        ToastMsg(response.data.message, "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Internal Server Error! Please Try Later", "error");
+      console.error("Error: ", error);
+    } finally {
+      setFormLoading(false);
+      onClose();
+    }
+  };
 
   // handle custom input field for location
   const handleLocationChange = (e) => {
@@ -92,7 +109,7 @@ function EditForm({ onClose, editData }) {
 
   // puting range of input date ****************
   const currentDate = new Date().toISOString().split("T")[0];
-  const formattedDate = new Date(editData.date).toISOString().split('T')[0];
+  const formattedDate = new Date(editData.date).toISOString().split("T")[0];
   const lastYearDate = new Date();
   lastYearDate.setFullYear(lastYearDate.getFullYear() - 1);
   const lastYearDateString = lastYearDate.toISOString().split("T")[0];
@@ -269,7 +286,9 @@ function EditForm({ onClose, editData }) {
       <div className="visible">
         <hr className="my-8 mx-auto border-t-2 border-gray-300 sm:w-[550px]" />
 
-        <p className="text-gray-500 text-[18px] font-semibold mb-2">Posted by:</p>
+        <p className="text-gray-500 text-[18px] font-semibold mb-2">
+          Posted by:
+        </p>
 
         <div className="flex flex-wrap sm:flex-nowrap sm:gap-4">
           {/* name */}
