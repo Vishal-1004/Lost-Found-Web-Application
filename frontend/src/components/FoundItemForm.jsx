@@ -58,7 +58,7 @@ function FoundItemForm({ onClose }) {
       founderRegNo: userRegistrationNo || "",
       founderEmail: userEmail || "",
       dayScholarORhosteler: userDayScholarORhosteler || "",
-      founderPhoneNumber: userPhoneNumber || 0,
+      founderPhoneNumber: userPhoneNumber || undefined,
     },
   });
 
@@ -90,10 +90,11 @@ function FoundItemForm({ onClose }) {
       formData.dayScholarORhosteler
     );
     formDataToSend.append("founderStatus", userStatus ? userStatus : "USER");
-    formDataToSend.append(
-      "founderPhoneNumber",
-      parseInt(userPhoneNumber, 10) || formData.founderPhoneNumber
-    );
+
+    // Only append founderPhoneNumber if it's defined
+    if (isChecked && formData.founderPhoneNumber) {
+      formDataToSend.append("founderPhoneNumber", formData.founderPhoneNumber);
+    }
 
     try {
       const response = await createFoundItemPost(formDataToSend);
@@ -110,6 +111,7 @@ function FoundItemForm({ onClose }) {
       setFormLoading(false);
       reset();
       onClose();
+      window.location.reload();
     }
   };
 
@@ -449,6 +451,9 @@ function FoundItemForm({ onClose }) {
             id="founderPhoneNumber"
             placeholder="ex: 70221*****"
             {...register("founderPhoneNumber", {
+              required: isChecked
+                ? "Provide phone number else uncheck the field"
+                : false,
               maxLength: {
                 value: 10,
                 message: "Phone number should be 10 digits",

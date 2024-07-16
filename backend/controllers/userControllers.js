@@ -616,14 +616,17 @@ exports.editFoundItem = async (req, res) => {
     founderPhoneNumber,
     itemImage,
   } = req.body;
-  console.log(founderPhoneNumber);
+
+  //console.log(founderPhoneNumber);
+
   const updateFields = {
     title,
     description,
     date,
     location,
-    founderPhoneNumber,
     itemImage,
+    personNumber:
+      founderPhoneNumber === undefined ? undefined : founderPhoneNumber,
   };
 
   if (!email || !foundItemId) {
@@ -674,12 +677,16 @@ exports.editFoundItem = async (req, res) => {
     allowedFields.forEach((field) => {
       updateData[field] = updateFields[field];
     });
-    console.log(updateData);
+    //console.log(updateData);
 
-    await foundItems.updateOne({ _id: foundItemId }, { $set: updateData });
+    const data = await foundItems.updateOne(
+      { _id: foundItemId },
+      { $set: updateData }
+    );
 
     return res.status(200).json({
       message: "Found item updated successfully.",
+      data: data,
     });
   } catch (error) {
     console.error("Error updating found item:", error);
@@ -689,6 +696,7 @@ exports.editFoundItem = async (req, res) => {
     });
   }
 };
+
 
 // Delete a found item post by a user
 exports.deleteFoundItem = async (req, res) => {

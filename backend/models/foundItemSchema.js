@@ -49,7 +49,7 @@ const foundItemSchema = new mongoose.Schema({
   },
   personNumber: {
     type: Number,
-    default: null,
+    default: undefined,
   },
   createdAt: {
     type: Date,

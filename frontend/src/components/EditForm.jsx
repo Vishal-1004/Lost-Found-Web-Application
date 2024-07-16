@@ -17,12 +17,14 @@ const locations = [
 ];
 
 function EditForm({ onClose, editData }) {
-  console.log(editData);
+  //console.log(editData);
   const userEmail = useSelector(
     (state) => state.storedUserData.userData.userEmail
   );
 
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(
+    editData.founder.number ? true : false
+  );
 
   const handleCheckboxChange = () => {
     setIsChecked((prevState) => !prevState);
@@ -42,7 +44,7 @@ function EditForm({ onClose, editData }) {
       founderName: editData.founder.name || "",
       founderRegNo: editData.founder.regNo || "",
       founderEmail: editData.founder.email || "",
-      founderPhoneNumber: editData.founder.number || 0,
+      founderPhoneNumber: editData.founder.number || undefined,
       itemLocation: editData.location || "",
       dayScholarORhosteler: editData.founder.dayScholarORhosteler || "",
     },
@@ -72,16 +74,20 @@ function EditForm({ onClose, editData }) {
         ? formData.customLocation
         : formData.itemLocation
     );
+
+    // Explicitly set founderPhoneNumber to null if checkbox is unchecked
     formDataToSend.append(
       "founderPhoneNumber",
-      !isChecked ? null : formData.founderPhoneNumber
+      isChecked ? formData.founderPhoneNumber : ""
     );
+
     formDataToSend.append("email", userEmail || formData.founderEmail);
     formDataToSend.append("foundItemId", editData.id); // prop validation missing
     formDataToSend.append("itemImage", editData.url); // prop validation missing
+
     try {
       const response = await editFoundItemPost(formDataToSend);
-      console.log(response);
+      //console.log(response);
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
       } else {
@@ -93,6 +99,7 @@ function EditForm({ onClose, editData }) {
     } finally {
       setFormLoading(false);
       onClose();
+      reset();
       window.location.reload();
     }
   };
@@ -431,6 +438,9 @@ function EditForm({ onClose, editData }) {
               id="founderPhoneNumber"
               placeholder="ex: 70221*****"
               {...register("founderPhoneNumber", {
+                required: isChecked
+                  ? "Provide phone number else uncheck the field"
+                  : false,
                 maxLength: {
                   value: 10,
                   message: "Phone number should be 10 digits",
@@ -438,11 +448,11 @@ function EditForm({ onClose, editData }) {
               })}
               disabled={!isChecked}
             />
-            {/* {errors.founderPhoneNumber && (
+            {errors.founderPhoneNumber && (
               <div className="invalid-feedback">
                 {errors.founderPhoneNumber.message}
               </div>
-            )} */}
+            )}
           </div>
         </div>
       </div>
