@@ -799,8 +799,9 @@ exports.getProfileGraphData = async (req, res) => {
     }
     const postsByAdmins = await foundItems.find({ personStatus: "ADMIN" });
     const totalFoundPosts = (await foundItems.find()).length;
-    const postsByOtherUsers = totalFoundPosts - postsByAdmins.length;
+    const postsByOtherUsers = totalFoundPosts - postsByAdmins.length - existingUser.foundItemsID.length;
     // console.log(postsByAdmins.length)
+    console.log(existingUser.foundItemsID.length)
     return res.status(200).json({
       allPostsData: {
         noOfLostPosts: 0,

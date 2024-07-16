@@ -1,5 +1,5 @@
 // Importing models/schemas
-const { users, nonRegisteredUser } = require("../models");
+const { users, nonRegisteredUser, foundItems } = require("../models");
 const jwt=require("jsonwebtoken")
 
 // getting all user data
@@ -93,7 +93,12 @@ exports.changeStatus = async (req,res)=>{
         { _id: userId },
         { status: newStatus }
       );
-      if (updatingStatus.acknowledged) {
+      // console.log(updatingStatus)
+      const changedUser=await users.findById(userId)
+      // console.log(changedUser)
+      const updatingStatusInFoundItems=await foundItems.updateMany({personRegistrationNumber:changedUser.registrationNo},{personStatus:newStatus})
+      // console.log(updatingStatusInFoundItems)
+      if (updatingStatus.acknowledged && updatingStatusInFoundItems.acknowledged) {
         return res.status(200).json({
           message: "Updated Successfully!",
         });
