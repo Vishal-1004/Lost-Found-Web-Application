@@ -805,33 +805,9 @@ exports.getProfileGraphData = async (req, res) => {
   }
 };
 
+// Geting some graph data to show in the home page of our website
 exports.getUserGraphData = async (req, res) => {
-  const { authToken } = req.body;
-
-  if (!authToken) {
-    return res.status(400).json({
-      message: "Auth token not provided!",
-    });
-  }
-
   try {
-    const decoded = await jwt.verify(authToken, process.env.JWT_SECRET_KEY);
-
-    if (!decoded) {
-      return res.status(400).json({
-        message: "Unable to decode",
-      });
-    }
-
-    const userId = decoded._id;
-    const existingUser = await users.findById(userId);
-
-    if (!existingUser) {
-      return res.status(400).json({
-        message: "User not found",
-      });
-    }
-
     const totalRegisteredUsers = await users.countDocuments();
     const totalNonRegisteredUsers = await nonRegisteredUser.countDocuments();
     const totalFoundPosts = await foundItems.countDocuments();
@@ -841,7 +817,7 @@ exports.getUserGraphData = async (req, res) => {
         noOfRegisteredUsers: totalRegisteredUsers,
         noOfNonRegisteredUsers: totalNonRegisteredUsers,
       },
-      foundPostsData: {
+      postsData: {
         noOfLostPosts: 0,
         noOfFoundPosts: totalFoundPosts,
       },

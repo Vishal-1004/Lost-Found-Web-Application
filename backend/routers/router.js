@@ -121,6 +121,7 @@ router.post("/api/v1/get-profile-data", userControllers.getProfileData);
 // Get user profile graph
 router.post("/api/v1/get-graph-data", userControllers.getProfileGraphData);
 
-router.post("/api/v1/get-user-graph-data", userControllers.getUserGraphData);
+// Geting some graph data to show in the home page of our website
+router.get("/api/v1/get-user-graph-data", userControllers.getUserGraphData);
 
 module.exports = router;

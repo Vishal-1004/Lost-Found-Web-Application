@@ -151,6 +151,14 @@ export const getProfileGraphFunction = async (authToken) => {
   );
 }
 
+// Geting some graph data to show in the home page of our website
+export const getHomePageGraphDataFunction  = async () => {
+  return await commonrequest(
+    "GET",
+    `${BACKEND_URL}/api/v1/get-user-graph-data`,
+  );
+}
+
 // Get all found items posted by a user
 export const getFoundItemsPostByUserFunction = async (
   email,

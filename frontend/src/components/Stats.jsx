@@ -4,6 +4,7 @@ import { getProfileGraphFunction } from "../services/API";
 import ToastMsg from "../constants/ToastMsg";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
+import { WarningComponent } from "../utility";
 
 function Stats() {
   const [profileTab, setProfileTab] = useState("All");
@@ -107,24 +108,7 @@ function Stats() {
             )}
             {profileTab === "Lost" && (
               <div className="py-1">
-                <Doughnut
-                  labels={["Yours Posts", "Admin Posts", "Others Posts"]}
-                  dataSet={[
-                    graphData.foundPostsData.currentUserFoundPosts,
-                    graphData.foundPostsData.adminFoundPosts,
-                    graphData.foundPostsData.otherUsersFoundPost,
-                  ]}
-                  backgroundColor={[
-                    "rgba(66, 165, 245, 0.2)",
-                    "rgba(255, 183, 77, 0.2)",
-                    "rgba(205,0,0,0.3)",
-                  ]}
-                  borderColor={[
-                    "rgba(66, 165, 245, 1)",
-                    "rgba(255, 183, 77, 1)",
-                    "rgba(205,0,0,0.5)",
-                  ]}
-                />
+                <WarningComponent />
               </div>
             )}
             {profileTab === "Found" && (

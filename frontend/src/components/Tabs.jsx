@@ -1,8 +1,9 @@
 import { useState } from "react";
 import FoundTab from "./ProfileTabs/FoundTab";
+import { WarningComponent } from "../utility";
 
 function Tabs() {
-  const [activeTab, setActiveTab] = useState("Lost");
+  const [activeTab, setActiveTab] = useState("Found");
 
   return (
     <div className="w-full mt-10">
@@ -34,8 +35,7 @@ function Tabs() {
         {/* Lost tab section */}
         {activeTab === "Lost" && (
           <div>
-            {/* lost content goes here */}
-            <p></p>
+            <WarningComponent />
           </div>
         )}
 

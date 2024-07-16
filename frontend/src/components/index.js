@@ -14,6 +14,7 @@ import UpdatePhoneNumberForm from "./EditProfile/UpdatePhoneNumberForm";
 import AboutUsVideo from "./AboutUsVideo";
 import RegisteredUsers from "./RegisteredUsers";
 import NonRegisteredUsers from "./NonRegisteredUsers";
+import HomeStatus from "./HomeStatus";
 
 export {
   Navbar,
@@ -32,4 +33,5 @@ export {
   AboutUsVideo,
   RegisteredUsers,
   NonRegisteredUsers,
+  HomeStatus,
 };
