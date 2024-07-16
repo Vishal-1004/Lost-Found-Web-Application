@@ -614,14 +614,16 @@ exports.editFoundItem = async (req, res) => {
     date,
     location,
     founderPhoneNumber,
+    itemImage,
   } = req.body;
+  console.log(founderPhoneNumber);
   const updateFields = {
     title,
     description,
     date,
     location,
     founderPhoneNumber,
-    itemImage: null,
+    itemImage,
   };
 
   if (!email || !foundItemId) {
@@ -670,10 +672,9 @@ exports.editFoundItem = async (req, res) => {
     ];
     const updateData = {};
     allowedFields.forEach((field) => {
-      if (updateFields[field] !== undefined) {
-        updateData[field] = updateFields[field];
-      }
+      updateData[field] = updateFields[field];
     });
+    console.log(updateData);
 
     await foundItems.updateOne({ _id: foundItemId }, { $set: updateData });
 

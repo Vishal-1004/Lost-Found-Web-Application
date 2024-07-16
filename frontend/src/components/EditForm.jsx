@@ -17,7 +17,7 @@ const locations = [
 ];
 
 function EditForm({ onClose, editData }) {
-  //console.log(editData);
+  console.log(editData);
   const userEmail = useSelector(
     (state) => state.storedUserData.userData.userEmail
   );
@@ -72,9 +72,13 @@ function EditForm({ onClose, editData }) {
         ? formData.customLocation
         : formData.itemLocation
     );
-    formDataToSend.append("founderPhoneNumber", formData.founderPhoneNumber);
+    formDataToSend.append(
+      "founderPhoneNumber",
+      !isChecked ? null : formData.founderPhoneNumber
+    );
     formDataToSend.append("email", userEmail || formData.founderEmail);
     formDataToSend.append("foundItemId", editData.id); // prop validation missing
+    formDataToSend.append("itemImage", editData.url); // prop validation missing
     try {
       const response = await editFoundItemPost(formDataToSend);
       console.log(response);
@@ -89,6 +93,7 @@ function EditForm({ onClose, editData }) {
     } finally {
       setFormLoading(false);
       onClose();
+      window.location.reload();
     }
   };
 
