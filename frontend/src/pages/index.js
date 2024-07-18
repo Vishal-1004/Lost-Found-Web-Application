@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import AllUsers from "./AllUsers";
 import Found from "./Found";
 import Lost from "./Lost";
+import ContactUs from "./ContactUs";
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   Profile,
   AllUsers,
   Found,
-  Lost
+  Lost,
+  ContactUs,
 };

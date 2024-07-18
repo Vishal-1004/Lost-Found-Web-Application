@@ -31,9 +31,12 @@ const Footer = () => {
           </div>
           <div className="col-sm-3 col-md-3 my-2">
             <div className="l_footer_col">
-              <p className="l_footer_head">Info</p>
+              <p className="l_footer_head">Support Links</p>
             </div>
             <div className="l_footer_list">
+              <div className="l_footer_link">
+                <span className="footer_link" onClick={() => handleLinkClick('/contact')}>Contact us</span>
+              </div>
               <div className="l_footer_link">
                 <span className="footer_link" onClick={() => handleLinkClick('/')}>Privacy Policy</span>
               </div>
