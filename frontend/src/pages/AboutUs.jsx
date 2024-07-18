@@ -111,6 +111,28 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
+        <div className="flex flex-col items-center mt-8">
+          <h2 className="text-center text-2xl font-semibold text-gray-800 pb-4">
+            Key Modules
+          </h2>
+          <ul className="list-disc space-y-4">
+            <li>
+              <span className="text-gray-700">Chart.js</span>
+            </li>
+            <li>
+              <span className="text-gray-700">Nodemailer</span>
+            </li>
+            <li>
+              <span className="text-gray-700">Toastify</span>
+            </li>
+            <li>
+              <span className="text-gray-700">Multer</span>
+            </li>
+            <li>
+              <span className="text-gray-700">Toastify</span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div
         className="py-16 sm:py-8"
