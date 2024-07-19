@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Doughnut from "./DoughnutChart";
-import ToastMsg from "../constants/ToastMsg";
 import { getHomePageGraphDataFunction } from "../services/API";
-import { FaSpinner } from "react-icons/fa";
+import { ErrorComponent, LoadingComponent } from "../utility";
 
 const HomeStatus = () => {
   const [profileTab, setProfileTab] = useState("AllUsers");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [graphData, setGraphData] = useState({
     allUsersData: {
       noOfRegisteredUsers: 0,
@@ -22,16 +22,19 @@ const HomeStatus = () => {
     setLoading(true);
     try {
       const response = await getHomePageGraphDataFunction();
-      console.log(response);
+      //console.log(response);
       if (response.status == 200) {
         //ToastMsg("Home page graph data fetched", "success");
         setGraphData(response.data);
+        setError(false);
       } else {
-        ToastMsg("Error while fetchign the graph data", "error");
+        //ToastMsg("Error while fetchign the graph data", "error");
+        setError(true);
       }
     } catch (error) {
-      ToastMsg("Server error! please try later", "error");
-      console.log("Internal Server Error: ", error);
+      //ToastMsg("Server error! please try later", "error");
+      //console.log("Internal Server Error: ", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -49,7 +52,9 @@ const HomeStatus = () => {
             <button
               className={`p-1 w-full text-center border-b font-medium text-sm 
                 ${
-                  profileTab === "AllUsers" ? ` border-blue-500` : "border-transparent"
+                  profileTab === "AllUsers"
+                    ? ` border-blue-500`
+                    : "border-transparent"
                 } `}
               onClick={() => setProfileTab("AllUsers")}
             >
@@ -68,10 +73,9 @@ const HomeStatus = () => {
             </button>
           </nav>
           {loading ? (
-            <>
-              <FaSpinner className="mr-2 animate-spin" />
-              Loading...
-            </>
+            <LoadingComponent loading={loading} />
+          ) : error ? (
+            <ErrorComponent />
           ) : (
             <div className="mt-4">
               {profileTab === "AllPosts" && (

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
-import { createFoundItemPost, editFoundItemPost } from "../services/API";
+import { editFoundItemPost } from "../services/API";
+import { tryFetchingData } from "../actions";
 
 // default locations available
 const locations = [
@@ -17,6 +18,8 @@ const locations = [
 ];
 
 function EditForm({ onClose, editData }) {
+  const dispatch = useDispatch();
+
   //console.log(editData);
   const userEmail = useSelector(
     (state) => state.storedUserData.userData.userEmail
@@ -58,8 +61,8 @@ function EditForm({ onClose, editData }) {
   // on submit
   const handleFormSubmit = async (formData) => {
     setFormLoading(true);
-    console.log("Edit the form", formData);
-    console.log("Editing post id: ", editData.id);
+    //console.log("Edit the form", formData);
+    //console.log("Editing post id: ", editData.id);
     const formDataToSend = new FormData();
 
     if (file) {
@@ -90,17 +93,18 @@ function EditForm({ onClose, editData }) {
       //console.log(response);
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
+        dispatch(tryFetchingData());
       } else {
         ToastMsg(response.response.data.message, "error");
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
-      console.error("Error: ", error);
+      //console.error("Error: ", error);
     } finally {
       setFormLoading(false);
       onClose();
       reset();
-      window.location.reload();
+      //window.location.reload();
     }
   };
 

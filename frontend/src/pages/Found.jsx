@@ -4,11 +4,15 @@ import ToastMsg from "../constants/ToastMsg";
 import { getFoundItemsFunction } from "../services/API";
 import { ItemCard, FormPopup, DetailedViewPopup } from "../components";
 import moment from "moment";
-import { useSelector } from "react-redux";
-import { FaSpinner } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { ErrorComponent, LoadingComponent } from "../utility";
+import { doneFetchingData } from "../actions";
 
 const Found = () => {
+  const dispatch = useDispatch();
+
   const [formLoading, setFormLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [allFoundPosts, setAllFoundPosts] = useState([]);
   const [pageInfo, setPageInfo] = useState({
     currentPage: 1,
@@ -39,13 +43,16 @@ const Found = () => {
           limit: parseInt(response.data.limit, 10),
         });
         setSortOrder(response.data.sortOrder);
+        setError(false);
         //ToastMsg("All Found posts data achieved", "success");
       } else {
         ToastMsg(response.response.data.message, "error");
+        setError(true);
       }
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
-      console.error("Internal Server Error:", error);
+      //console.error("Internal Server Error:", error);
+      setError(true);
     } finally {
       setFormLoading(false);
     }
@@ -55,6 +62,19 @@ const Found = () => {
     gettingAllFoundPostFunction();
     //console.log(pageInfo);
   }, [pageInfo.currentPage, debouncedSearch, pageInfo.limit, sortOrder]);
+
+  // Fetching data again when ever a new post is created **********************
+  const fetchData = useSelector((state) => state.dataFetching.fetchData);
+  useEffect(() => {
+    const reFetchData = async () => {
+      await gettingAllFoundPostFunction();
+      dispatch(doneFetchingData());
+    };
+
+    if (fetchData == true) {
+      reFetchData();
+    }
+  }, [fetchData]);
 
   // Debounce mechanism
   useEffect(() => {
@@ -124,10 +144,9 @@ const Found = () => {
         Item Posts
       </h1>
       {formLoading ? (
-        <div className="flex items-center">
-          <FaSpinner className="mr-3 animate-spin" />
-          Loading...
-        </div>
+        <LoadingComponent />
+      ) : error ? (
+        <ErrorComponent />
       ) : (
         <>
           <div className="mb-4">

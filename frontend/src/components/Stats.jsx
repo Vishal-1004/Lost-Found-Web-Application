@@ -4,7 +4,7 @@ import { getProfileGraphFunction } from "../services/API";
 import ToastMsg from "../constants/ToastMsg";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
-import { WarningComponent } from "../utility";
+import { ErrorComponent, LoadingComponent, WarningComponent } from "../utility";
 
 function Stats() {
   const [profileTab, setProfileTab] = useState("All");
@@ -17,6 +17,7 @@ function Stats() {
     },
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const userToken = useSelector((state) => state.storedUserData.userToken);
 
@@ -26,12 +27,15 @@ function Stats() {
       const response = await getProfileGraphFunction(userToken);
       if (response.status === 200) {
         setGraphData(response.data);
+        setError(false);
       } else {
         ToastMsg("Could not fetch graph data", "error");
+        setError(true);
       }
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
       console.log("Internal Server Error: ", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -81,10 +85,9 @@ function Stats() {
           </button>
         </nav>
         {loading ? (
-          <>
-            <FaSpinner className="mr-2 animate-spin" />
-            Loading...
-          </>
+          <LoadingComponent />
+        ) : error ? (
+          <ErrorComponent />
         ) : (
           <div className="mt-4">
             {profileTab === "All" && (

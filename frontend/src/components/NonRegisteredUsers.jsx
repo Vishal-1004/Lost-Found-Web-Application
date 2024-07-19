@@ -6,10 +6,12 @@ import {
 } from "../services/API";
 import { useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
+import { ErrorComponent, LoadingComponent, NoDataComponent } from "../utility";
 
 const NonRegisteredUsers = () => {
   const [actionLoading, setActionLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [pageInfo, setPageInfo] = useState({
     currentPage: 1,
@@ -36,6 +38,7 @@ const NonRegisteredUsers = () => {
         debouncedSearch,
         pageInfo.limit
       );
+      //console.log(response);
       if (response.status === 200) {
         setAllUsers(response.data.nonRegisteredUsers);
         setPageInfo({
@@ -43,13 +46,16 @@ const NonRegisteredUsers = () => {
           totalPages: parseInt(response.data.totalPages, 10),
           limit: parseInt(response.data.limit, 10),
         });
-        ToastMsg("All users data achieved", "success");
+        //ToastMsg("All users data achieved", "success");
+        setError(false);
       } else {
         ToastMsg(response.response.data.message, "error");
+        setError(true);
       }
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
-      console.error("Internal Server Error:", error);
+      //console.error("Internal Server Error:", error);
+      setError(true);
     } finally {
       setFormLoading(false);
     }
@@ -124,44 +130,45 @@ const NonRegisteredUsers = () => {
       <h1 className="text-center md:text-left text-3xl md:text-4xl font-semibold mb-4">
         All Non Registered Users
       </h1>
+      <div className="mb-4">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search users..."
+          className="p-2 border rounded w-full sm:w-1/2"
+        />
+      </div>
+      {/* No of users to show */}
+      <div className="mb-3 w-full md:w-1/2">
+        <label
+          className="text-sm font-medium text-gray-700 flex items-center"
+          htmlFor="limit"
+        >
+          No. of users:
+        </label>
+        <select
+          className="form-control"
+          name="Hosteller/Day Scholar"
+          id="limit"
+          value={pageInfo.limit}
+          onChange={(e) => handleLimitBtnClick(e.target.value)}
+        >
+          <option value="">Select an option</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="25">25</option>
+        </select>
+      </div>
       {formLoading ? (
-        <div className="flex items-center">
-          <FaSpinner className="mr-3 animate-spin" />
-          Loading...
-        </div>
+        <LoadingComponent />
+      ) : error ? (
+        <ErrorComponent />
+      ) : pageInfo.totalPages == 0 ? (
+        <NoDataComponent />
       ) : (
         <>
-          <div className="mb-4">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search users..."
-              className="p-2 border rounded w-full sm:w-1/2"
-            />
-          </div>
-          {/* No of users to show */}
-          <div className="mb-3 w-full md:w-1/2">
-            <label
-              className="text-sm font-medium text-gray-700 flex items-center"
-              htmlFor="limit"
-            >
-              No. of users:
-            </label>
-            <select
-              className="form-control"
-              name="Hosteller/Day Scholar"
-              id="limit"
-              value={pageInfo.limit}
-              onChange={(e) => handleLimitBtnClick(e.target.value)}
-            >
-              <option value="">Select an option</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="25">25</option>
-            </select>
-          </div>
           <div className="overflow-x-auto xl:overflow-x-visible">
             <table className="min-w-full bg-white border border-gray-200">
               <thead>

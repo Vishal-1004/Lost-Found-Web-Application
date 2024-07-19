@@ -29,3 +29,11 @@ export const otpVerificationDone = () => ({
 export const resettingPasswordDone = () => ({
   type: "RESET_PASSWORD_DONE",
 });
+
+export const tryFetchingData = () => ({
+  type: "TRY_FETCHING",
+});
+
+export const doneFetchingData = () => ({
+  type: "DONE_FETCHING",
+});
