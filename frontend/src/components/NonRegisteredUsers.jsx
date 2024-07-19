@@ -36,6 +36,7 @@ const NonRegisteredUsers = () => {
         debouncedSearch,
         pageInfo.limit
       );
+      console.log(response);
       if (response.status === 200) {
         setAllUsers(response.data.nonRegisteredUsers);
         setPageInfo({

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
+import { tryFetchingData } from "../actions";
 
 // default locations available
 const locations = [
@@ -17,6 +18,8 @@ const locations = [
 ];
 
 function FoundItemForm({ onClose }) {
+  const dispatch = useDispatch();
+
   // getting user data from localstorage****************
   const userName = useSelector(
     (state) => state.storedUserData.userData.userName
@@ -37,7 +40,6 @@ function FoundItemForm({ onClose }) {
   // *****************************************************
 
   const [isChecked, setIsChecked] = useState(userPhoneNumber ? true : false);
-  //console.log(userPhoneNumber);
 
   const handleCheckboxChange = () => {
     setIsChecked((prevState) => !prevState);
@@ -101,6 +103,7 @@ function FoundItemForm({ onClose }) {
       //console.log(response);
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
+        dispatch(tryFetchingData());
       } else {
         ToastMsg(response.response.data.message, "error");
       }
@@ -111,7 +114,7 @@ function FoundItemForm({ onClose }) {
       setFormLoading(false);
       reset();
       onClose();
-      window.location.reload();
+      //window.location.reload();
     }
   };
 
