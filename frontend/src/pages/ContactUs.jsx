@@ -11,7 +11,7 @@ function ContactUs() {
 
   return (
     <div className="w-full py-4 sm:h-[90vh] flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-300">
-      <div className="flex flex-col md:flex-row gap-4 p-2 sm:p-10 bg-white md:h-[60vh] lg:h-[65vh] w-5/6 sm:w-[80vw] lg:w-4/6 rounded-2xl shadow-lg bg-opacity-30">
+      <div className="flex flex-col md:flex-row gap-4 p-2 sm:p-10 bg-white md:h-[60vh] lg:h-[65vh] w-5/6 sm:w-[80vw] lg:w-4/6 rounded-2xl shadow-lg bg-opacity-80">
         <div className="w-full md:w-1/2 flex flex-col items-center sm:items-start gap-6">
           <div className="flex flex-col items-start">
             <h1 className="text-[28px] sm:text-[36px] font-bold text-gray-700">Get in touch</h1>
@@ -23,7 +23,7 @@ function ContactUs() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center w-full md:w-1/2 p-4 border-2 rounded-xl bg-blue-300 bg-opacity-40">
+        <div className="flex flex-col items-center justify-center w-full md:w-1/2 p-4 border-2 rounded-xl bg-white">
           <form
             className="w-full"
             onSubmit={handleSubmit}
