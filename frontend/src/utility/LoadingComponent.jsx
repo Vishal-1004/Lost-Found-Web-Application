@@ -6,15 +6,12 @@ const LoadingComponent = ({ loading }) => {
     <div className="">
       <div className="border border-yellow-500 bg-yellow-100 p-6 rounded-lg shadow-md max-w-lg mx-auto my-6">
         <h1 className="text-yellow-500 text-2xl mb-4">
-          {" "}
           {loading && (
             <>
-              <div className="flex items-center">
-                <FaSpinner className="mr-3 animate-spin" />
-                Loading...
-              </div>
+              <FaSpinner className="inline-block mr-3 animate-spin" />
             </>
           )}
+          Loading...
         </h1>
         <div className="text-gray-800">
           <p className="mb-2">

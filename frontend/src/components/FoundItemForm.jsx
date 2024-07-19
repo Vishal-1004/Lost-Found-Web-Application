@@ -109,7 +109,7 @@ function FoundItemForm({ onClose }) {
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
-      console.error("Error: ", error);
+      //console.error("Error: ", error);
     } finally {
       setFormLoading(false);
       reset();

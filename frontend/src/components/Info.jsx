@@ -56,61 +56,66 @@ export default function Info() {
 
   return (
     <>
-      {loading ? (
-        <LoadingComponent />
-      ) : error ? (
-        <ErrorComponent />
-      ) : (
-        <div className="w-full md:w-1/2 bg-blue-100 py-6 px-4 md:px-10 rounded-tl-lg rounded-bl-lg flex flex-wrap lg:flex-nowrap md:flex-col lg:flex-row md:items-center lg:items-start">
-          <div className="w-full lg:w-1/4 md:mb-0 flex justify-center md:justify-start mb-4">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-gray-400">
-              {/* <img
+      <div className="w-full md:w-1/2 bg-blue-100 py-6 px-4 md:px-10 rounded-tl-lg rounded-bl-lg flex flex-wrap lg:flex-nowrap md:flex-col lg:flex-row md:items-center lg:items-start">
+        {loading ? (
+          <LoadingComponent />
+        ) : error ? (
+          <ErrorComponent />
+        ) : (
+          <>
+            <div className="w-full lg:w-1/4 md:mb-0 flex justify-center md:justify-start mb-4">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-gray-400">
+                {/* <img
                 alt="profilepic"
                 src="https://i1.wp.com/cdn130.picsart.com/344993131001211.png"
                 className="w-full h-full object-cover"
               /> */}
-              <FaUserCircle size={"100px"} className="mx-auto text-blue-300" />
+                <FaUserCircle
+                  size={"100px"}
+                  className="mx-auto text-blue-300"
+                />
+              </div>
             </div>
-          </div>
-          <div className="w-full lg:w-3/4 md:py-0 px-4 md:px-6">
-            <div className="mb-4">
-              <h2 className="text-base font-bold text-blue-600">Name:</h2>
-              <p className="text-gray-700 text-[14px]">{userData.name}</p>
-            </div>
-            <div className="mb-4">
-              <h2 className="text-base font-bold text-blue-600">Email:</h2>
-              <p className="text-gray-700 text-[14px] break-words">
-                {userData.email}
-              </p>
-            </div>
-            <div className="mb-4">
-              <h2 className="text-base font-bold text-blue-600">
-                Registration Number:
-              </h2>
-              <p className="text-gray-700 text-[14px]">
-                {userData.registrationNo}
-              </p>
-            </div>
-            <div className="mb-4">
-              <h2 className="text-base font-bold text-blue-600">
-                Day Scholar/ Hosteler:
-              </h2>
-              <p className="text-gray-700 text-[14px]">
-                {userData.dayScholarOrHosteler}
-              </p>
-            </div>
+            <div className="w-full lg:w-3/4 md:py-0 px-4 md:px-6">
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-blue-600">Name:</h2>
+                <p className="text-gray-700 text-[14px]">{userData.name}</p>
+              </div>
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-blue-600">Email:</h2>
+                <p className="text-gray-700 text-[14px] break-words">
+                  {userData.email}
+                </p>
+              </div>
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-blue-600">
+                  Registration Number:
+                </h2>
+                <p className="text-gray-700 text-[14px]">
+                  {userData.registrationNo}
+                </p>
+              </div>
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-blue-600">
+                  Day Scholar/ Hosteler:
+                </h2>
+                <p className="text-gray-700 text-[14px]">
+                  {userData.dayScholarOrHosteler}
+                </p>
+              </div>
 
-            <div className="mb-4">
-              <h2 className="text-base font-bold text-blue-600">
-                Phone Number:
-              </h2>
-              <p className="text-gray-700 text-[14px]">
-                {userData.phoneNumber ? userData.phoneNumber : "Not Provided"}
-              </p>
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-blue-600">
+                  Phone Number:
+                </h2>
+                <p className="text-gray-700 text-[14px]">
+                  {userData.phoneNumber ? userData.phoneNumber : "Not Provided"}
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 }
