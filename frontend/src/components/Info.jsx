@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getProfileDataFunction } from "../services/API";
 import ToastMsg from "../constants/ToastMsg";
-import { FaSpinner, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+import { ErrorComponent, LoadingComponent } from "../utility";
 
 export default function Info() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -32,12 +34,15 @@ export default function Info() {
           phoneNumber: response.data.profile.phoneNumber,
         });
         //console.log(userData);
+        setError(false);
       } else {
         ToastMsg("Some error has occured while fetching your data", "error");
+        setError(true);
       }
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
       console.log("Internal Server Error: ", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -52,10 +57,9 @@ export default function Info() {
   return (
     <>
       {loading ? (
-        <>
-          <FaSpinner className="mr-2 animate-spin" />
-          Loading...
-        </>
+        <LoadingComponent />
+      ) : error ? (
+        <ErrorComponent />
       ) : (
         <div className="w-full md:w-1/2 bg-blue-100 py-6 px-4 md:px-10 rounded-tl-lg rounded-bl-lg flex flex-wrap lg:flex-nowrap md:flex-col lg:flex-row md:items-center lg:items-start">
           <div className="w-full lg:w-1/4 md:mb-0 flex justify-center md:justify-start mb-4">
