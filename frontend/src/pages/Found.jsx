@@ -51,7 +51,7 @@ const Found = () => {
       }
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
-      console.error("Internal Server Error:", error);
+      //console.error("Internal Server Error:", error);
       setError(true);
     } finally {
       setFormLoading(false);
