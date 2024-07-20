@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from "react-redux";
 
 function ContactUs() {
-  // getting user data from localstorage****************
+  // Getting user data from localstorage****************
   const userName = useSelector(
     (state) => state.storedUserData.userData.userName
   );
@@ -19,8 +19,8 @@ function ContactUs() {
   };
 
   return (
-    <div className="w-full py-4 sm:h-[90vh] flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-300">
-      <div className="flex flex-col md:flex-row gap-4 p-2 sm:p-10 bg-white md:h-[60vh] lg:h-[65vh] w-5/6 sm:w-[80vw] lg:w-4/6 rounded-2xl shadow-lg bg-opacity-80">
+    <div className="w-full py-4 flex items-center justify-center bg-gradient-to-b from-[#fff] to-blue-200">
+      <div className="flex flex-col md:flex-row gap-4 p-2 sm:p-10 bg-white w-5/6 sm:w-[80vw] lg:w-4/6 rounded-2xl shadow-lg bg-opacity-80">
         <div className="w-full md:w-1/2 flex flex-col items-center sm:items-start gap-6">
           <div className="flex flex-col items-start">
             <h1 className="text-[28px] sm:text-[36px] font-bold text-gray-700">
@@ -41,13 +41,16 @@ function ContactUs() {
 
         <div className="flex flex-col items-center justify-center w-full md:w-1/2 p-4 border-2 rounded-xl bg-white">
           <form className="w-full" onSubmit={handleSubmit} noValidate>
-            <div className="flex flex-wrap sm:gap-4">
+            <h2 className="text-[28px] sm:text-[32px] text-center font-bold text-gray-700 mb-2">Contact Form</h2>
+
+            <div className="flex flex-wrap gap-4">
               <div className="mb-3 w-full">
                 <input
                   type="text"
                   name="name"
                   placeholder="eg: Shashank Sharma"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500"
+                  aria-label="Name"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out"
                   required
                 />
               </div>
@@ -57,7 +60,8 @@ function ContactUs() {
                   type="email"
                   name="email"
                   placeholder="eg: shashank.sharma2022@vitstudent.ac.in"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500"
+                  aria-label="Email"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out"
                   required
                 />
               </div>
@@ -66,18 +70,21 @@ function ContactUs() {
                 <textarea
                   name="message"
                   placeholder="Your message !!"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500"
+                  aria-label="Message"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out"
                   rows={5}
                   required
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full p-3 bg-blue-400 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-700"
-              >
-                Submit
-              </button>
+              <div className="w-full">
+                <button
+                  type="submit"
+                  className="btnSubmit w-full flex justify-center"
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </form>
         </div>
