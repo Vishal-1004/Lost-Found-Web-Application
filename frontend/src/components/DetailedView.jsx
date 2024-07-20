@@ -193,7 +193,7 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
               Edit
             </button>
             <button
-              className="btnSubmit bg-red-400 hover:bg-red-600 rounded"
+              className="btnSubmit bg-red-400 hover:bg-red-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               onClick={handleDelete}
             >
               {loading ? (

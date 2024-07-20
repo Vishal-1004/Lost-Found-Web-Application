@@ -54,7 +54,7 @@ const DeleteAccount = () => {
         <button
           type="submit"
           onClick={handleDeleteAccount}
-          className={`flex px-4 py-2 text-sm bg-red-500 text-white rounded-md ${
+          className={`flex px-4 py-2 text-sm bg-red-500 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${
             formLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-700"
           }`}
         >

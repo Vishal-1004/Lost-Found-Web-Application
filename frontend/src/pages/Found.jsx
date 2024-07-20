@@ -213,7 +213,7 @@ const Found = () => {
           <div className="flex justify-between mt-4">
             {pageInfo.currentPage > 1 && (
               <button
-                className="btnSubmit bg-red-400 hover:bg-red-600 p-2 rounded"
+                className="btnSubmit bg-red-400 hover:bg-red-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 onClick={handlePrevBtnClick}
               >
                 Prev
@@ -222,7 +222,7 @@ const Found = () => {
             <div className="flex-grow"></div>
             {pageInfo.currentPage < pageInfo.totalPages && (
               <button
-                className="btnSubmit bg-green-400 hover:bg-green-600 p-2 rounded"
+                className="btnSubmit bg-green-400 hover:bg-green-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 onClick={handleNextBtnClick}
               >
                 Next
