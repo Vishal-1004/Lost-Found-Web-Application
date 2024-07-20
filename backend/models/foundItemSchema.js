@@ -8,7 +8,8 @@ const foundItemSchema = new mongoose.Schema({
   itemImage: {
     type: String,
     required: true,
-    default: null,
+    default:
+      "https://res.cloudinary.com/dcmqniwwc/image/upload/v1721453179/nwygugtii3lpwt7xnqgn.jpg",
   },
   date: {
     type: Date,

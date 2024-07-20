@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
 import { tryFetchingData } from "../actions";
+import { defaultPostImage } from "../assets";
 
 // default locations available
 const locations = [
@@ -65,13 +66,13 @@ function FoundItemForm({ onClose }) {
   });
 
   // handling the image file which the user gives
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(false);
 
   // on submit
   const handleFormSubmit = async (formData) => {
     setFormLoading(true);
     const formDataToSend = new FormData();
-    formDataToSend.append("photo", file);
+    formDataToSend.append("photo", file || defaultPostImage);
     formDataToSend.append("itemTitle", formData.itemTitle);
     formDataToSend.append("itemDescription", formData.itemDescription);
     formDataToSend.append("itemFoundDate", formData.date);
@@ -100,16 +101,17 @@ function FoundItemForm({ onClose }) {
 
     try {
       const response = await createFoundItemPost(formDataToSend);
-      //console.log(response);
+      console.log(response);
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
         dispatch(tryFetchingData());
       } else {
         ToastMsg(response.response.data.message, "error");
+        console.error("Error: ", response);
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
-      //console.error("Error: ", error);
+      console.error("Error: ", error);
     } finally {
       setFormLoading(false);
       reset();
@@ -285,8 +287,7 @@ function FoundItemForm({ onClose }) {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="itemImage"
         >
-          Item Image (jpg, png, jpeg):{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          Item Image (jpg, png, jpeg):
         </label>
         <input
           className={`form-control text-gray-500 ${
@@ -296,10 +297,10 @@ function FoundItemForm({ onClose }) {
           type="file"
           id="itemImage"
           accept=".jpg,.png,.jpeg"
-          {...register("itemImage", { required: "Item image is required" })}
+          {...register("itemImage")}
           onChange={(e) => {
             setFile(e.target.files[0]);
-            //console.log(e.target.files[0]);
+            console.log(e.target.files[0]);
           }}
         />
         {errors.itemImage && (

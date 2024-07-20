@@ -35,7 +35,16 @@ async function createFoundItemPost({
 
 // Creating found post API
 exports.createFoundPost = async (req, res) => {
-  const upload = await cloudinary.uploader.upload(req.file.path);
+  let upload;
+  if (req.file) {
+    upload = await cloudinary.uploader.upload(req.file.path);
+  } else {
+    // Set a default image URL or path
+    upload = {
+      secure_url:
+        "https://res.cloudinary.com/dcmqniwwc/image/upload/v1721453179/nwygugtii3lpwt7xnqgn.jpg",
+    };
+  }
   const {
     itemTitle,
     itemDescription,

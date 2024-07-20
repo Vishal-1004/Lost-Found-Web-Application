@@ -6,6 +6,7 @@ import surya from "./AboutUs/Surya.jpg";
 import adithya from "./AboutUs/Adithya.jpg";
 import ourTeamBackgound from "./ourTeamBackground.svg";
 import AboutUsVideo from "./AboutUs/AboutUsVideo.mp4";
+import defaultPostImage from "./Default/defaultImage.jpg";
 
 export {
   vishal,
@@ -16,4 +17,5 @@ export {
   ourTeamBackgound,
   AboutUsVideo,
   adithya,
+  defaultPostImage,
 };
