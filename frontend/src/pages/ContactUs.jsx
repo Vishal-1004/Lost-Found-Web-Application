@@ -1,21 +1,38 @@
-import React from 'react';
+import React from "react";
+import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { FaSpinner } from "react-icons/fa";
+import ToastMsg from "../constants/ToastMsg";
 
 function ContactUs() {
   // Getting user data from localstorage****************
-  const userName = useSelector(
-    (state) => state.storedUserData.userData.userName
-  );
-  const userEmail = useSelector(
-    (state) => state.storedUserData.userData.userEmail
-  );
+  const userName = useSelector((state) => state.storedUserData.userData.userName);
+  const userEmail = useSelector((state) => state.storedUserData.userData.userEmail);
   // *****************************************************
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log("Form Data:", data);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    defaultValues: {
+      name: userName || "",
+      email: userEmail || "",
+      message: "",
+    },
+  });
+
+  const onSubmit = async (formData) => {
+    console.log("Form Data:", formData);
+    
+    try {
+      ToastMsg("Message sent successfully!", "success");
+      reset();
+    } catch (error) {
+      ToastMsg("Internal Server Error! Please Try Later", "error");
+      console.error("Error: ", error);
+    }
   };
 
   return (
@@ -40,8 +57,14 @@ function ContactUs() {
         </div>
 
         <div className="flex flex-col items-center justify-center w-full md:w-1/2 p-4 border-2 rounded-xl bg-white">
-          <form className="w-full" onSubmit={handleSubmit} noValidate>
-            <h2 className="text-[28px] sm:text-[32px] text-center font-bold text-gray-700 mb-2">Contact Form</h2>
+          <form
+            className="w-full"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
+            <h2 className="text-[28px] sm:text-[32px] text-center font-bold text-gray-700 mb-2">
+              Contact Form
+            </h2>
 
             <div className="flex flex-wrap gap-4">
               <div className="mb-3 w-full">
@@ -50,9 +73,13 @@ function ContactUs() {
                   name="name"
                   placeholder="eg: Shashank Sharma"
                   aria-label="Name"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out"
-                  required
+                  className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
+                  {...register("name", { required: "Name is required" })}
+                  readOnly
                 />
+                {errors.name && (
+                  <div className="invalid-feedback text-red-500">{errors.name.message}</div>
+                )}
               </div>
 
               <div className="mb-3 w-full">
@@ -61,9 +88,19 @@ function ContactUs() {
                   name="email"
                   placeholder="eg: shashank.sharma2022@vitstudent.ac.in"
                   aria-label="Email"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out"
-                  required
+                  className={`w-full p-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
+                  readOnly
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$/,
+                      message: "Invalid email",
+                    },
+                  })}
                 />
+                {errors.email && (
+                  <div className="invalid-feedback text-red-500">{errors.email.message}</div>
+                )}
               </div>
 
               <div className="mb-3 w-full">
@@ -71,18 +108,35 @@ function ContactUs() {
                   name="message"
                   placeholder="Your message !!"
                   aria-label="Message"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out"
+                  className={`w-full p-3 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-md text-gray-500 transition-all duration-300 ease-in-out`}
                   rows={5}
-                  required
+                  {...register("message", {
+                    required: "Message is required",
+                    minLength: {
+                      value: 50,
+                      message: "Message must be at least 50 characters",
+                    },
+                  })}
                 />
+                {errors.message && (
+                  <div className="invalid-feedback text-red-500">{errors.message.message}</div>
+                )}
               </div>
 
               <div className="w-full">
                 <button
                   type="submit"
-                  className="btnSubmit w-full flex justify-center"
+                  disabled={isSubmitting}
+                  className={`btnSubmit w-full flex justify-center ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  Submit
+                  {isSubmitting ? (
+                    <>
+                      <FaSpinner className="mr-3 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </div>
