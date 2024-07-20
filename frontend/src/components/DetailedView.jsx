@@ -177,7 +177,7 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
           ) : null}
         </div>
         {!userToken ? (
-          <div className="p-4 mt-4 border border-blue-300 bg-blue-100 rounded-md">
+          <div className="p-4 mt-4 border text-blue-500 border-blue-300 bg-blue-100 rounded-md">
             Login to view details
           </div>
         ) : (
@@ -208,7 +208,12 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
           </div>
         )}
       </div>
-      <FormPopup isOpen={showEditPopup} onClose={handleCloseEditPopup} type="edit" editData={editData} />
+      <FormPopup
+        isOpen={showEditPopup}
+        onClose={handleCloseEditPopup}
+        type="edit"
+        editData={editData}
+      />
     </div>
   );
 };

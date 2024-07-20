@@ -24,8 +24,8 @@ const Found = () => {
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   const gettingAllFoundPostFunction = async () => {
-    setFormLoading(true);
     try {
+      setFormLoading(true);
       const response = await getFoundItemsFunction(
         "1",
         0,
@@ -144,7 +144,7 @@ const Found = () => {
         Item Posts
       </h1>
       {formLoading ? (
-        <LoadingComponent />
+        <LoadingComponent loading={formLoading} />
       ) : error ? (
         <ErrorComponent />
       ) : (

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import { createFoundItemPost } from "../services/API";
 import moment from "moment";
-import { WarningComponent } from "../utility";
+import { LoginToAccessComponent, WarningComponent } from "../utility";
 
 // default locations available
 const locations = [
@@ -36,6 +36,8 @@ function LostItemForm({ onClose }) {
     (state) => state.storedUserData.userData.userDayScholarORhosteler
   );
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
+
+  const userToken = useSelector((state) => state.storedUserData.userToken);
   // *****************************************************
 
   const [isChecked, setIsChecked] = useState(!!userPhoneNumber);
@@ -48,7 +50,7 @@ function LostItemForm({ onClose }) {
     setIsChecked(e.target.checked);
   };
 
-  const [shouldRender,setShouldRender] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [customLocation, setCustomLocation] = useState(false);
   const {
@@ -76,7 +78,10 @@ function LostItemForm({ onClose }) {
     );
     formDataToSend.append("itemLocation", formData.itemLocation);
     formDataToSend.append("founderName", userName || formData.founderName);
-    formDataToSend.append("founderRegistrationNumber", userRegistrationNo || formData.founderRegNo);
+    formDataToSend.append(
+      "founderRegistrationNumber",
+      userRegistrationNo || formData.founderRegNo
+    );
     formDataToSend.append("founderEmail", userEmail || formData.founderEmail);
     formDataToSend.append(
       "founderDayScholarORhosteler",
@@ -125,8 +130,8 @@ function LostItemForm({ onClose }) {
   const lastYearDateString = lastYearDate.toISOString().split("T")[0];
   // *******************************************
 
-  return (
-   shouldRender ? <form
+  return shouldRender ? (
+    <form
       className="w-full"
       onSubmit={handleSubmit(handleFormSubmit)}
       noValidate
@@ -484,7 +489,11 @@ function LostItemForm({ onClose }) {
         </button>
       </div>
     </form>
-  : (<WarningComponent/>) );
+  ) : !userToken ? (
+    <LoginToAccessComponent />
+  ) : (
+    <WarningComponent />
+  );
 }
 
 export default LostItemForm;
