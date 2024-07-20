@@ -108,13 +108,13 @@ const DetailedView = ({ id, url, title, date, about, location, founder }) => {
 
           {/* Date */}
           <p className="mb-1.5 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
-            <AiFillCalendar className="mr-1" size={"20px"} />
+            <AiFillCalendar className="mr-1" size={"20px"} color='#F9CAAC' />
             {moment(date).format("dddd, D MMM YYYY")}
           </p>
 
           {/* Location */}
           <div className="text-[14px] text-gray-500 font-semibold mb-2 flex items-center gap-1">
-            <FaMapMarkerAlt className="mr-2" size={"20px"} />
+            <FaMapMarkerAlt className="mr-2" size={"20px"} color='#FFDBE0' />
             {location}
           </div>
         </div>
