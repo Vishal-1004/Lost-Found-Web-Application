@@ -115,7 +115,7 @@ const AboutUs = () => {
           <h2 className="text-center text-2xl font-semibold text-gray-800 pb-4">
             Key Modules
           </h2>
-          <ul className="list-disc space-y-4">
+          <ul className="list-disc grid grid-cols-1 sm:grid-cols-2 gap-4 gap-x-8">
             <li>
               <span className="text-gray-700">Chart.js</span>
             </li>

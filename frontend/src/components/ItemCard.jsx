@@ -38,14 +38,14 @@ function ItemCard({ url, title, date, about, location, }) {
         </div>
 
         <div className="text-[14px] text-gray-500 font-semibold mb-2 flex items-center gap-1">
-          <FaMapMarkerAlt className="mr-2" size={"20px"} color='#FFDBE0' />
+          <FaMapMarkerAlt className="mr-2" size={"20px"} color="#B0E57C" />
           {location}
         </div>
 
         <p className="text-[14px] text-gray-700 break-words">{shortAbout}</p>
 
         <div className="mt-4 text-[#333333] text-[13px] font-semibold flex items-center gap-2">
-          <AiFillCalendar className="mr-1" size={"20px"} color='#F9CAAC' />
+          <AiFillCalendar className="mr-1" size={"20px"} color="#ADD8E6" />
           {date}
         </div>
       </div>
