@@ -174,8 +174,8 @@ const Found = () => {
                 value={sortOrder == -1 ? "-1" : "1"}
                 onChange={(e) => handleSortOrderBtnClick(e.target.value)}
               >
-                <option value="-1">Z-A</option>
-                <option value="1">A-Z</option>
+                <option value="-1">Latest</option>
+                <option value="1">Oldest</option>
               </select>
             </div>
             <div className="flex items-center justify-center md:px-2">

@@ -136,21 +136,23 @@ const FoundTab = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between px-0 md:px-4">
+            {/* Sorting dropdown */}
             <div className="md:ml-10 mb-4 w-full sm:w-1/2 md:p-2">
               <label
                 className="text-sm font-medium text-gray-700 flex items-center"
-                htmlFor="sortBy"
+                htmlFor="limit"
               >
-                Sort by:{" "}
+                Sort Order:
               </label>
               <select
-                className={`form-control text-gray-600`}
-                name="sortBy"
-                id="sortBy"
-                onChange={(e) => setSortingOrder(parseInt(e.target.value, 10))}
+                className="form-control text-gray-600"
+                name="Hosteller/Day Scholar"
+                id="sortOrder"
+                value={sortingOrder == -1 ? "-1" : "1"}
+                onChange={(e) => setSortingOrder(e.target.value)}
               >
-                <option value="-1">Z-A</option>
-                <option value="1">A-Z</option>
+                <option value="-1">Latest</option>
+                <option value="1">Oldest</option>
               </select>
             </div>
             <div className="flex items-center justify-center md:px-2">

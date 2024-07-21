@@ -147,9 +147,9 @@ const AboutUs = () => {
         </h1>
         {/* Right Aligned Cards */}
         <div className="hidden md:flex md:flex-row justify-center items-center md:items-end">
-          <div className="inline-block pl-32 mr-24 scale-150 my-20 mx-20">
+          <div className="inline-block pl-40 mr-24 scale-125 my-20 mx-20">
             <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-              President
+              Faculty Guide
             </h3>
             <TeamCard
               name="Vishal Kumar Yadav"
@@ -159,7 +159,7 @@ const AboutUs = () => {
           </div>
           <div className="inline-block scale-125 ml-12 my-10">
           <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-              Vice President
+              Team Lead
             </h3>
             <TeamCard
               name="Vishal Kumar Yadav"
@@ -168,9 +168,9 @@ const AboutUs = () => {
             />
           </div>
         </div>
-        
+
         <div className="flex flex-col block md:hidden md:flex-row justify-center items-center md:items-end max-[440px]:scale-90">
-          <div className="inline-block scale-150 my-20 mx-20">
+          <div className="inline-block scale-125 my-20 mx-20">
             <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
               Faculty Guide
             </h3>
@@ -181,7 +181,7 @@ const AboutUs = () => {
             />
           </div>
           <div className="w-full flex flex-row justify-evenly">
-            <div className="inline-block scale-105 my-10">
+            <div className="inline-block scale-125 my-10">
               <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
               Team Lead
               </h3>
