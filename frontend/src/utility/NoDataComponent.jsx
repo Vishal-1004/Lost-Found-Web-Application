@@ -29,7 +29,7 @@ const NoDataComponent = () => {
                 typewriter
                   .pauseFor(2000)
                   .typeString(
-                    "* If there is still no data to display, you may proceed to create one."
+                    "* If there is still no data displayed then you may proceed to create one."
                   )
                   .start();
               }}

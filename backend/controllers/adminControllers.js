@@ -184,7 +184,7 @@ exports.changeNonRegisteredUserStatus = async(req,res)=>{
   }
 }
 
-//getAll nonregistered users
+// getAll nonregistered users
 exports.allNonRegisteredUsers = async(req,res)=>{
   const {authToken}=req.body
   const{page=1,search="",limit=5}=req.query

@@ -5,7 +5,7 @@ import ItemCard from './ItemCard';
 import DetailedViewPopup from "./DetailedViewPopup";
 import { getFoundItemsFunction } from "../services/API";
 import moment from "moment";
-import { ErrorComponent, LoadingComponent } from "../utility";
+import { ErrorComponent, LoadingComponent, NoDataComponent } from "../utility";
 import { useDispatch, useSelector } from "react-redux";
 import { doneFetchingData } from "../actions";
 
@@ -177,6 +177,8 @@ function ItemCarousel({ heading }) {
         <LoadingComponent loading={formLoading} />
       ) : error ? (
         <ErrorComponent />
+      ) : postData.length == 0 ? (
+        <NoDataComponent />
       ) : (
         <>
           <div

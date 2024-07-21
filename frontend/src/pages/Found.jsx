@@ -5,7 +5,7 @@ import { getFoundItemsFunction } from "../services/API";
 import { ItemCard, FormPopup, DetailedViewPopup } from "../components";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { ErrorComponent, LoadingComponent } from "../utility";
+import { ErrorComponent, LoadingComponent, NoDataComponent } from "../utility";
 import { doneFetchingData } from "../actions";
 
 const Found = () => {
@@ -191,53 +191,62 @@ const Found = () => {
             />
           </div>
 
-          <div className="flex flex-wrap overflow-hidden py-4 justify-evenly md:mx-10">
-            {allFoundPosts?.map((item, index) => (
-              <div
-                className="mb-4 md:px-1 py-1 md:mx-2"
-                key={index}
-                onClick={() => handleCardClick(item)}
-              >
-                <ItemCard
-                  url={item.itemImage}
-                  title={item.title}
-                  date={moment(item.date).format("ddd, D MMM YYYY")}
-                  about={item.description}
-                  location={item.location}
-                />
-                <hr />
+          {allFoundPosts.length == 0 ? (
+            <NoDataComponent />
+          ) : (
+            <>
+              <div className="flex flex-wrap overflow-hidden py-4 justify-evenly md:mx-10">
+                {allFoundPosts?.map((item, index) => (
+                  <div
+                    className="mb-4 md:px-1 py-1 md:mx-2"
+                    key={index}
+                    onClick={() => handleCardClick(item)}
+                  >
+                    <ItemCard
+                      url={item.itemImage}
+                      title={item.title}
+                      date={moment(item.date).format("ddd, D MMM YYYY")}
+                      about={item.description}
+                      location={item.location}
+                    />
+                    <hr />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="flex justify-between mt-4">
-            {pageInfo.currentPage > 1 && (
-              <button
-                className="btnSubmit bg-red-400 hover:bg-red-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                onClick={handlePrevBtnClick}
-              >
-                Prev
-              </button>
-            )}
-            <div className="flex-grow"></div>
-            {pageInfo.currentPage < pageInfo.totalPages && (
-              <button
-                className="btnSubmit bg-green-400 hover:bg-green-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                onClick={handleNextBtnClick}
-              >
-                Next
-              </button>
-            )}
-          </div>
+              <div className="flex justify-between mt-4">
+                {pageInfo.currentPage > 1 && (
+                  <button
+                    className="btnSubmit bg-red-400 hover:bg-red-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    onClick={handlePrevBtnClick}
+                  >
+                    Prev
+                  </button>
+                )}
+                <div className="flex-grow"></div>
+                {pageInfo.currentPage < pageInfo.totalPages && (
+                  <button
+                    className="btnSubmit bg-green-400 hover:bg-green-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    onClick={handleNextBtnClick}
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
 
-          <div className="mt-4 text-center">
-            <span className="p-2 bg-gray-200 rounded">
-              Page {pageInfo.currentPage} of {pageInfo.totalPages}
-            </span>
-          </div>
-          {/* detailed view popup */}
-          {selectedItem && (
-            <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+              <div className="mt-4 text-center">
+                <span className="p-2 bg-gray-200 rounded">
+                  Page {pageInfo.currentPage} of {pageInfo.totalPages}
+                </span>
+              </div>
+              {/* detailed view popup */}
+              {selectedItem && (
+                <DetailedViewPopup
+                  item={selectedItem}
+                  onClose={handleClosePopup}
+                />
+              )}
+            </>
           )}
         </>
       )}
