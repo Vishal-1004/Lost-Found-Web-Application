@@ -2,11 +2,14 @@ import Doughnut from "./DoughnutChart";
 import { useEffect, useState } from "react";
 import { getProfileGraphFunction } from "../services/API";
 import ToastMsg from "../constants/ToastMsg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 import { ErrorComponent, LoadingComponent, WarningComponent } from "../utility";
+import { doneFetchingData } from "../actions";
 
 function Stats() {
+  const dispatch = useDispatch();
+
   const [profileTab, setProfileTab] = useState("All");
   const [graphData, setGraphData] = useState({
     allPostsData: { noOfFoundPosts: 0, noOfLostPosts: 0 },
@@ -46,6 +49,19 @@ function Stats() {
       getGraphData();
     }
   }, [userToken]);
+
+  // Fetching data again when ever a new post is created **********************
+  const fetchData = useSelector((state) => state.dataFetching.fetchData);
+  useEffect(() => {
+    const reFetchData = async () => {
+      await getGraphData();
+      dispatch(doneFetchingData());
+    };
+
+    if (fetchData == true) {
+      reFetchData();
+    }
+  }, [fetchData]);
 
   return (
     <div className="w-full md:w-5/12 bg-blue-100 p-4 rounded-tr-lg rounded-br-lg">
