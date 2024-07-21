@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { FaSpinner } from "react-icons/fa";
+import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import ToastMsg from "../constants/ToastMsg";
 
 function ContactUs() {
@@ -67,13 +67,20 @@ function ContactUs() {
             </h2>
 
             <div className="flex flex-wrap gap-4">
-              <div className="mb-3 w-full">
+              <div className="mb-2 w-full">
+                <label
+                  className="text-base font-medium text-gray-700 flex items-center"
+                  htmlFor="name"
+                >
+                  Name:{" "}
+                  <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+                </label>
                 <input
                   type="text"
                   name="name"
                   placeholder="eg: Shashank Sharma"
                   aria-label="Name"
-                  className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
+                  className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
                   {...register("name", { required: "Name is required" })}
                   readOnly
                 />
@@ -82,13 +89,20 @@ function ContactUs() {
                 )}
               </div>
 
-              <div className="mb-3 w-full">
+              <div className="mb-2 w-full">
+                <label
+                  className="text-base font-medium text-gray-700 flex items-center"
+                  htmlFor="email"
+                >
+                  Email:{" "}
+                  <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+                </label>
                 <input
                   type="email"
                   name="email"
                   placeholder="eg: shashank.sharma2022@vitstudent.ac.in"
                   aria-label="Email"
-                  className={`w-full p-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
+                  className={`w-full p-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
                   readOnly
                   {...register("email", {
                     required: "Email is required",
@@ -103,12 +117,19 @@ function ContactUs() {
                 )}
               </div>
 
-              <div className="mb-3 w-full">
+              <div className="mb-2 w-full">
+                <label
+                  className="text-base font-medium text-gray-700 flex items-center"
+                  htmlFor="message"
+                >
+                  Message:{" "}
+                  <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+                </label>
                 <textarea
                   name="message"
                   placeholder="Your message !!"
                   aria-label="Message"
-                  className={`w-full p-3 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-md text-gray-500 transition-all duration-300 ease-in-out`}
+                  className={`w-full p-2 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-md text-gray-500 transition-all duration-300 ease-in-out`}
                   rows={5}
                   {...register("message", {
                     required: "Message is required",
