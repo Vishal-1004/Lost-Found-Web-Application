@@ -3,7 +3,7 @@ import TypewriterComponent from "typewriter-effect";
 
 const LoadingComponent = ({ loading }) => {
   return (
-    <div className="">
+    <div className="w-full h-full">
       <div className="border border-yellow-500 bg-yellow-100 p-6 rounded-lg shadow-md max-w-lg mx-auto my-6">
         <h1 className="text-yellow-500 text-2xl mb-4">
           {loading && (
