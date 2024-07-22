@@ -3,6 +3,15 @@ const { users, foundItems, nonRegisteredUser } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { default: mongoose } = require("mongoose");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "vitcseguide@gmail.com",
+    pass: "gvdt kqqs zzvr vfib",
+  },
+});
 
 async function createFoundItemPost({
   title,
@@ -706,7 +715,6 @@ exports.editFoundItem = async (req, res) => {
   }
 };
 
-
 // Delete a found item post by a user
 exports.deleteFoundItem = async (req, res) => {
   const { email, foundItemId } = req.body;
@@ -827,7 +835,7 @@ exports.getProfileGraphData = async (req, res) => {
         existingUser.foundItemsID.length;
     }
     // console.log(postsByAdmins.length)
-    console.log(existingUser.foundItemsID.length)
+    console.log(existingUser.foundItemsID.length);
     return res.status(200).json({
       allPostsData: {
         noOfLostPosts: 0,
@@ -871,5 +879,38 @@ exports.getUserGraphData = async (req, res) => {
     return res.status(400).json({
       error: err,
     });
+  }
+};
+
+exports.userSendsMessage = async (req, res) => {
+  const { email, name, message } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Please Enter Your Email" });
+  }
+
+  try {
+    const mailOptions = {
+      from: "vitcseguide@gmail.com",
+      to: "vitcseguide@gmail.com",
+      subject: `${name} is contacting you regarding some issues`,
+      html: `
+        <p>A user named <strong>${name}</strong> is trying to contact you through the email <strong>${email}</strong>.</p>
+        <p>The message looks as follows:</p>
+        <p><strong>${message}</strong></p>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("error", error);
+        return res.status(400).json({ message: "Message not sent" });
+      } else {
+        console.log("Email sent", info.response);
+        return res.status(200).json({ message: "Message Sent Successfully" });
+      }
+    });
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid details", error });
   }
 };

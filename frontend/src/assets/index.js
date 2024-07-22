@@ -4,6 +4,7 @@ import akkilesh from "./AboutUs/Akkilesh.jpg";
 import adityaP from "./AboutUs/Aditya.jpg";
 import surya from "./AboutUs/Surya.jpg";
 import adithya from "./AboutUs/Adithya.jpg";
+import facultyGuideSangeethaN from "./AboutUs/faculty-guide-Sangeetha-N.jpg";
 import ourTeamBackgound from "./ourTeamBackground.svg";
 import AboutUsVideo from "./AboutUs/AboutUsVideo.mp4";
 import defaultPostImage from "./Default/defaultImage.jpg";
@@ -17,5 +18,6 @@ export {
   ourTeamBackgound,
   AboutUsVideo,
   adithya,
+  facultyGuideSangeethaN,
   defaultPostImage,
 };

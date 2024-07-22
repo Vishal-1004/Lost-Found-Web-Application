@@ -1,13 +1,17 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import ToastMsg from "../constants/ToastMsg";
+import { userSendsAMessageFunction } from "../services/API";
 
 function ContactUs() {
   // Getting user data from localstorage****************
-  const userName = useSelector((state) => state.storedUserData.userData.userName);
-  const userEmail = useSelector((state) => state.storedUserData.userData.userEmail);
+  const userName = useSelector(
+    (state) => state.storedUserData.userData.userName
+  );
+  const userEmail = useSelector(
+    (state) => state.storedUserData.userData.userEmail
+  );
   // *****************************************************
 
   const {
@@ -24,14 +28,15 @@ function ContactUs() {
   });
 
   const onSubmit = async (formData) => {
-    console.log("Form Data:", formData);
-    
+    //console.log("Form Data:", formData);
+    const { name, email, message } = formData;
     try {
-      ToastMsg("Message sent successfully!", "success");
+      const response = await userSendsAMessageFunction(name, email, message);
+      ToastMsg(response.data.message, "success");
       reset();
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");
-      console.error("Error: ", error);
+      //console.error("Error: ", error);
     }
   };
 
@@ -57,11 +62,7 @@ function ContactUs() {
         </div>
 
         <div className="flex flex-col items-center justify-center w-full md:w-1/2 p-4 border-2 rounded-xl bg-white">
-          <form
-            className="w-full"
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
-          >
+          <form className="w-full" onSubmit={handleSubmit(onSubmit)} noValidate>
             <h2 className="text-[28px] sm:text-[32px] text-center font-bold text-gray-700 mb-2">
               Contact Form
             </h2>
@@ -80,12 +81,16 @@ function ContactUs() {
                   name="name"
                   placeholder="eg: Shashank Sharma"
                   aria-label="Name"
-                  className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
+                  className={`w-full p-2 border ${
+                    errors.name ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
                   {...register("name", { required: "Name is required" })}
                   readOnly
                 />
                 {errors.name && (
-                  <div className="invalid-feedback text-red-500">{errors.name.message}</div>
+                  <div className="invalid-feedback text-red-500">
+                    {errors.name.message}
+                  </div>
                 )}
               </div>
 
@@ -102,18 +107,23 @@ function ContactUs() {
                   name="email"
                   placeholder="eg: shashank.sharma2022@vitstudent.ac.in"
                   aria-label="Email"
-                  className={`w-full p-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
+                  className={`w-full p-2 border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 transition-all duration-300 ease-in-out`}
                   readOnly
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value: /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$/,
+                      value:
+                        /^[A-Za-z]+\.?[A-Za-z0-9]+[0-9]{4}[A-Za-z]*@vitstudent\.ac\.in$/,
                       message: "Invalid email",
                     },
                   })}
                 />
                 {errors.email && (
-                  <div className="invalid-feedback text-red-500">{errors.email.message}</div>
+                  <div className="invalid-feedback text-red-500">
+                    {errors.email.message}
+                  </div>
                 )}
               </div>
 
@@ -129,7 +139,9 @@ function ContactUs() {
                   name="message"
                   placeholder="Your message !!"
                   aria-label="Message"
-                  className={`w-full p-2 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-md text-gray-500 transition-all duration-300 ease-in-out`}
+                  className={`w-full p-2 border ${
+                    errors.message ? "border-red-500" : "border-gray-300"
+                  } rounded-md text-gray-500 transition-all duration-300 ease-in-out`}
                   rows={5}
                   {...register("message", {
                     required: "Message is required",
@@ -140,7 +152,9 @@ function ContactUs() {
                   })}
                 />
                 {errors.message && (
-                  <div className="invalid-feedback text-red-500">{errors.message.message}</div>
+                  <div className="invalid-feedback text-red-500">
+                    {errors.message.message}
+                  </div>
                 )}
               </div>
 
@@ -148,7 +162,9 @@ function ContactUs() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`btnSubmit w-full flex justify-center ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`btnSubmit w-full flex justify-center ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   {isSubmitting ? (
                     <>

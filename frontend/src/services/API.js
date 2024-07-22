@@ -215,3 +215,12 @@ export const changeStatusOfNonRegisteredUserFunction = async (
     { nonRegisteredUserId, authToken, newStatus }
   );
 };
+
+// User sends a message to admin
+export const userSendsAMessageFunction = async (name, email, message) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/send-message`,
+    { name, email, message }
+  );
+}

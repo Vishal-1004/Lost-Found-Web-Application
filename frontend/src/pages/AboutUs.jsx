@@ -6,6 +6,7 @@ import {
   adityaP,
   surya,
   adithya,
+  facultyGuideSangeethaN,
 } from "../assets";
 import { AboutUsVideo, TeamCard } from "../components";
 
@@ -115,7 +116,7 @@ const AboutUs = () => {
           <h2 className="text-center text-2xl font-semibold text-gray-800 pb-4">
             Key Modules
           </h2>
-          <ul className="list-disc grid grid-cols-1 sm:grid-cols-2 gap-4 gap-x-8">
+          <ul className="list-disc grid grid-cols-1 sm:grid-cols-2 gap-4 gap-x-12">
             <li>
               <span className="text-gray-700">Chart.js</span>
             </li>
@@ -123,7 +124,7 @@ const AboutUs = () => {
               <span className="text-gray-700">Nodemailer</span>
             </li>
             <li>
-              <span className="text-gray-700">Toastify</span>
+              <span className="text-gray-700">Cloudinary</span>
             </li>
             <li>
               <span className="text-gray-700">Multer</span>
@@ -152,13 +153,13 @@ const AboutUs = () => {
               Faculty Guide
             </h3>
             <TeamCard
-              name="Vishal Kumar Yadav"
-              image={vishal}
+              name="Dr. Sangeetha N"
+              image={facultyGuideSangeethaN}
               link="https://www.linkedin.com/in/vishal-kumar-yadav-8085a3232/"
             />
           </div>
           <div className="inline-block scale-125 ml-12 my-10">
-          <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
+            <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
               Team Lead
             </h3>
             <TeamCard
@@ -183,7 +184,7 @@ const AboutUs = () => {
           <div className="w-full flex flex-row justify-evenly">
             <div className="inline-block scale-125 my-10">
               <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-              Team Lead
+                Team Lead
               </h3>
               <TeamCard
                 name="Vishal Kumar Yadav"
