@@ -59,6 +59,6 @@ const lostItemSchema = new mongoose.Schema({
 });
 
 // creating model
-const lostItems = mongoose.model("foundItems", lostItemSchema);
+const lostItems = mongoose.model("lostItems", lostItemSchema);
 
 module.exports = lostItems;
