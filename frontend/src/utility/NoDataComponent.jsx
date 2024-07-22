@@ -2,7 +2,7 @@ import TypewriterComponent from "typewriter-effect";
 
 const NoDataComponent = () => {
   return (
-    <div className="">
+    <div className="w-full h-full">
       <div className="border border-blue-500 bg-blue-100 p-6 rounded-lg shadow-md max-w-lg mx-auto my-6">
         <h1 className="text-blue-500 text-2xl mb-4">No Data To Display</h1>
         <div className="text-gray-800">

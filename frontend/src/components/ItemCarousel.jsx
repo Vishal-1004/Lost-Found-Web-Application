@@ -51,13 +51,13 @@ function ItemCarousel({ heading }) {
     }
   }, [fetchData]);
 
+  // auto-scrolling starts here **********************************************************
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
 
-  // auto-scrolling starts here **********************************************************
   useEffect(() => {
     const container = containerRef.current;
     intervalRef.current = setInterval(() => {
@@ -173,21 +173,27 @@ function ItemCarousel({ heading }) {
         {heading}
       </h2>
 
-      {formLoading ? (
-        <LoadingComponent loading={formLoading} />
-      ) : error ? (
-        <ErrorComponent />
-      ) : postData.length == 0 ? (
-        <NoDataComponent />
-      ) : (
-        <>
-          <div
-            ref={containerRef}
-            id="carouselContainer"
-            className="flex overflow-x-scroll space-x-4 sm:p-4 transition-all duration-300"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+      <div
+        ref={containerRef}
+        id="carouselContainer"
+        className="flex overflow-x-scroll space-x-4 sm:p-4 transition-all duration-300"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {formLoading ? (
+          <div className="flex justify-center items-center w-full h-full">
+            <LoadingComponent loading={formLoading} />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center w-full h-full">
+            <ErrorComponent />
+          </div>
+        ) : postData.length == 0 ? (
+          <div className="flex justify-center items-center w-full h-full">
+            <NoDataComponent />
+          </div>
+        ) : (
+          <>
             {postData.map((item, index) => (
               <div key={index} onClick={() => handleCardClick(item)}>
                 <ItemCard
@@ -199,64 +205,37 @@ function ItemCarousel({ heading }) {
                 />
               </div>
             ))}
-          </div>
 
-          {showLeftButton && (
-            <button
-              className="absolute top-1/2 left-2 sm:left-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
-              onClick={scrollLeft}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FiChevronLeft size={24} />
-            </button>
-          )}
+            {showLeftButton && (
+              <button
+                className="absolute top-1/2 left-2 sm:left-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
+                onClick={scrollLeft}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FiChevronLeft size={24} />
+              </button>
+            )}
 
-          {showRightButton && (
-            <button
-              className="absolute top-1/2 right-2 sm:right-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
-              onClick={scrollRight}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FiChevronRight size={24} />
-            </button>
-          )}
+            {showRightButton && (
+              <button
+                className="absolute top-1/2 right-2 sm:right-6 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-20"
+                onClick={scrollRight}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FiChevronRight size={24} />
+              </button>
+            )}
 
-          {selectedItem && (
-            <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
-          )}
-        </>
-      )}
+            {selectedItem && (
+              <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
 export default ItemCarousel;
-
-  //  {formLoading ? (
-  //           <>
-  //             <FaSpinner className="mr-3 animate-spin" />
-  //             Loading...
-  //           </>
-  //         ) : (
-  //           <div
-  //             ref={containerRef}
-  //             id="carouselContainer"
-  //             className="flex overflow-x-scroll space-x-4 sm:p-4 transition-all duration-300"
-  //             onMouseEnter={handleMouseEnter}
-  //             onMouseLeave={handleMouseLeave}
-  //           >
-  //             {postData?.map((item, index) => (
-  //               <div key={index} onClick={() => handleCardClick(item)}>
-  //                 <ItemCard
-  //                   url={item.itemImage}
-  //                   title={item.title}
-  //                   date={item.date}
-  //                   about={item.description}
-  //                   location={item.location}
-  //                 />
-  //               </div>
-  //             ))}
-  //           </div>
-  //         )}
