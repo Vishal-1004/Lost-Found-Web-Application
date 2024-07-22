@@ -50,7 +50,7 @@ function LostItemForm({ onClose }) {
     setIsChecked(e.target.checked);
   };
 
-  const [shouldRender, setShouldRender] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [customLocation, setCustomLocation] = useState(false);
   const {
