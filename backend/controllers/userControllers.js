@@ -531,7 +531,14 @@ exports.updatePhoneNumber = async (req, res) => {
       { personEmail: email },
       { personNumber: phoneNumber }
     );
-    if (!phoneNumberUpdate || !phoneNumberUpdateForFoundSchema) {
+
+    // Updating day scholar or hosteler details for lost item schema
+    const phoneNumberUpdateForLostSchema = await lostItems.updateMany(
+      { personEmail: email },
+      { personNumber: phoneNumber }
+    );
+
+    if (!phoneNumberUpdate || !phoneNumberUpdateForFoundSchema || !phoneNumberUpdateForLostSchema) {
       return res.status(400).json({
         message: "Error updating phone number!",
       });
@@ -1204,6 +1211,7 @@ exports.getUserGraphData = async (req, res) => {
     const totalRegisteredUsers = await users.countDocuments();
     const totalNonRegisteredUsers = await nonRegisteredUser.countDocuments();
     const totalFoundPosts = await foundItems.countDocuments();
+    const totalLostPosts = await lostItems.countDocuments();
 
     return res.status(200).json({
       allUsersData: {
@@ -1211,7 +1219,7 @@ exports.getUserGraphData = async (req, res) => {
         noOfNonRegisteredUsers: totalNonRegisteredUsers,
       },
       postsData: {
-        noOfLostPosts: 0,
+        noOfLostPosts: totalLostPosts,
         noOfFoundPosts: totalFoundPosts,
       },
     });
