@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FoundTab from "./ProfileTabs/FoundTab";
 import { WarningComponent } from "../utility";
+import LostTab from "./ProfileTabs/LostTab";
 
 function Tabs() {
   const [activeTab, setActiveTab] = useState("Found");
@@ -35,7 +36,8 @@ function Tabs() {
         {/* Lost tab section */}
         {activeTab === "Lost" && (
           <div>
-            <WarningComponent />
+            {/* <WarningComponent />
+             */} <LostTab/>
           </div>
         )}
 
