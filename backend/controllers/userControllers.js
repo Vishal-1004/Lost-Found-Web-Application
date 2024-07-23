@@ -1,5 +1,10 @@
 const { cloudinary } = require("../utilities/cloudinaryUpload");
-const { users, foundItems, nonRegisteredUser } = require("../models");
+const {
+  users,
+  foundItems,
+  nonRegisteredUser,
+  lostItems,
+} = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { default: mongoose } = require("mongoose");
@@ -331,6 +336,67 @@ exports.updatePhoneNumber = async (req, res) => {
   }
 };
 
+//getting all lost items
+
+exports.fetchLostItems = async (req, res) => {
+  try {
+    const {
+      all,
+      count,
+      page = 1,
+      search = "",
+      sortOrder = -1,
+      limit = 6,
+    } = req.query;
+
+    if (all === "true" || all === "1") {
+      const skip = (page - 1) * limit;
+
+      const searchFilter = {
+        $or: [
+          { title: new RegExp(search, "i") },
+          { description: new RegExp(search, "i") },
+        ],
+      };
+
+      const lostItemsAll = await lostItems
+        .find(searchFilter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: parseInt(sortOrder, 10) });
+
+      const totalLostItemsPost = await lostItems.countDocuments(searchFilter);
+
+      return res.status(200).json({
+        message: "All Lost Post Fetched Successfully!",
+        data: lostItemsAll,
+        totalPages: Math.ceil(totalLostItemsPost / limit),
+        currentPage: page,
+        limit: limit,
+        sortOrder: sortOrder,
+      });
+    } else if (count) {
+      const countValue = parseInt(count, 10);
+      if (isNaN(countValue)) {
+        return res.status(400).json({ message: "Invalid count value" });
+      }
+      const lostItemsCount = await lostItems
+        .find()
+        .sort({ createdAt: -1 })
+        .limit(countValue);
+      return res.status(200).json({
+        message: "Lost Items Fetched Successfully!",
+        data: lostItemsCount,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid parameter" });
+    }
+  } catch (error) {
+    console.error("Error fetching lost items:", error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 // getting all found items
 exports.fetchFoundItems = async (req, res) => {
   try {
@@ -503,8 +569,13 @@ exports.deleteUser = async (req, res) => {
       });
     }
 */
+    // Deleting associated lost items
+    const lostItemsDeletion = await lostItems.deleteMany({
+      personEmail: email,
+    });
+
     return res.status(200).json({
-      message: `${userDeletion.deletedCount} user account(s) and ${foundItemsDeletion.deletedCount} found item(s) deleted successfully!`,
+      message: `${userDeletion.deletedCount} user account(s), ${foundItemsDeletion.deletedCount} and ${lostItemsDeletion.deletedCount}found item(s) deleted successfully!`,
     });
   } catch (error) {
     return res.status(400).json({
@@ -556,6 +627,64 @@ exports.updatePassword = async (req, res) => {
     return res.status(500).json({
       message: "Error connecting to db!",
       error: error,
+    });
+  }
+};
+
+//getting lost items by user
+exports.getLostItemsByUser = async (req, res) => {
+  const { email, registrationNumber, sortingOrder } = req.body;
+  const { search = "" } = req.query;
+
+  if (!email && !registrationNumber) {
+    return res.status(400).json({
+      message: "Email or Registration Number is required!",
+    });
+  }
+
+  try {
+    let user;
+    if (email) {
+      user = await users.findOne({ email: email });
+    } else if (registrationNumber) {
+      user = await users.findOne({ registrationNo: registrationNumber });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found in the Database",
+      });
+    }
+
+    const searchFilter = {
+      personEmail: user.email,
+      $or: [
+        { title: new RegExp(search, "i") },
+        { description: new RegExp(search, "i") },
+      ],
+    };
+
+    const lostItemsList = await lostItems
+      .find(searchFilter)
+      .sort({ createdAt: parseInt(sortingOrder, 10) });
+
+    if (lostItemsList.length === 0) {
+      return res.status(404).json({
+        message: "No lost items posted by user",
+        metaData: "0",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Lost items fetched successfully",
+      data: lostItemsList,
+      metaData: lostItemsList.length,
+    });
+  } catch (error) {
+    console.error("Error fetching lost items:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };

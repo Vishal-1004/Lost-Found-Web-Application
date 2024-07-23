@@ -80,10 +80,16 @@ router.post(
 );
 
 // editing found items posts
-router.put("/api/v1/edit-found-item", upload.single("photo"), userControllers.editFoundItem);
+router.put(
+  "/api/v1/edit-found-item",
+  upload.single("photo"),
+  userControllers.editFoundItem
+);
 
 // Getting all found items
 router.post("/api/v1/get-found-items", userControllers.fetchFoundItems);
+//Getting all lost items
+router.post("/api/v1/get-lost-items", userControllers.fetchLostItems);
 
 // Get all users for admin to show
 router.post("/api/v1/get-all-users", adminControllers.getAllUsers);
@@ -97,6 +103,8 @@ router.post(
   "/api/v1/get-found-items-user",
   userControllers.getFoundItemsByUser
 );
+// Get all lost items posted by a user
+router.post("/api/v1/get-lost-items-user", userControllers.getLostItemsByUser);
 
 //Update user/admin/blocked status of registered  users only by admins
 router.post("/api/v1/change-user-status", adminControllers.changeStatus);
@@ -113,7 +121,6 @@ router.post(
   adminControllers.allNonRegisteredUsers
 );
 
-
 // delete a found item post of a user
 router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
 
@@ -127,6 +134,6 @@ router.post("/api/v1/get-graph-data", userControllers.getProfileGraphData);
 router.get("/api/v1/get-user-graph-data", userControllers.getUserGraphData);
 
 // Users sent some message to  admin
-router.post("/api/v1/send-message",userControllers.userSendsMessage)
+router.post("/api/v1/send-message", userControllers.userSendsMessage);
 
 module.exports = router;
