@@ -265,7 +265,6 @@ exports.createLostPost = async (req, res) => {
         "https://res.cloudinary.com/dcmqniwwc/image/upload/v1721453179/nwygugtii3lpwt7xnqgn.jpg",
     };
   }
-  console.log(req.body)
   const {
     itemTitle,
     itemDescription,
@@ -474,7 +473,12 @@ exports.updateHostelerOrDayScholar = async (req, res) => {
       { personDayScholarORhosteler: dayScholarORhosteler }
     );
 
-    if (!stayDetailUpdate || !stayDetailUpdateForFoundSchema) {
+    const stayDetailUpdateForLostSchema = await lostItems.updateMany(
+      { personEmail: email },
+      { personDayScholarORhosteler: dayScholarORhosteler }
+    );
+
+    if (!stayDetailUpdate || !stayDetailUpdateForFoundSchema || !stayDetailUpdateForLostSchema) {
       return res.status(400).json({
         message: "Error updating detail!",
       });
