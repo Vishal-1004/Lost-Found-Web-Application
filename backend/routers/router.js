@@ -136,4 +136,11 @@ router.get("/api/v1/get-user-graph-data", userControllers.getUserGraphData);
 // Users sent some message to  admin
 router.post("/api/v1/send-message", userControllers.userSendsMessage);
 
+//Create lost post 
+router.post(
+  "/api/v1/create-lost-post",
+  upload.single("photo"),
+  userControllers.createLostPost
+);
+
 module.exports = router;

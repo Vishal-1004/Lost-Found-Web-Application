@@ -13,6 +13,10 @@ const nonRegisteredUserSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  lostItemsID:{
+    type: [String],
+    default: [],
+  },
   status: {
     type: String,
     enum: ["USER", "BLOCKED"],

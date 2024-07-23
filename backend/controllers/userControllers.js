@@ -225,6 +225,213 @@ exports.createFoundPost = async (req, res) => {
   }
 };
 
+async function createLostItemPost({
+  title,
+  itemImage,
+  date,
+  location,
+  description,
+  personName,
+  personRegistrationNumber,
+  personEmail,
+  personDayScholarORhosteler,
+  personStatus,
+  personNumber,
+}) {
+  const newLostItemPost = await lostItems.create({
+    title,
+    itemImage,
+    date,
+    location,
+    description,
+    personName,
+    personRegistrationNumber,
+    personEmail,
+    personDayScholarORhosteler,
+    personStatus,
+    personNumber,
+  });
+  return newLostItemPost;
+}
+
+exports.createLostPost = async (req, res) => {
+  let upload;
+  if (req.file) {
+    upload = await cloudinary.uploader.upload(req.file.path);
+  } else {
+    // Set a default image URL or path
+    upload = {
+      secure_url:
+        "https://res.cloudinary.com/dcmqniwwc/image/upload/v1721453179/nwygugtii3lpwt7xnqgn.jpg",
+    };
+  }
+  console.log(req.body)
+  const {
+    itemTitle,
+    itemDescription,
+    itemLostDate,
+    itemLocation,
+    loserName,
+    loserRegistrationNumber,
+    loserEmail,
+    loserDayScholarORhosteler,
+    loserStatus,
+    loserPhoneNumber,
+  } = req.body;
+  if (
+    !itemTitle ||
+    !itemDescription ||
+    !itemLostDate ||
+    !itemLocation ||
+    !loserName ||
+    !loserRegistrationNumber ||
+    !loserEmail ||
+    !loserDayScholarORhosteler ||
+    !loserStatus
+  ) {
+    return res.status(400).json({
+      message: "Enter all the details!",
+    });
+  }
+  try {
+    const existingUser = await users.findOne({
+      email: loserEmail,
+      registrationNo: loserRegistrationNumber,
+    });
+    if (existingUser) {
+      // console.log(existingUser);
+      if (existingUser.status === "BLOCKED") {
+        return res.status(400).json({
+          message: "You are Blocked by Admin!",
+        });
+      }
+      // User already existing in our database
+      try {
+        //Creating new post in found Items
+        const newFoundItem = await createLostItemPost({
+          title: itemTitle,
+          itemImage: upload.secure_url,
+          date: itemLostDate,
+          location: itemLocation,
+          description: itemDescription,
+          personName: loserName,
+          personRegistrationNumber: loserRegistrationNumber,
+          personEmail: loserEmail,
+          personDayScholarORhosteler: loserDayScholarORhosteler,
+          personStatus: loserStatus,
+          personNumber: loserPhoneNumber,
+        });
+
+        //Adding new post id to user's foundItemsID array
+        if (newFoundItem) {
+          const newFoundItemPost = await users.updateOne(
+            { _id: existingUser._id },
+            { foundItemsID: [...existingUser.foundItemsID, newFoundItem._id] }
+          );
+          if (newFoundItemPost) {
+            return res.status(200).json({
+              message: "Lost Post Created Successful!",
+              registered: true,
+            });
+          }
+        }
+      } catch (error) {
+        //console.log("inside catch");
+        return res.status(500).json({
+          message: "Lost Post Creation Failed!",
+          error: error.message,
+        });
+      }
+    } else {
+      //User not in our database
+      const existingNonRegisteredUser = await nonRegisteredUser.findOne({
+        email: loserEmail,
+        registrationNo: loserRegistrationNumber,
+      });
+      try {
+        //Adding new post id to an existing non registered users foundItemsID array
+        if (existingNonRegisteredUser) {
+          if (existingNonRegisteredUser.status === "BLOCKED") {
+            return res.status(400).json({
+              message: "You are Blocked by Admin!",
+            });
+          }
+          //Creating new post in found Items
+          const newLostItem = await createLostItemPost({
+            title: itemTitle,
+            itemImage: upload.secure_url,
+            date: itemLostDate,
+            location: itemLocation,
+            description: itemDescription,
+            personName: loserName,
+            personRegistrationNumber: loserRegistrationNumber,
+            personEmail: loserEmail,
+            personDayScholarORhosteler: loserDayScholarORhosteler,
+            personStatus: loserStatus,
+            personNumber: loserPhoneNumber,
+          });
+          const newLostItemPost = await nonRegisteredUser.updateOne(
+            {
+              email: existingNonRegisteredUser.email,
+              registrationNo: existingNonRegisteredUser.registrationNo,
+            },
+            {
+              lostItemsID: [
+                ...existingNonRegisteredUser.lostItemsID,
+                newLostItem._id,
+              ],
+            }
+          );
+          if (newLostItemPost) {
+            return res.status(200).json({
+              message: "Lost Post Created Successfully!",
+              registered: false,
+            });
+          }
+        } else {
+          //Creating new post in found Items
+          const newLostItem = await createFoundItemPost({
+            title: itemTitle,
+            itemImage: upload.secure_url,
+            date: itemLostDate,
+            location: itemLocation,
+            description: itemDescription,
+            personName: loserName,
+            personRegistrationNumber: loserRegistrationNumber,
+            personEmail: loserEmail,
+            personDayScholarORhosteler: loserDayScholarORhosteler,
+            personStatus: loserStatus,
+            personNumber: loserPhoneNumber,
+          });
+          //User NOT in nonRegisteredUser
+          const newLostItemPostwithNonRegisteredUser =
+            await nonRegisteredUser.create({
+              email: loserEmail,
+              registrationNo: loserRegistrationNumber,
+              foundItemsID: [newLostItem._id],
+            });
+          if (newLostItemPostwithNonRegisteredUser) {
+            return res.status(200).json({
+              message: "Lost Post Created Successful!",
+              registered: false,
+            });
+          }
+        }
+      } catch (error) {
+        return res.status(500).json({
+          message: "Lost Post Creation Failed!",
+          error: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Lost Post Creation Failed!",
+      error: error.message,
+    });
+  }
+};
+
 // update hosteler or day scholar information
 exports.updateHostelerOrDayScholar = async (req, res) => {
   const { email, dayScholarORhosteler } = req.body;
