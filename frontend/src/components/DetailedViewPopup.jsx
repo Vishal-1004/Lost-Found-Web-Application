@@ -4,7 +4,7 @@ import DetailedView from "./DetailedView";
 import PropTypes from "prop-types";
 
 const DetailedViewPopup = ({ item, onClose, type }) => {
-  console.log(type);
+  // console.log(type);
   const {
     itemImage,
     title,
