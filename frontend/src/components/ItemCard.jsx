@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiFillCalendar } from 'react-icons/ai';
 
-function ItemCard({ url, title, date, about, location, }) {
+function ItemCard({ url, title, date, about, location, type, }) {
+  // console.log(type);
   const [isHovered, setIsHovered] = useState(false);
 
   const cardStyle = {

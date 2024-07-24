@@ -220,16 +220,34 @@ function ItemCarousel({ heading }) {
           </div>
         ) : (
           <>
-            {postData.map((item, index) => (
-              <div key={index} onClick={() => handleCardClick(item)}>
-                <ItemCard
-                  url={item.itemImage}
-                  title={item.title}
-                  date={moment(item.date).format("ddd, D MMM YYYY")}
-                  about={item.description}
-                  location={item.location}
-                />
-              </div>
+            {/* Found posts display */}
+            {heading==="Found" &&
+              postData.map((item, index) => (
+                <div key={index} onClick={() => handleCardClick(item)}>
+                  <ItemCard
+                    url={item.itemImage}
+                    title={item.title}
+                    date={moment(item.date).format("ddd, D MMM YYYY")}
+                    about={item.description}
+                    location={item.location}
+                    type={"Found"}
+                  />
+                </div>
+            ))}
+
+            {/* Lost posts display */}
+            {heading==="Lost" &&
+              postData.map((item, index) => (
+                <div key={index} onClick={() => handleCardClick(item)}>
+                  <ItemCard
+                    url={item.itemImage}
+                    title={item.title}
+                    date={moment(item.date).format("ddd, D MMM YYYY")}
+                    about={item.description}
+                    location={item.location}
+                    type={"Lost"}
+                  />
+                </div>
             ))}
 
             {showLeftButton && (
@@ -258,6 +276,7 @@ function ItemCarousel({ heading }) {
               <DetailedViewPopup
                 item={selectedItem}
                 onClose={handleClosePopup}
+                type={heading}
               />
             )}
           </>
