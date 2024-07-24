@@ -9,7 +9,7 @@ import { ErrorComponent, LoadingComponent, NoDataComponent } from "../utility";
 import { useDispatch, useSelector } from "react-redux";
 import { doneFetchingData } from "../actions";
 
-function ItemCarousel({ heading }) {
+function ItemCarousel({ type }) {
   const dispatch = useDispatch();
 
   const [postData, setPostData] = useState([]);
@@ -53,18 +53,18 @@ function ItemCarousel({ heading }) {
   };
 
   useEffect(() => {
-    if (heading == "Found") {
+    if (type == "Found") {
       getRecentFoundPost();
     } else {
       getRecentLostPost();
     }
-  }, [heading]);
+  }, [type]);
 
   // Fetching data again when ever a new post is created **********************
   const fetchData = useSelector((state) => state.dataFetching.fetchData);
   useEffect(() => {
     const reFetchData = async () => {
-      if (heading == "Found") {
+      if (type == "Found") {
         await getRecentFoundPost();
       } else {
         await getRecentLostPost();
@@ -196,7 +196,7 @@ function ItemCarousel({ heading }) {
         `}
       </style>
       <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
-        Recently {heading} Items
+        Recently {type} Items
       </h2>
 
       <div
@@ -221,7 +221,7 @@ function ItemCarousel({ heading }) {
         ) : (
           <>
             {/* Found posts display */}
-            {heading==="Found" &&
+            {type==="Found" &&
               postData.map((item, index) => (
                 <div key={index} onClick={() => handleCardClick(item)}>
                   <ItemCard
@@ -236,7 +236,7 @@ function ItemCarousel({ heading }) {
             ))}
 
             {/* Lost posts display */}
-            {heading==="Lost" &&
+            {type==="Lost" &&
               postData.map((item, index) => (
                 <div key={index} onClick={() => handleCardClick(item)}>
                   <ItemCard
@@ -276,7 +276,7 @@ function ItemCarousel({ heading }) {
               <DetailedViewPopup
                 item={selectedItem}
                 onClose={handleClosePopup}
-                type={heading}
+                type={type}
               />
             )}
           </>
