@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
-import { createFoundItemPost } from "../services/API";
+import { createLostItemPost } from "../services/API";
 import moment from "moment";
-import { LoginToAccessComponent, WarningComponent } from "../utility";
+import { LoginToAccessComponent } from "../utility";
+import { tryFetchingData } from "../actions";
 
 // default locations available
 const locations = [
@@ -19,6 +20,8 @@ const locations = [
 ];
 
 function LostItemForm({ onClose }) {
+  const dispatch = useDispatch();
+
   // getting user data from localstorage****************
   const userName = useSelector(
     (state) => state.storedUserData.userData.userName
@@ -50,7 +53,6 @@ function LostItemForm({ onClose }) {
     setIsChecked(e.target.checked);
   };
 
-  const [shouldRender, setShouldRender] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [customLocation, setCustomLocation] = useState(false);
   const {
@@ -72,29 +74,27 @@ function LostItemForm({ onClose }) {
     formDataToSend.append("photo", file);
     formDataToSend.append("itemTitle", formData.itemTitle);
     formDataToSend.append("itemDescription", formData.itemDescription);
-    formDataToSend.append(
-      "itemFoundDate",
-      moment(formData.date).format("DD-MM-YYYY")
-    );
+    formDataToSend.append("itemLostDate", formData.date);
     formDataToSend.append("itemLocation", formData.itemLocation);
-    formDataToSend.append("founderName", userName || formData.founderName);
+    formDataToSend.append("loserName", userName || formData.founderName);
     formDataToSend.append(
-      "founderRegistrationNumber",
+      "loserRegistrationNumber",
       userRegistrationNo || formData.founderRegNo
     );
-    formDataToSend.append("founderEmail", userEmail || formData.founderEmail);
+    formDataToSend.append("loserEmail", userEmail || formData.founderEmail);
     formDataToSend.append(
-      "founderDayScholarORhosteler",
+      "loserDayScholarORhosteler",
       formData.dayScholarORhosteler
     );
-    formDataToSend.append("founderStatus", userStatus ? userStatus : "USER");
-    formDataToSend.append("founderPhoneNumber", userPhoneNumber);
+    formDataToSend.append("loserStatus", userStatus ? userStatus : "USER");
+    formDataToSend.append("loserPhoneNumber", userPhoneNumber);
 
     try {
-      const response = await createFoundItemPost(formDataToSend);
+      const response = await createLostItemPost(formDataToSend);
       //console.log(response);
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
+        dispatch(tryFetchingData());
       } else {
         ToastMsg(response.response.data.message, "error");
       }
@@ -130,7 +130,9 @@ function LostItemForm({ onClose }) {
   const lastYearDateString = lastYearDate.toISOString().split("T")[0];
   // *******************************************
 
-  return shouldRender ? (
+  return !userToken ? (
+    <LoginToAccessComponent />
+  ) : (
     <form
       className="w-full"
       onSubmit={handleSubmit(handleFormSubmit)}
@@ -274,8 +276,7 @@ function LostItemForm({ onClose }) {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="itemImage"
         >
-          Item Image (jpg, png, jpeg):{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          Item Image (jpg, png, jpeg):
         </label>
         <input
           className={`form-control text-gray-500 ${
@@ -285,10 +286,10 @@ function LostItemForm({ onClose }) {
           type="file"
           id="itemImage"
           accept=".jpg,.png,.jpeg"
-          {...register("itemImage", { required: "Item image is required" })}
+          {...register("itemImage")}
           onChange={(e) => {
             setFile(e.target.files[0]);
-            //console.log(e.target.files[0]);
+            console.log(e.target.files[0]);
           }}
         />
         {errors.itemImage && (
@@ -344,7 +345,6 @@ function LostItemForm({ onClose }) {
             type="text"
             id="founderRegNo"
             placeholder="ex: 22BCE1411"
-            value={userRegistrationNo ? userRegistrationNo : null}
             {...register("founderRegNo", {
               required: "Founder registration number is required",
               pattern: {
@@ -489,10 +489,6 @@ function LostItemForm({ onClose }) {
         </button>
       </div>
     </form>
-  ) : !userToken ? (
-    <LoginToAccessComponent />
-  ) : (
-    <WarningComponent />
   );
 }
 

@@ -101,13 +101,13 @@ function FoundItemForm({ onClose }) {
 
     try {
       const response = await createFoundItemPost(formDataToSend);
-      console.log(response);
+      //console.log(response);
       if (response.status === 200) {
         ToastMsg(response.data.message, "success");
         dispatch(tryFetchingData());
       } else {
         ToastMsg(response.response.data.message, "error");
-        console.error("Error: ", response);
+        //console.error("Error: ", response);
       }
     } catch (error) {
       ToastMsg("Internal Server Error! Please Try Later", "error");

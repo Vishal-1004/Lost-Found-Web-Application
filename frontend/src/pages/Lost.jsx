@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ToastMsg from "../constants/ToastMsg";
-import { getFoundItemsFunction } from "../services/API";
+import { getLostItemsFunction } from "../services/API";
 import { ItemCard, FormPopup, DetailedViewPopup } from "../components";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,10 +23,10 @@ const Lost = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  const gettingAllFoundPostFunction = async () => {
+  const gettingAllLostPostFunction = async () => {
     try {
       setFormLoading(true);
-      const response = await getFoundItemsFunction(
+      const response = await getLostItemsFunction(
         "1",
         0,
         pageInfo.currentPage,
@@ -59,7 +59,7 @@ const Lost = () => {
   };
 
   useEffect(() => {
-    gettingAllFoundPostFunction();
+    gettingAllLostPostFunction();
     //console.log(pageInfo);
   }, [pageInfo.currentPage, debouncedSearch, pageInfo.limit, sortOrder]);
 
@@ -67,7 +67,7 @@ const Lost = () => {
   const fetchData = useSelector((state) => state.dataFetching.fetchData);
   useEffect(() => {
     const reFetchData = async () => {
-      await gettingAllFoundPostFunction();
+      await gettingAllLostPostFunction();
       dispatch(doneFetchingData());
     };
 
@@ -111,14 +111,14 @@ const Lost = () => {
   };
 
   // item popup form
-  const [showFoundPopup, setShowFoundPopup] = useState(false);
+  const [showLostPopup, setShowLostPopup] = useState(false);
 
   const handleOpenFormPopup = () => {
-    setShowFoundPopup(true);
+    setShowLostPopup(true);
   };
 
   const handleCloseFormPopup = () => {
-    setShowFoundPopup(false);
+    setShowLostPopup(false);
   };
   // *************************
 
@@ -183,9 +183,9 @@ const Lost = () => {
             </div>
             {/* found item form popup */}
             <FormPopup
-              isOpen={showFoundPopup}
+              isOpen={showLostPopup}
               onClose={handleCloseFormPopup}
-              type="found"
+              type="lost"
             />
           </div>
 

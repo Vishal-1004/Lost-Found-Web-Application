@@ -6,8 +6,8 @@ const Home = () => {
     <div>
       {/* <h1 style={{ textAlign: "center" }}>Home Page!</h1> */}
       <HeroSection />
-      <ItemCarousel heading={"Recently Found Items"} />
-      <ItemCarousel heading={"Recently Lost Items"} />
+      <ItemCarousel heading={"Found"} />
+      <ItemCarousel heading={"Lost"} />
       <ColumnsWithChart />
     </div>
   );

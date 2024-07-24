@@ -3,7 +3,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import ItemCard from './ItemCard';
 import DetailedViewPopup from "./DetailedViewPopup";
-import { getFoundItemsFunction } from "../services/API";
+import { getFoundItemsFunction, getLostItemsFunction } from "../services/API";
 import moment from "moment";
 import { ErrorComponent, LoadingComponent, NoDataComponent } from "../utility";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,15 +34,41 @@ function ItemCarousel({ heading }) {
     }
   };
 
+  const getRecentLostPost = async () => {
+    setFormLoading(true);
+    try {
+      const all = 0;
+      const count = 6;
+      const response = await getLostItemsFunction(all, count);
+      //console.log(response);
+      setError(false);
+      setPostData(response.data.data);
+    } catch (error) {
+      setError(true);
+      //ToastMsg("Server error! please try later", "error");
+      //console.log("Internal Server Error: ", error);
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getRecentFoundPost();
-  }, []);
+    if (heading == "Found") {
+      getRecentFoundPost();
+    } else {
+      getRecentLostPost();
+    }
+  }, [heading]);
 
   // Fetching data again when ever a new post is created **********************
   const fetchData = useSelector((state) => state.dataFetching.fetchData);
   useEffect(() => {
     const reFetchData = async () => {
-      await getRecentFoundPost();
+      if (heading == "Found") {
+        await getRecentFoundPost();
+      } else {
+        await getRecentLostPost();
+      }
       dispatch(doneFetchingData());
     };
 
@@ -170,7 +196,7 @@ function ItemCarousel({ heading }) {
         `}
       </style>
       <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
-        {heading}
+        Recently {heading} Items
       </h2>
 
       <div
@@ -229,7 +255,10 @@ function ItemCarousel({ heading }) {
             )}
 
             {selectedItem && (
-              <DetailedViewPopup item={selectedItem} onClose={handleClosePopup} />
+              <DetailedViewPopup
+                item={selectedItem}
+                onClose={handleClosePopup}
+              />
             )}
           </>
         )}

@@ -117,6 +117,28 @@ export const getFoundItemsFunction = async (
   );
 };
 
+// creating lost item post
+export const createLostItemPost = async (data) => {
+  return await commonrequest("POST", `${BACKEND_URL}/api/v1/create-lost-post`, data, {
+    "Content-Type": "multipart/form-data",
+  });
+};
+
+// getting all lost items
+export const getLostItemsFunction = async (
+  all = "0",
+  count = 5,
+  page = 1,
+  search = "",
+  limit = 6,
+  sortOrder = -1
+) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/get-lost-items?all=${all}&count=${count}&page=${page}&limit=${limit}&search=${search}&sortOrder=${sortOrder}`
+  );
+};
+
 // getting all users data for admin function
 export const getAllUsersFunction = async (
   email,
@@ -176,6 +198,20 @@ export const getFoundItemsPostByUserFunction = async (
   return await commonrequest(
     "POST",
     `${BACKEND_URL}/api/v1/get-found-items-user?&search=${search}`,
+    { email, registrationNumber, sortingOrder }
+  );
+};
+
+// Get all found items posted by a user
+export const getLostItemsPostByUserFunction = async (
+  email,
+  registrationNumber,
+  sortingOrder = -1,
+  search = ""
+) => {
+  return await commonrequest(
+    "POST",
+    `${BACKEND_URL}/api/v1/get-lost-items-user?&search=${search}`,
     { email, registrationNumber, sortingOrder }
   );
 };

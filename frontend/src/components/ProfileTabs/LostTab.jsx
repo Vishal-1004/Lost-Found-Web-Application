@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFoundItemsPostByUserFunction } from "../../services/API";
+import { getLostItemsPostByUserFunction } from "../../services/API";
 import ToastMsg from "../../constants/ToastMsg";
 import { Link } from "react-router-dom";
 import DetailedViewPopup from "../DetailedViewPopup";
@@ -40,7 +40,7 @@ const LostTab = () => {
   const getFoundPostsData = async () => {
     setLoading(true);
     try {
-      const response = await getFoundItemsPostByUserFunction(
+      const response = await getLostItemsPostByUserFunction(
         userEmail,
         userRegistrationNo,
         sortingOrder,
@@ -96,14 +96,14 @@ const LostTab = () => {
   // *************************
 
   // item popup form
-  const [showFoundPopup, setShowFoundPopup] = useState(false);
+  const [showLostPopup, setShowLostPopup] = useState(false);
 
   const handleOpenFormPopup = () => {
-    setShowFoundPopup(true);
+    setShowLostPopup(true);
   };
 
   const handleCloseFormPopup = () => {
-    setShowFoundPopup(false);
+    setShowLostPopup(false);
   };
   // *************************
 
@@ -168,9 +168,9 @@ const LostTab = () => {
               <NoDataComponent />
               {/* found item form popup */}
               <FormPopup
-                isOpen={showFoundPopup}
+                isOpen={showLostPopup}
                 onClose={handleCloseFormPopup}
-                type="found"
+                type="lost"
               />
             </>
           ) : (
@@ -194,9 +194,9 @@ const LostTab = () => {
 
               {/* found item form popup */}
               <FormPopup
-                isOpen={showFoundPopup}
+                isOpen={showLostPopup}
                 onClose={handleCloseFormPopup}
-                type="found"
+                type="lost"
               />
 
               {/* detailed view popup */}
