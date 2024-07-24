@@ -1,6 +1,11 @@
 // Importing models/schemas
-const { users, nonRegisteredUser, foundItems } = require("../models");
-const jwt=require("jsonwebtoken")
+const {
+  users,
+  nonRegisteredUser,
+  foundItems,
+  lostItems,
+} = require("../models");
+const jwt = require("jsonwebtoken");
 
 // getting all user data
 exports.getAllUsers = async (req, res) => {
@@ -47,7 +52,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 //change status for registered users
-exports.changeStatus = async (req,res)=>{
+exports.changeStatus = async (req, res) => {
   const { userId, userToken, newStatus } = req.body;
   //console.log(userId, userToken, newStatus);
   try {
@@ -94,11 +99,22 @@ exports.changeStatus = async (req,res)=>{
         { status: newStatus }
       );
       // console.log(updatingStatus)
-      const changedUser=await users.findById(userId)
+      const changedUser = await users.findById(userId);
       // console.log(changedUser)
-      const updatingStatusInFoundItems=await foundItems.updateMany({personRegistrationNumber:changedUser.registrationNo},{personStatus:newStatus})
+      const updatingStatusInFoundItems = await foundItems.updateMany(
+        { personRegistrationNumber: changedUser.registrationNo },
+        { personStatus: newStatus }
+      );
+      const updatingStatusInLostItems = await lostItems.updateMany(
+        { personRegistrationNumber: changedUser.registrationNo },
+        { personStatus: newStatus }
+      );
       // console.log(updatingStatusInFoundItems)
-      if (updatingStatus.acknowledged && updatingStatusInFoundItems.acknowledged) {
+      if (
+        updatingStatus.acknowledged &&
+        updatingStatusInFoundItems.acknowledged &&
+        updatingStatusInLostItems.acknowledged
+      ) {
         return res.status(200).json({
           message: "Updated Successfully!",
         });
@@ -119,92 +135,96 @@ exports.changeStatus = async (req,res)=>{
       error: err,
     });
   }
-}
+};
 
 //change status for nonRegistered users
-exports.changeNonRegisteredUserStatus = async(req,res)=>{
-  const {nonRegisteredUserId,authToken,newStatus} = req.body
-  try{
-    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+exports.changeNonRegisteredUserStatus = async (req, res) => {
+  const { nonRegisteredUserId, authToken, newStatus } = req.body;
+  try {
+    const decoded = await jwt.verify(authToken, process.env.JWT_SECRET_KEY);
 
     //Checking if admin exists
-    const existingAdmin=await users.findById(decoded._id)
-    if(!existingAdmin || existingAdmin.status!=="ADMIN"){
+    const existingAdmin = await users.findById(decoded._id);
+    if (!existingAdmin || existingAdmin.status !== "ADMIN") {
       return res.status(400).json({
-        message : "Admin not found!"
-      })
+        message: "Admin not found!",
+      });
     }
 
     //Checking if user exists
-    const existingNonRegisteredUser=await nonRegisteredUser.findById(nonRegisteredUserId)
-    if(!existingNonRegisteredUser){
+    const existingNonRegisteredUser = await nonRegisteredUser.findById(
+      nonRegisteredUserId
+    );
+    if (!existingNonRegisteredUser) {
       return res.status(400).json({
-        message:"User not found!"
-      })
+        message: "User not found!",
+      });
     }
 
     //Checking if user's email is admin's email
-    if(existingAdmin.email==existingNonRegisteredUser.email){
+    if (existingAdmin.email == existingNonRegisteredUser.email) {
       return res.status(400).json({
-        message:"Cannot perform operation on self"
-      })
+        message: "Cannot perform operation on self",
+      });
     }
 
     //Checking newStatus
-    if(newStatus!=="USER" && newStatus!=="BLOCKED"){
+    if (newStatus !== "USER" && newStatus !== "BLOCKED") {
       return res.status(400).json({
-        message : "Status provided is wrong!"
-      })
+        message: "Status provided is wrong!",
+      });
     }
 
     //changing status of user
-    try{
-      const updatingStatus=await nonRegisteredUser.updateOne({_id:nonRegisteredUserId},{status:newStatus})
-      if(updatingStatus.acknowledged){
+    try {
+      const updatingStatus = await nonRegisteredUser.updateOne(
+        { _id: nonRegisteredUserId },
+        { status: newStatus }
+      );
+      if (updatingStatus.acknowledged) {
         return res.status(200).json({
-          message : "Updated Successfully!"
-        })
-      }else{
+          message: "Updated Successfully!",
+        });
+      } else {
         return res.status(400).json({
-          message:"Unable to update in DB!",
-        })
+          message: "Unable to update in DB!",
+        });
       }
-    }catch(err){
+    } catch (err) {
       return res.status(400).json({
-        message:"Unable to update in DB!",
-        error: err
-      })
+        message: "Unable to update in DB!",
+        error: err,
+      });
     }
-  }
-  catch(err){
+  } catch (err) {
     return res.status(400).json({
-      message : 'Invalid admin token',
-      error : err
-    })
+      message: "Invalid admin token",
+      error: err,
+    });
   }
-}
+};
 
 // getAll nonregistered users
-exports.allNonRegisteredUsers = async(req,res)=>{
-  const {authToken}=req.body
-  const{page=1,search="",limit=5}=req.query
-  try{
-    const decoded=await jwt.verify(authToken,process.env.JWT_SECRET_KEY)
+exports.allNonRegisteredUsers = async (req, res) => {
+  const { authToken } = req.body;
+  const { page = 1, search = "", limit = 5 } = req.query;
+  try {
+    const decoded = await jwt.verify(authToken, process.env.JWT_SECRET_KEY);
 
     //Checking if admin exists
-    const existingAdmin=await users.findById(decoded._id)
+    const existingAdmin = await users.findById(decoded._id);
 
-    if(!existingAdmin || existingAdmin.status!=="ADMIN"){
+    if (!existingAdmin || existingAdmin.status !== "ADMIN") {
       return res.status(400).json({
-        message : "Admin not found!"
-      })
+        message: "Admin not found!",
+      });
     }
 
     //set pagination variables
-    const skip=(page-1)*limit
+    const skip = (page - 1) * limit;
 
-     // Create the search filter
-     const searchFilter = {
+    // Create the search filter
+    const searchFilter = {
       $or: [
         { name: new RegExp(search, "i") },
         { email: new RegExp(search, "i") },
@@ -213,28 +233,28 @@ exports.allNonRegisteredUsers = async(req,res)=>{
 
     // Find users with pagination and search
     const nonRegisteredUsers = await nonRegisteredUser
-    .find(searchFilter)
-    .skip(skip)
-    .limit(limit)
+      .find(searchFilter)
+      .skip(skip)
+      .limit(limit);
 
     // Get total user count for pagination
     const totalUsers = await nonRegisteredUser.countDocuments(searchFilter);
-    if(!nonRegisteredUsers){
+    if (!nonRegisteredUsers) {
       return res.status(400).json({
-        message : "Error fetching data!"
-      })
+        message: "Error fetching data!",
+      });
     }
 
     return res.status(200).json({
-      message : "Data fetched successfully!",
+      message: "Data fetched successfully!",
       nonRegisteredUsers,
       totalPages: Math.ceil(totalUsers / limit),
       currentPage: page,
       limit: limit,
     });
-  }catch(err){
+  } catch (err) {
     return res.status(400).json({
-      message : "Error"
-    })
+      message: "Error",
+    });
   }
-}
+};
