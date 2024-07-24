@@ -3,7 +3,8 @@ import { FaTimes } from "react-icons/fa";
 import DetailedView from "./DetailedView";
 import PropTypes from "prop-types";
 
-const DetailedViewPopup = ({ item, onClose }) => {
+const DetailedViewPopup = ({ item, onClose, type }) => {
+  // console.log(type);
   const {
     itemImage,
     title,
@@ -74,6 +75,7 @@ const DetailedViewPopup = ({ item, onClose }) => {
           about={description}
           location={location}
           founder={founder}
+          type={type}
         />
       </div>
     </div>

@@ -8,7 +8,8 @@ import ToastMsg from "../constants/ToastMsg";
 import moment from "moment";
 import { deleteFoundItemPostByUserFunction } from "../services/API";
 
-const DetailedView = ({ id, url, title, date, about, location, founder }) => {
+const DetailedView = ({ id, url, title, date, about, location, founder, type }) => {
+  console.log(type);
   const userToken = useSelector((state) => state.storedUserData.userToken);
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   const userEmail = useSelector(
