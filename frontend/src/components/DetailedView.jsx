@@ -73,6 +73,7 @@ const DetailedView = ({
       console.log("Internal Server Error: ", error);
     } finally {
       setLoading(false);
+      window.location.reload();
     }
   };
 

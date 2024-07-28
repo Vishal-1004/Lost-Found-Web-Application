@@ -41,7 +41,7 @@ function ContactUs() {
   };
 
   return (
-    <div className="w-full py-4 flex items-center justify-center bg-gradient-to-b from-[#fff] to-blue-200">
+    <div className="w-full mt-1 py-4 flex items-center justify-center bg-gradient-to-b from-[#fff] to-blue-200">
       <div className="flex flex-col md:flex-row gap-4 p-2 sm:p-10 bg-white w-5/6 sm:w-[80vw] lg:w-4/6 rounded-2xl shadow-lg bg-opacity-80">
         <div className="w-full md:w-1/2 flex flex-col items-center sm:items-start gap-6">
           <div className="flex flex-col items-start">

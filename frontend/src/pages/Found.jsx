@@ -237,6 +237,7 @@ const Found = () => {
                   Page {pageInfo.currentPage} of {pageInfo.totalPages}
                 </span>
               </div>
+              
               {/* detailed view popup */}
               {selectedItem && (
                 <DetailedViewPopup
