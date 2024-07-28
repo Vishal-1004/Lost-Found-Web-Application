@@ -243,6 +243,7 @@ const Found = () => {
                 <DetailedViewPopup
                   item={selectedItem}
                   onClose={handleClosePopup}
+                  type={"found"}
                 />
               )}
             </>

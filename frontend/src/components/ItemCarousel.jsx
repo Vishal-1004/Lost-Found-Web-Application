@@ -273,11 +273,13 @@ function ItemCarousel({ type }) {
             )}
 
             {selectedItem && (
-              <DetailedViewPopup
-                item={selectedItem}
-                onClose={handleClosePopup}
-                type={type}
-              />
+              <div className='w-full'>
+                <DetailedViewPopup
+                  item={selectedItem}
+                  onClose={handleClosePopup}
+                  type={type}
+                />
+              </div>
             )}
           </>
         )}
