@@ -254,6 +254,7 @@ async function createLostItemPost({
   return newLostItemPost;
 }
 
+// Creating lost post by a user
 exports.createLostPost = async (req, res) => {
   let upload;
   if (req.file) {
@@ -306,8 +307,8 @@ exports.createLostPost = async (req, res) => {
       }
       // User already existing in our database
       try {
-        //Creating new post in found Items
-        const newFoundItem = await createLostItemPost({
+        //Creating new post in lost Items
+        const newLostItem = await createLostItemPost({
           title: itemTitle,
           itemImage: upload.secure_url,
           date: itemLostDate,
@@ -322,12 +323,12 @@ exports.createLostPost = async (req, res) => {
         });
 
         //Adding new post id to user's foundItemsID array
-        if (newFoundItem) {
-          const newFoundItemPost = await users.updateOne(
+        if (newLostItem) {
+          const newLostItemPost = await users.updateOne(
             { _id: existingUser._id },
-            { foundItemsID: [...existingUser.foundItemsID, newFoundItem._id] }
+            { lostItemsID: [...existingUser.lostItemsID, newLostItem._id] }
           );
-          if (newFoundItemPost) {
+          if (newLostItemPost) {
             return res.status(200).json({
               message: "Lost Post Created Successful!",
               registered: true,
@@ -388,7 +389,7 @@ exports.createLostPost = async (req, res) => {
             });
           }
         } else {
-          //Creating new post in found Items
+          //Creating new post in lost Items
           const newLostItem = await createFoundItemPost({
             title: itemTitle,
             itemImage: upload.secure_url,
@@ -402,12 +403,12 @@ exports.createLostPost = async (req, res) => {
             personStatus: loserStatus,
             personNumber: loserPhoneNumber,
           });
-          //User NOT in nonRegisteredUser
+          // User NOT in nonRegisteredUser
           const newLostItemPostwithNonRegisteredUser =
             await nonRegisteredUser.create({
               email: loserEmail,
               registrationNo: loserRegistrationNumber,
-              foundItemsID: [newLostItem._id],
+              lostItemsID: [newLostItem._id],
             });
           if (newLostItemPostwithNonRegisteredUser) {
             return res.status(200).json({
@@ -555,7 +556,6 @@ exports.updatePhoneNumber = async (req, res) => {
 };
 
 //getting all lost items
-
 exports.fetchLostItems = async (req, res) => {
   try {
     const {
@@ -749,7 +749,7 @@ exports.deleteAccount = async (req, res) => {
   }
 };
 
-// Deleting user account and associated found items
+// Deleting user account and associated found items & lost items
 exports.deleteUser = async (req, res) => {
   const { email } = req.body;
   //console.log(email)
@@ -970,6 +970,7 @@ async function isAdmin(email) {
   return user && user.status === "ADMIN";
 }
 
+// edit found post
 exports.editFoundItem = async (req, res) => {
   const {
     email,
@@ -1113,6 +1114,57 @@ exports.deleteFoundItem = async (req, res) => {
   }
 };
 
+// Delete a lost item post by a user
+exports.deleteLostItem = async (req, res) => {
+  const { email, lostItemId } = req.body;
+
+  if (!email || !lostItemId) {
+    return res.status(400).json({
+      message: "Email and foundItemId are required!",
+    });
+  }
+
+  try {
+    const userIsAdmin = await isAdmin(email);
+
+    if (!userIsAdmin) {
+      const lostItem = await lostItems.findOne({
+        _id: lostItemId,
+        personEmail: email,
+      });
+      if (!lostItem) {
+        return res.status(403).json({
+          message: "No such lost post exist",
+        });
+      }
+    } else {
+      const lostItem = await lostItems.findOne({ _id: lostItemId });
+      if (!lostItem) {
+        return res.status(404).json({
+          message: "Lost post not found.",
+        });
+      }
+    }
+
+    await lostItems.deleteOne({ _id: lostItemId });
+
+    await users.updateOne(
+      { email: email },
+      { $pull: { lostItemsID: new mongoose.Types.ObjectId(lostItemId) } }
+    );
+
+    return res.status(200).json({
+      message: "Lost item deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error deleting lost item:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
 // getting profile data
 exports.getProfileData = async (req, res) => {
   const { authToken } = req.body;
@@ -1170,33 +1222,41 @@ exports.getProfileGraphData = async (req, res) => {
         message: "User not found!",
       });
     }
-    const postsByAdmins = await foundItems.find({ personStatus: "ADMIN" });
+    const foundPostsByAdmins = await foundItems.find({ personStatus: "ADMIN" });
+    const lostPostsByAdmins = await lostItems.find({ personStatus: "ADMIN" });
     const totalFoundPosts = (await foundItems.find()).length;
-    let postsByOtherUsers;
+    const totalLostPosts = (await lostItems.find()).length;
+    let foundPostsByOtherUsers;
+    let lostPostsByOtherUsers;
     if (existingUser.status === "ADMIN") {
-      postsByOtherUsers = totalFoundPosts - postsByAdmins.length;
+      foundPostsByOtherUsers = totalFoundPosts - foundPostsByAdmins.length;
+      lostPostsByOtherUsers = totalLostPosts - lostPostsByAdmins.length;
     } else {
-      postsByOtherUsers =
+      foundPostsByOtherUsers =
         totalFoundPosts -
-        postsByAdmins.length -
+        foundPostsByAdmins.length -
         existingUser.foundItemsID.length;
+
+      lostPostsByOtherUsers =
+        totalLostPosts -
+        lostPostsByAdmins.length -
+        existingUser.lostItemsID.length;
     }
-    // console.log(postsByAdmins.length)
-    console.log(existingUser.foundItemsID.length);
     return res.status(200).json({
       allPostsData: {
-        noOfLostPosts: 0,
+        noOfLostPosts: totalLostPosts,
         noOfFoundPosts: totalFoundPosts,
       },
       foundPostsData: {
         currentUserFoundPosts: existingUser.foundItemsID.length,
-        adminFoundPosts: postsByAdmins.length,
-        otherUsersFoundPost: postsByOtherUsers,
+        adminFoundPosts: foundPostsByAdmins.length,
+        otherUsersFoundPost: foundPostsByOtherUsers,
       },
-      // lostPostsData:{
-      //   currentUserLostPosts:existingUser.lostItemsID.length,
-      //   otherUsersLostPost:allLostPosts-existingUser.lostItemsID.length
-      // }
+      lostPostsData: {
+        currentUserLostPosts: existingUser.lostItemsID.length,
+        adminLostPosts: lostPostsByAdmins.length,
+        otherUsersLostPost: lostPostsByOtherUsers,
+      },
     });
   } catch (err) {
     return res.status(400).json({
@@ -1230,6 +1290,7 @@ exports.getUserGraphData = async (req, res) => {
   }
 };
 
+// API to send email to the admin regarding the contact us message given by a user
 exports.userSendsMessage = async (req, res) => {
   const { email, name, message } = req.body;
 

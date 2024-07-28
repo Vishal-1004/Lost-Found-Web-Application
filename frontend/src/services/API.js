@@ -225,6 +225,15 @@ export const deleteFoundItemPostByUserFunction  = async (email, foundItemId) => 
   );
 }
 
+// Delete a lost item post of a user
+export const deleteLostItemPostByUserFunction  = async (email, lostItemId) => {
+  return await commonrequest(
+    "DELETE",
+    `${BACKEND_URL}/api/v1/delete-lost-items`,
+    { email, lostItemId }
+  );
+}
+
 // Get all non registered user data
 export const getAllNonRegisteredUserData = async (
   authToken,

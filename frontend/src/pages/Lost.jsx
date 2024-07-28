@@ -242,6 +242,7 @@ const Lost = () => {
                 <DetailedViewPopup
                   item={selectedItem}
                   onClose={handleClosePopup}
+                  type={"lost"}
                 />
               )}
             </>

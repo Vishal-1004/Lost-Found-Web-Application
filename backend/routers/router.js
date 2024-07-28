@@ -95,6 +95,7 @@ router.post("/api/v1/get-lost-items", userControllers.fetchLostItems);
 // Get all users for admin to show
 router.post("/api/v1/get-all-users", adminControllers.getAllUsers);
 
+// update password of a user
 router.post("/api/v1/update-password", userControllers.updatePassword);
 
 router.post("/api/v1/account-delete", userControllers.deleteAccount);
@@ -124,6 +125,9 @@ router.post(
 
 // delete a found item post of a user
 router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
+
+// delete a lost item post of a user
+router.delete("/api/v1/delete-lost-items", userControllers.deleteLostItem);
 
 // Get user profile data
 router.post("/api/v1/get-profile-data", userControllers.getProfileData);

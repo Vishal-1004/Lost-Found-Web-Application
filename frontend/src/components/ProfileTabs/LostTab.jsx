@@ -166,7 +166,7 @@ const LostTab = () => {
           ) : noData ? (
             <>
               <NoDataComponent />
-              {/* found item form popup */}
+              {/* lost item form popup */}
               <FormPopup
                 isOpen={showLostPopup}
                 onClose={handleCloseFormPopup}
@@ -175,7 +175,7 @@ const LostTab = () => {
             </>
           ) : (
             <div className="flex flex-wrap overflow-hidden py-4 justify-evenly md:mx-10">
-              {/* found content goes here */}
+              {/* lost content goes here */}
               {foundPostsData?.map((item, index) => (
                 <div
                   className="md:px-1 py-1 md:mx-2"
@@ -192,7 +192,7 @@ const LostTab = () => {
                 </div>
               ))}
 
-              {/* found item form popup */}
+              {/* lost item form popup */}
               <FormPopup
                 isOpen={showLostPopup}
                 onClose={handleCloseFormPopup}
@@ -204,6 +204,7 @@ const LostTab = () => {
                 <DetailedViewPopup
                   item={selectedItem}
                   onClose={handleClosePopup}
+                  type={"lost"}
                 />
               )}
             </div>

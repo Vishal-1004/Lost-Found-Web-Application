@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { getProfileGraphFunction } from "../services/API";
 import ToastMsg from "../constants/ToastMsg";
 import { useDispatch, useSelector } from "react-redux";
-import { FaSpinner } from "react-icons/fa";
 import { ErrorComponent, LoadingComponent, WarningComponent } from "../utility";
 import { doneFetchingData } from "../actions";
 
@@ -37,7 +36,7 @@ function Stats() {
       }
     } catch (error) {
       ToastMsg("Server error! please try later", "error");
-      console.log("Internal Server Error: ", error);
+      //console.log("Internal Server Error: ", error);
       setError(true);
     } finally {
       setLoading(false);
@@ -127,7 +126,24 @@ function Stats() {
             )}
             {profileTab === "Lost" && (
               <div className="py-1">
-                <WarningComponent />
+                <Doughnut
+                  labels={["Yours Posts", "Admin Posts", "Others Posts"]}
+                  dataSet={[
+                    graphData.lostPostsData.currentUserLostPosts,
+                    graphData.lostPostsData.adminLostPosts,
+                    graphData.lostPostsData.otherUsersLostPost,
+                  ]}
+                  backgroundColor={[
+                    "rgba(66, 165, 245, 0.2)",
+                    "rgba(255, 183, 77, 0.2)",
+                    "rgba(205,0,0,0.3)",
+                  ]}
+                  borderColor={[
+                    "rgba(66, 165, 245, 1)",
+                    "rgba(255, 183, 77, 1)",
+                    "rgba(205,0,0,0.5)",
+                  ]}
+                />
               </div>
             )}
             {profileTab === "Found" && (

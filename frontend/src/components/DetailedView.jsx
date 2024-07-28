@@ -3,13 +3,28 @@ import PropTypes from "prop-types";
 import FormPopup from "./FormPopup";
 import { FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import { AiFillCalendar } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import moment from "moment";
-import { deleteFoundItemPostByUserFunction } from "../services/API";
+import {
+  deleteFoundItemPostByUserFunction,
+  deleteLostItemPostByUserFunction,
+} from "../services/API";
+import { tryFetchingData } from "../actions";
 
-const DetailedView = ({ id, url, title, date, about, location, founder, type }) => {
-  console.log(type);
+const DetailedView = ({
+  id,
+  url,
+  title,
+  date,
+  about,
+  location,
+  founder,
+  type,
+}) => {
+  const dispatch = useDispatch();
+
+  //console.log(type);
   const userToken = useSelector((state) => state.storedUserData.userToken);
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   const userEmail = useSelector(
@@ -37,16 +52,19 @@ const DetailedView = ({ id, url, title, date, about, location, founder, type }) 
   // ****************************
 
   const handleDelete = async () => {
-    console.log(founder.email, " and id: ", id);
+    //console.log(founder.email, " and id: ", id);
     setLoading(true);
     try {
-      const response = await deleteFoundItemPostByUserFunction(
-        founder.email,
-        id
-      );
-      console.log(response);
+      let response;
+      if (type == "lost") {
+        response = await deleteLostItemPostByUserFunction(founder.email, id);
+      } else {
+        response = await deleteFoundItemPostByUserFunction(founder.email, id);
+      }
+      //console.log(response);
       if (response.status == 200) {
         ToastMsg(response.data.message, "success");
+        dispatch(tryFetchingData());
       } else {
         ToastMsg(response.response.data.message, "error");
       }
@@ -55,7 +73,6 @@ const DetailedView = ({ id, url, title, date, about, location, founder, type }) 
       console.log("Internal Server Error: ", error);
     } finally {
       setLoading(false);
-      window.location.reload();
     }
   };
 
@@ -67,7 +84,7 @@ const DetailedView = ({ id, url, title, date, about, location, founder, type }) 
     about,
     location,
     founder,
-  }
+  };
 
   return (
     <div
