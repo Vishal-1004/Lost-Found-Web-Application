@@ -11,6 +11,7 @@ import DeleteAccount from "./EditProfile/DeleteAccount";
 import UpdateHostelerDayScholarForm from "./EditProfile/UpdateHostelerDayScholarForm";
 import UpdatePasswordForm from "./EditProfile/UpdatePasswordForm";
 import UpdatePhoneNumberForm from "./EditProfile/UpdatePhoneNumberForm";
+import SubscribeButton from "./EditProfile/SubscribeButton";
 import AboutUsVideo from "./AboutUsVideo";
 import RegisteredUsers from "./RegisteredUsers";
 import NonRegisteredUsers from "./NonRegisteredUsers";
@@ -30,6 +31,7 @@ export {
   UpdateHostelerDayScholarForm,
   UpdatePasswordForm,
   UpdatePhoneNumberForm,
+  SubscribeButton,
   AboutUsVideo,
   RegisteredUsers,
   NonRegisteredUsers,

@@ -12,6 +12,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const [formLoading, setFormLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false); // subscription state
 
   const {
     register,
@@ -70,6 +71,16 @@ const SignUp = () => {
   useEffect(() => {
     setValue("email", Email?.toLowerCase());
   }, [Email, setValue]);
+  
+  // Handle subscription toggle
+  const handleSubscribeToggle = () => {
+    setIsSubscribed(!isSubscribed);
+    if (!isSubscribed) {
+      console.log("User subscribed to notifications.");
+    } else {
+      console.log("User unsubscribed from notifications.");
+    }
+  }
 
   return (
     <div className="signup-area flex justify-center items-center pt-[80px] sm:pt-[50px] pb-[50px]">
@@ -270,6 +281,19 @@ const SignUp = () => {
                   {errors.confirm_password.message}
                 </div>
               )}
+            </div>
+
+            {/* Subscribe Button */}
+            <div className="subscribe-container text-center mt-5">
+              <button
+                type="button"
+                onClick={handleSubscribeToggle}
+                className={`subscribe-btn ${
+                  isSubscribed ? "bg-red-500" : "bg-blue-500"
+                } text-white py-2 px-6 rounded-full flex items-center justify-center`}
+              >
+                {isSubscribed ? "Subscribed" : "Subscribe"}
+              </button>
             </div>
           </div>
 
