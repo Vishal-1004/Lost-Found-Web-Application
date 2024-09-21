@@ -38,7 +38,7 @@ function ItemCard({ url, title, date, about, location, type, }) {
           </h3>
         </div>
 
-        <div className="text-[14px] text-gray-500 font-semibold mb-2 flex items-center gap-1">
+        <div className="text-[14px] text-gray-500 font-semibold mb-2 flex items-center gap-1 capitalize">
           <FaMapMarkerAlt className="mr-2" size={"20px"} color="#B0E57C" />
           {location}
         </div>

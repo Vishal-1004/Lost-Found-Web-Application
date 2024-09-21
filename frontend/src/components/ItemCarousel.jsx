@@ -53,7 +53,7 @@ function ItemCarousel({ type }) {
   };
 
   useEffect(() => {
-    if (type == "Found") {
+    if (type == "found") {
       getRecentFoundPost();
     } else {
       getRecentLostPost();
@@ -64,7 +64,7 @@ function ItemCarousel({ type }) {
   const fetchData = useSelector((state) => state.dataFetching.fetchData);
   useEffect(() => {
     const reFetchData = async () => {
-      if (type == "Found") {
+      if (type == "found") {
         await getRecentFoundPost();
       } else {
         await getRecentLostPost();
@@ -195,7 +195,7 @@ function ItemCarousel({ type }) {
           }
         `}
       </style>
-      <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4">
+      <h2 className="text-[28px] sm:text-[36px] font-bold text-gray-700 py-2 text-left mt-4 ml-2 sm:ml-4 capitalize">
         Recently {type} Items
       </h2>
 
@@ -221,7 +221,7 @@ function ItemCarousel({ type }) {
         ) : (
           <>
             {/* Found posts display */}
-            {type==="Found" &&
+            {type==="found" &&
               postData.map((item, index) => (
                 <div key={index} onClick={() => handleCardClick(item)}>
                   <ItemCard
@@ -230,13 +230,13 @@ function ItemCarousel({ type }) {
                     date={moment(item.date).format("ddd, D MMM YYYY")}
                     about={item.description}
                     location={item.location}
-                    type={"Found"}
+                    type={"found"}
                   />
                 </div>
             ))}
 
             {/* Lost posts display */}
-            {type==="Lost" &&
+            {type==="lost" &&
               postData.map((item, index) => (
                 <div key={index} onClick={() => handleCardClick(item)}>
                   <ItemCard
@@ -245,7 +245,7 @@ function ItemCarousel({ type }) {
                     date={moment(item.date).format("ddd, D MMM YYYY")}
                     about={item.description}
                     location={item.location}
-                    type={"Lost"}
+                    type={"lost"}
                   />
                 </div>
             ))}
@@ -273,11 +273,13 @@ function ItemCarousel({ type }) {
             )}
 
             {selectedItem && (
-              <DetailedViewPopup
-                item={selectedItem}
-                onClose={handleClosePopup}
-                type={type}
-              />
+              <div className='w-full'>
+                <DetailedViewPopup
+                  item={selectedItem}
+                  onClose={handleClosePopup}
+                  type={type}
+                />
+              </div>
             )}
           </>
         )}
