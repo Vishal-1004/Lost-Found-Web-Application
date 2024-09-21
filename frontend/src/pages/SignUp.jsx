@@ -57,6 +57,13 @@ const SignUp = () => {
       reset();
     }
 
+    // Check if the user has subscribed
+    if (isSubscribed) {
+      console.log("User subscribed to lost post notifications via email");
+    } else {
+      console.log("User did not subscribe");
+    }
+
     //console.log(formData);
   };
 
@@ -71,16 +78,6 @@ const SignUp = () => {
   useEffect(() => {
     setValue("email", Email?.toLowerCase());
   }, [Email, setValue]);
-  
-  // Handle subscription toggle
-  const handleSubscribeToggle = () => {
-    setIsSubscribed(!isSubscribed);
-    if (!isSubscribed) {
-      console.log("User subscribed to notifications.");
-    } else {
-      console.log("User unsubscribed from notifications.");
-    }
-  }
 
   return (
     <div className="signup-area flex justify-center items-center pt-[80px] sm:pt-[50px] pb-[50px]">
@@ -283,17 +280,18 @@ const SignUp = () => {
               )}
             </div>
 
-            {/* Subscribe Button */}
-            <div className="subscribe-container text-center mt-5">
-              <button
-                type="button"
-                onClick={handleSubscribeToggle}
-                className={`subscribe-btn ${
-                  isSubscribed ? "bg-red-500" : "bg-blue-500"
-                } text-white py-2 px-6 rounded-full flex items-center justify-center`}
-              >
-                {isSubscribed ? "Subscribed" : "Subscribe"}
-              </button>
+            {/* Subscribe to notifications */}
+            <div className="mb-3 w-full px-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center">
+                <input
+                  type="checkbox"
+                  id="subscribe"
+                  className="mr-2"
+                  checked={isSubscribed}
+                  onChange={() => setIsSubscribed(!isSubscribed)}
+                />
+                Subscribe to lost post notifications
+              </label>
             </div>
           </div>
 
