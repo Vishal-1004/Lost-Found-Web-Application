@@ -13,7 +13,8 @@ import {
   AboutUs,
   Found,
   Lost,
-  ContactUs
+  ContactUs,
+  ReturnItems
 } from "./pages";
 import { BackToTop, Footer, Navbar } from "./components";
 import EditProfile from "./pages/EditProfile";
@@ -161,6 +162,7 @@ const App = () => {
         <Route path="/found" element={<Found />} />
         <Route path="/lost" element={<Lost />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/return-item" element={<ReturnItems />} />
       </Routes>
       <Footer />
       <BackToTop />
