@@ -54,6 +54,10 @@ const userSchema = new mongoose.Schema({
   authToken: {
     type: String,
   },
+  notifications: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // hash password
@@ -79,7 +83,6 @@ userSchema.methods.generateAuthtoken = async function () {
     throw new Error(error);
   }
 };
-
 
 // creating model
 const users = mongoose.model("users", userSchema);

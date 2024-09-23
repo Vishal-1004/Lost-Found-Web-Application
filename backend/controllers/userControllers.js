@@ -479,7 +479,11 @@ exports.updateHostelerOrDayScholar = async (req, res) => {
       { personDayScholarORhosteler: dayScholarORhosteler }
     );
 
-    if (!stayDetailUpdate || !stayDetailUpdateForFoundSchema || !stayDetailUpdateForLostSchema) {
+    if (
+      !stayDetailUpdate ||
+      !stayDetailUpdateForFoundSchema ||
+      !stayDetailUpdateForLostSchema
+    ) {
       return res.status(400).json({
         message: "Error updating detail!",
       });
@@ -539,7 +543,11 @@ exports.updatePhoneNumber = async (req, res) => {
       { personNumber: phoneNumber }
     );
 
-    if (!phoneNumberUpdate || !phoneNumberUpdateForFoundSchema || !phoneNumberUpdateForLostSchema) {
+    if (
+      !phoneNumberUpdate ||
+      !phoneNumberUpdateForFoundSchema ||
+      !phoneNumberUpdateForLostSchema
+    ) {
       return res.status(400).json({
         message: "Error updating phone number!",
       });
@@ -1107,6 +1115,96 @@ exports.deleteFoundItem = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting found item:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+//Edit a lost itrm post by a user
+
+exports.editLostItem = async (req, res) => {
+  const {
+    email,
+    lostItemId,
+    title,
+    description,
+    date,
+    location,
+    ownerPhoneNumber,
+    itemImage,
+  } = req.body;
+
+  const updateFields = {
+    title,
+    description,
+    date,
+    location,
+    itemImage,
+    ownerNumber: ownerPhoneNumber === undefined ? undefined : ownerPhoneNumber,
+  };
+
+  if (!email || !lostItemId) {
+    return res.status(400).json({
+      message: "Email and lostItemId are required!",
+      givenEmail: email,
+      givenId: lostItemId,
+    });
+  }
+
+  try {
+    const userIsAdmin = await isAdmin(email);
+
+    let lostItem;
+    if (!userIsAdmin) {
+      lostItem = await lostItems.findOne({
+        _id: lostItemId,
+        ownerEmail: email,
+      });
+      if (!lostItem) {
+        return res.status(403).json({
+          message: "You do not have permission to edit this lost item.",
+        });
+      }
+    } else {
+      lostItem = await lostItems.findById(lostItemId);
+      if (!lostItem) {
+        return res.status(404).json({
+          message: "Lost item not found.",
+        });
+      }
+    }
+
+    if (req.file) {
+      const upload = await cloudinary.uploader.upload(req.file.path);
+      updateFields.itemImage = upload.secure_url;
+    }
+
+    const allowedFields = [
+      "title",
+      "description",
+      "date",
+      "location",
+      "itemImage",
+      "ownerNumber",
+    ];
+    const updateData = {};
+    allowedFields.forEach((field) => {
+      updateData[field] = updateFields[field];
+    });
+
+    const data = await lostItems.updateOne(
+      { _id: lostItemId },
+      { $set: updateData }
+    );
+
+    return res.status(200).json({
+      message: "Lost item updated successfully.",
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error updating lost item:", error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,

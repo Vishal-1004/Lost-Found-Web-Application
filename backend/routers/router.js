@@ -45,6 +45,9 @@ router.post("/api/v1/verify-token", authControllers.verifyToken);
 // User SignUp
 router.post("/api/v1/sign-up", authControllers.signup);
 
+//Update notifications
+router.put("/api/v1/update-notification", authControllers.updateNotifications);
+
 // Email verification and OTP Generation
 router.post("/api/v1/otp-send", authControllers.userOtpSend);
 
@@ -126,6 +129,9 @@ router.post(
 // delete a found item post of a user
 router.delete("/api/v1/delete-found-items", userControllers.deleteFoundItem);
 
+//Edit a lost item post of a user
+router.put("/api/v1/edit-lost-items", userControllers.editLostItem);
+
 // delete a lost item post of a user
 router.delete("/api/v1/delete-lost-items", userControllers.deleteLostItem);
 
@@ -141,7 +147,7 @@ router.get("/api/v1/get-user-graph-data", userControllers.getUserGraphData);
 // Users sent some message to  admin
 router.post("/api/v1/send-message", userControllers.userSendsMessage);
 
-//Create lost post 
+//Create lost post
 router.post(
   "/api/v1/create-lost-post",
   upload.single("photo"),

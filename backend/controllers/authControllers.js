@@ -100,15 +100,22 @@ exports.verifyToken = async (req, res) => {
 
 // User SignUp
 exports.signup = async (req, res) => {
-  const { name, email, password, registrationNo, dayScholarORhosteler } =
-    req.body;
+  const {
+    name,
+    email,
+    password,
+    registrationNo,
+    dayScholarORhosteler,
+    notifications,
+  } = req.body;
 
   if (
     !name ||
     !email ||
     !password ||
     !registrationNo ||
-    !dayScholarORhosteler
+    !dayScholarORhosteler ||
+    !notifications
   ) {
     return res.status(400).json({ message: "Please enter all input fields" });
   }
@@ -119,17 +126,9 @@ exports.signup = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "User Already Exists" });
     } else {
-      // Check if the user has previously created found item posts
       const nonexistingUser = await nonRegisteredUser.findOne({
-        $or: [{ email }, { registrationNo: registrationNo }],
+        $or: [{ email }, { registrationNo }],
       });
-
-      if (nonexistingUser) {
-        console.log("Non-registered user found:", nonexistingUser);
-        console.log("Found items IDs:", nonexistingUser.foundItemsIds);
-      } else {
-        console.log("Non-registered user not found");
-      }
 
       const registerUser = new users({
         name,
@@ -139,15 +138,11 @@ exports.signup = async (req, res) => {
         password,
         status: "USER",
         foundItemsID: nonexistingUser ? nonexistingUser.foundItemsID : [],
+        notifications: notifications || false,
       });
 
       await registerUser.save();
-      console.log(
-        "Registered user found items IDs:",
-        registerUser.foundItemsID
-      );
 
-      // If the user was found in nonRegisteredUser, remove the entry
       if (nonexistingUser) {
         await nonRegisteredUser.deleteOne({ _id: nonexistingUser._id });
       }
@@ -159,6 +154,38 @@ exports.signup = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Internal Server Error", specificError: error.message });
+  }
+};
+//Update the notification field of user
+exports.updateNotifications = async (req, res) => {
+  const { registrationNo, notifications } = req.body;
+
+  if (!registrationNo || notifications === undefined) {
+    return res
+      .status(400)
+      .json({
+        message: "Registration number and notifications field are required",
+      });
+  }
+
+  try {
+    const user = await users.findOne({ registrationNo });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.notifications = notifications;
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Notifications updated successfully" });
+  } catch (error) {
+    console.error("Error updating notifications:", error);
+    return res
+      .status(400)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 
