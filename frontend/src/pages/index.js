@@ -10,6 +10,7 @@ import AllUsers from "./AllUsers";
 import Found from "./Found";
 import Lost from "./Lost";
 import ContactUs from "./ContactUs";
+import ReturnItems from "./ReturnItems";
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   Found,
   Lost,
   ContactUs,
+  ReturnItems
 };

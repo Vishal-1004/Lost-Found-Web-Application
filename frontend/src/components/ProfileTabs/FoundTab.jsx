@@ -204,6 +204,7 @@ const FoundTab = () => {
                 <DetailedViewPopup
                   item={selectedItem}
                   onClose={handleClosePopup}
+                  type="found"
                 />
               )}
             </div>

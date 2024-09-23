@@ -117,6 +117,14 @@ const Navbar = () => {
           </div>
           <div className="mx-2 block">
             <Link
+              to="/return-item"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
+            >
+              <button>Returned Items</button>
+            </Link>
+          </div>
+          <div className="mx-2 block">
+            <Link
               to="/about-us"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >

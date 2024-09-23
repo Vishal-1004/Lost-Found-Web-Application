@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import DetailedView from "./DetailedView";
 import PropTypes from "prop-types";
+import DetailedViewB from "./DetailedViewB";
 
 const DetailedViewPopup = ({ item, onClose, type }) => {
   // console.log(type);
@@ -67,16 +68,29 @@ const DetailedViewPopup = ({ item, onClose, type }) => {
         </button>
 
         {/* Detailed view card component */}
-        <DetailedView
-          id={_id}
-          url={itemImage}
-          title={title}
-          date={date}
-          about={description}
-          location={location}
-          founder={founder}
-          type={type}
-        />
+        {type === "found" ? (
+          <DetailedViewB
+            id={_id}
+            url={itemImage}
+            title={title}
+            date={date}
+            about={description}
+            location={location}
+            founder={founder}
+            type={type}
+          />
+        ) : (
+          <DetailedView
+            id={_id}
+            url={itemImage}
+            title={title}
+            date={date}
+            about={description}
+            location={location}
+            founder={founder}
+            type={type}
+          />
+        )}
       </div>
     </div>
   );
