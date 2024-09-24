@@ -3,6 +3,7 @@ import {
   UpdateHostelerDayScholarForm,
   UpdatePasswordForm,
   UpdatePhoneNumberForm,
+  SubscribeButton,
 } from "../components";
 
 const EditProfile = () => {
@@ -19,6 +20,8 @@ const EditProfile = () => {
         <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
         <UpdatePasswordForm />
         <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
+        <SubscribeButton />
+        <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px] hidden md:block" />
         <DeleteAccount />
         <hr className="my-2 mx-auto border-t-4 border-gray-300 w-[400px] md:w-[500px]" />
       </div>

@@ -12,6 +12,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const [formLoading, setFormLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false); // subscription state
 
   const {
     register,
@@ -54,6 +55,13 @@ const SignUp = () => {
     } finally {
       setFormLoading(false);
       reset();
+    }
+
+    // Check if the user has subscribed
+    if (isSubscribed) {
+      console.log("User subscribed to lost post notifications via email");
+    } else {
+      console.log("User did not subscribe");
     }
 
     //console.log(formData);
@@ -270,6 +278,20 @@ const SignUp = () => {
                   {errors.confirm_password.message}
                 </div>
               )}
+            </div>
+
+            {/* Subscribe to notifications */}
+            <div className="mb-3 w-full px-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center">
+                <input
+                  type="checkbox"
+                  id="subscribe"
+                  className="mr-2"
+                  checked={isSubscribed}
+                  onChange={() => setIsSubscribed(!isSubscribed)}
+                />
+                Subscribe to lost post notifications
+              </label>
             </div>
           </div>
 
