@@ -16,6 +16,7 @@ import AboutUsVideo from "./AboutUsVideo";
 import RegisteredUsers from "./RegisteredUsers";
 import NonRegisteredUsers from "./NonRegisteredUsers";
 import HomeStatus from "./HomeStatus";
+import SubscribePopup from "./SubscribePopup";
 
 export {
   Navbar,
@@ -36,4 +37,5 @@ export {
   RegisteredUsers,
   NonRegisteredUsers,
   HomeStatus,
+  SubscribePopup,
 };
