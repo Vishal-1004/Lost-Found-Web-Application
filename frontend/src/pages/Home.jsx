@@ -2,9 +2,15 @@ import { useState } from "react";
 
 import HeroSection from "../components/Hero";
 import { ColumnsWithChart, ItemCarousel, SubscribePopup } from "../components";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const [isSubscribed, setIsSubscribed] = useState(false); // subscription status
+  const userToken = useSelector((state) => state.storedUserData.userToken);
+  const notifications = useSelector(
+    (state) => state.storedUserData.userData.notifications
+  );
+
+  //const [isSubscribed, setIsSubscribed] = useState(false); // subscription status
 
   return (
     <div>
@@ -13,7 +19,7 @@ const Home = () => {
       <ItemCarousel type={"lost"} />
       <ColumnsWithChart />
 
-      {!isSubscribed && <SubscribePopup setIsSubscribed={setIsSubscribed} />}
+      {!notifications && userToken && <SubscribePopup setIsSubscribed={null} />}
     </div>
   );
 };

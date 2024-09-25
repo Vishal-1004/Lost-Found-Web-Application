@@ -22,7 +22,8 @@ export const signupFunction = async (
   email,
   password,
   registrationNo,
-  dayScholarORhosteler
+  dayScholarORhosteler,
+  notifications
 ) => {
   return await commonrequest("POST", `${BACKEND_URL}/api/v1/sign-up`, {
     name,
@@ -30,6 +31,7 @@ export const signupFunction = async (
     password,
     registrationNo,
     dayScholarORhosteler,
+    notifications,
   });
 };
 

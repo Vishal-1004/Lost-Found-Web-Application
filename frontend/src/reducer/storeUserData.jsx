@@ -7,6 +7,7 @@ const initialState = {
     userEmail: "",
     userPhoneNumber: 0,
     userDayScholarORhosteler: "",
+    notifications: false,
   },
 };
 
@@ -25,6 +26,7 @@ export const storedUserData = (state = initialState, action) => {
           userPhoneNumber: action.payload.userData.userPhoneNumber,
           userDayScholarORhosteler:
             action.payload.userData.userDayScholarORhosteler,
+          notifications: action.payload.userData.notifications,
         },
       };
 

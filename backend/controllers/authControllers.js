@@ -50,6 +50,7 @@ exports.login = async (req, res) => {
             registrationNo: user.registrationNo,
             phoneNumber: user.phoneNumber,
             status: user.status,
+            notifications: user.notifications,
           };
           return res.status(200).json({
             message: "Login Successfull!",
@@ -114,8 +115,7 @@ exports.signup = async (req, res) => {
     !email ||
     !password ||
     !registrationNo ||
-    !dayScholarORhosteler ||
-    !notifications
+    !dayScholarORhosteler
   ) {
     return res.status(400).json({ message: "Please enter all input fields" });
   }

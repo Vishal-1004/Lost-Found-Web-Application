@@ -45,6 +45,7 @@ const handleLogin = async (formData) => {
         userRegistrationNo: response.data.userData.registrationNo,
         userPhoneNumber: response.data.userData.phoneNumber,
         userDayScholarORhosteler: response.data.userData.dayScholarORhosteler,
+        notifications: response.data.userData.notifications,
       };
 
       ToastMsg(response.data.message, "success");
