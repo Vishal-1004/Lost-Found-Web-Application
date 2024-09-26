@@ -1,24 +1,31 @@
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import ToastMsg from "../../constants/ToastMsg";
+import { useDispatch, useSelector } from "react-redux";
+import { updateNotificationFunction } from "../../services/API";
+import { updateNotificationStatus } from "../../actions";
 
 const SubscribeButton = () => {
+  const dispatch = useDispatch();
+
+  const notifications = useSelector(
+    (state) => state.storedUserData.userData.notifications
+  );
+  const email = useSelector((state) => state.storedUserData.userData.userEmail);
+
   const [formLoading, setFormLoading] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleSubscribeToggle = async () => {
     setFormLoading(true);
     try {
       // API call here
+      const response = await updateNotificationFunction(email, !notifications);
 
-      setTimeout(() => {
-        setIsSubscribed(!isSubscribed);
-        const message = isSubscribed
-          ? "You have unsubscribed from notifications."
-          : "You have successfully subscribed to notifications.";
-        ToastMsg(message, "success");
-        setFormLoading(false);
-      }, 1000);
+      if (response.status == 200) {
+        dispatch(updateNotificationStatus(!notifications));
+        ToastMsg(response.data.message, "success");
+      }
+      setFormLoading(false);
     } catch (error) {
       ToastMsg("Server error! Please try again later.", "error");
       setFormLoading(false);
@@ -36,7 +43,8 @@ const SubscribeButton = () => {
           Notifications Subscription
         </h1>
         <div className="text-sm font-normal text-gray-500 text-left max-w-[420px]">
-          Subscribe to receive notifications for the latest updates and important news. You can unsubscribe at any time.
+          Subscribe to receive notifications for the latest updates and
+          important news. You can unsubscribe at any time.
         </div>
       </div>
 
@@ -46,7 +54,7 @@ const SubscribeButton = () => {
           disabled={formLoading}
           onClick={handleSubscribeToggle}
           className={`btnSubmit px-4 py-2 text-sm ${
-            isSubscribed ? "bg-red-500" : "bg-blue-500"
+            notifications ? "bg-red-500" : "bg-blue-500"
           } text-white rounded-md ${
             formLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
           }`}
@@ -56,7 +64,7 @@ const SubscribeButton = () => {
               <FaSpinner className="mr-2 animate-spin" />
               Loading...
             </>
-          ) : isSubscribed ? (
+          ) : notifications ? (
             "Unsubscribe"
           ) : (
             "Subscribe"

@@ -37,3 +37,12 @@ export const tryFetchingData = () => ({
 export const doneFetchingData = () => ({
   type: "DONE_FETCHING",
 });
+
+export const increaseNotificationPopupCount = () => ({
+  type: "INCREASE_NOTIFICATION_POPUP_COUNT",
+});
+
+export const updateNotificationStatus = (notifications) => ({
+  type: "UPDATE_NOTIFICATION_STATUS",
+  payload: { notifications },
+});

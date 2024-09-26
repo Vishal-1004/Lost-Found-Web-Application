@@ -83,6 +83,13 @@ export const updatePasswordFunction = async (email, currentPassword,newPassword)
   });
 }
 
+// update notification function
+export const updateNotificationFunction = async (email, notifications) => {
+  return await commonrequest("PUT",`${BACKEND_URL}/api/v1/update-notification`, {
+email, notifications
+  })
+}
+
 // deleting user account function
 export const deleteAccountFunction = async (email) => {
   return await commonrequest("POST", `${BACKEND_URL}/api/v1/delete-account`, {

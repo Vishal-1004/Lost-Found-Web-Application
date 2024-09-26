@@ -156,20 +156,18 @@ exports.signup = async (req, res) => {
       .json({ message: "Internal Server Error", specificError: error.message });
   }
 };
-//Update the notification field of user
+// Update the notification field of user
 exports.updateNotifications = async (req, res) => {
-  const { registrationNo, notifications } = req.body;
+  const { email, notifications } = req.body;
 
   if (!registrationNo || notifications === undefined) {
-    return res
-      .status(400)
-      .json({
-        message: "Registration number and notifications field are required",
-      });
+    return res.status(400).json({
+      message: "Please enter all input field",
+    });
   }
 
   try {
-    const user = await users.findOne({ registrationNo });
+    const user = await users.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
