@@ -20,14 +20,17 @@ const SubscribeButton = () => {
     try {
       // API call here
       const response = await updateNotificationFunction(email, !notifications);
-      console.log(response);
+      //console.log(response);
       if (response.status == 200) {
         dispatch(updateNotificationStatus(!notifications));
         ToastMsg(response.data.message, "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
       }
-      setFormLoading(false);
     } catch (error) {
-      ToastMsg("Server error! Please try again later", "error");
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
       setFormLoading(false);
     }
   };
@@ -56,7 +59,11 @@ const SubscribeButton = () => {
           className={`btnSubmit px-4 py-2 text-sm ${
             notifications ? "bg-red-500" : "bg-blue-500"
           } text-white rounded-md ${
-            formLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
+            formLoading
+              ? "opacity-50 cursor-not-allowed"
+              : notifications
+              ? "hover:bg-red-700"
+              : "hover:bg-blue-700"
           }`}
         >
           {formLoading ? (

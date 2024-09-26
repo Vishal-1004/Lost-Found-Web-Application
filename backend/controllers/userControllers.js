@@ -18,6 +18,31 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// function to send email notification to all the users who have subscribed to our website
+async function sendNotificationEmails() {
+  try {
+    // Find all users with notification set to true
+    const usersToNotify = await users.find({ notification: true });
+
+    // If users are found, send emails
+    if (usersToNotify.length > 0) {
+      usersToNotify.forEach(async (user) => {
+        const mailOptions = {
+          from: "vitcseguide@gmail.com",
+          to: user.email,
+          subject: "New Post Notification",
+          text: "Hello, a new item post has been created.",
+        };
+
+        await transporter.sendMail(mailOptions);
+      });
+    }
+  } catch (error) {
+    console.log("Error sending notification emails:", error.message);
+  }
+}
+
+
 async function createFoundItemPost({
   title,
   itemImage,
@@ -50,6 +75,7 @@ async function createFoundItemPost({
 // Creating found post API
 exports.createFoundPost = async (req, res) => {
   let upload;
+  let isPostCreated = false;
   if (req.file) {
     upload = await cloudinary.uploader.upload(req.file.path);
   } else {
@@ -122,6 +148,8 @@ exports.createFoundPost = async (req, res) => {
             { foundItemsID: [...existingUser.foundItemsID, newFoundItem._id] }
           );
           if (newFoundItemPost) {
+            isPostCreated = true;
+
             return res.status(200).json({
               message: "Found Post Created Successful!",
               registered: true,
@@ -134,9 +162,13 @@ exports.createFoundPost = async (req, res) => {
           message: "Found Post Creation Failed!",
           error: error.message,
         });
+      }finally{
+        if (isPostCreated) {
+          await sendNotificationEmails();
+        }
       }
     } else {
-      //User not in our database
+      // User not in our database
       const existingNonRegisteredUser = await nonRegisteredUser.findOne({
         email: founderEmail,
         registrationNo: founderRegistrationNumber,
@@ -176,13 +208,15 @@ exports.createFoundPost = async (req, res) => {
             }
           );
           if (newFoundItemPost) {
+            isPostCreated = true;
+
             return res.status(200).json({
               message: "Found Post Created Successful!",
               registered: false,
             });
           }
         } else {
-          //Creating new post in found Items
+          // Creating new post in found Items
           const newFoundItem = await createFoundItemPost({
             title: itemTitle,
             itemImage: upload.secure_url,
@@ -196,7 +230,7 @@ exports.createFoundPost = async (req, res) => {
             personStatus: founderStatus,
             personNumber: founderPhoneNumber,
           });
-          //User NOT in nonRegisteredUser
+          // User NOT in nonRegisteredUser
           const newFoundItemPostwithNonRegisteredUser =
             await nonRegisteredUser.create({
               email: founderEmail,
@@ -204,6 +238,8 @@ exports.createFoundPost = async (req, res) => {
               foundItemsID: [newFoundItem._id],
             });
           if (newFoundItemPostwithNonRegisteredUser) {
+            isPostCreated = true;
+
             return res.status(200).json({
               message: "Found Post Created Successful!",
               registered: false,
@@ -215,6 +251,10 @@ exports.createFoundPost = async (req, res) => {
           message: "Found Post Creation Failed!",
           error: error.message,
         });
+      }finally{
+        if (isPostCreated) {
+          await sendNotificationEmails();
+        }
       }
     }
   } catch (error) {
@@ -256,6 +296,7 @@ async function createLostItemPost({
 
 // Creating lost post by a user
 exports.createLostPost = async (req, res) => {
+  let isPostCreated = false;
   let upload;
   if (req.file) {
     upload = await cloudinary.uploader.upload(req.file.path);
@@ -383,6 +424,8 @@ exports.createLostPost = async (req, res) => {
             }
           );
           if (newLostItemPost) {
+            isPostCreated = true;
+
             return res.status(200).json({
               message: "Lost Post Created Successfully!",
               registered: false,
@@ -411,6 +454,8 @@ exports.createLostPost = async (req, res) => {
               lostItemsID: [newLostItem._id],
             });
           if (newLostItemPostwithNonRegisteredUser) {
+            isPostCreated = true;
+
             return res.status(200).json({
               message: "Lost Post Created Successful!",
               registered: false,
@@ -422,6 +467,10 @@ exports.createLostPost = async (req, res) => {
           message: "Lost Post Creation Failed!",
           error: error.message,
         });
+      }finally{
+        if (isPostCreated) {
+          await sendNotificationEmails();
+        }
       }
     }
   } catch (error) {
@@ -1122,8 +1171,7 @@ exports.deleteFoundItem = async (req, res) => {
   }
 };
 
-//Edit a lost itrm post by a user
-
+// Edit a lost item post by a user
 exports.editLostItem = async (req, res) => {
   const {
     email,
