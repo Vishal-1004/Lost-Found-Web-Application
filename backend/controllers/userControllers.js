@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 async function sendNotificationEmails() {
   try {
     // Find all users with notification set to true
-    const usersToNotify = await users.find({ notification: true });
+    const usersToNotify = await users.find({ notifications: true });
 
     // If users are found, send emails
     if (usersToNotify.length > 0) {
