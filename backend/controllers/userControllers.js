@@ -296,7 +296,7 @@ async function createLostItemPost({
 
 // Creating lost post by a user
 exports.createLostPost = async (req, res) => {
-  let isPostCreated = false;
+  let isLostPostCreated = false;
   let upload;
   if (req.file) {
     upload = await cloudinary.uploader.upload(req.file.path);
@@ -370,6 +370,8 @@ exports.createLostPost = async (req, res) => {
             { lostItemsID: [...existingUser.lostItemsID, newLostItem._id] }
           );
           if (newLostItemPost) {
+            isLostPostCreated = true;
+
             return res.status(200).json({
               message: "Lost Post Created Successful!",
               registered: true,
@@ -382,6 +384,10 @@ exports.createLostPost = async (req, res) => {
           message: "Lost Post Creation Failed!",
           error: error.message,
         });
+      } finally {
+        if (isLostPostCreated) {
+          await sendNotificationEmails();
+        }
       }
     } else {
       //User not in our database
@@ -424,7 +430,7 @@ exports.createLostPost = async (req, res) => {
             }
           );
           if (newLostItemPost) {
-            isPostCreated = true;
+            isLostPostCreated = true;
 
             return res.status(200).json({
               message: "Lost Post Created Successfully!",
@@ -454,7 +460,7 @@ exports.createLostPost = async (req, res) => {
               lostItemsID: [newLostItem._id],
             });
           if (newLostItemPostwithNonRegisteredUser) {
-            isPostCreated = true;
+            isLostPostCreated = true;
 
             return res.status(200).json({
               message: "Lost Post Created Successful!",
@@ -467,8 +473,8 @@ exports.createLostPost = async (req, res) => {
           message: "Lost Post Creation Failed!",
           error: error.message,
         });
-      }finally{
-        if (isPostCreated) {
+      } finally {
+        if (isLostPostCreated) {
           await sendNotificationEmails();
         }
       }
