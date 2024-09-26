@@ -160,7 +160,7 @@ exports.signup = async (req, res) => {
 exports.updateNotifications = async (req, res) => {
   const { email, notifications } = req.body;
 
-  if (!registrationNo || notifications === undefined) {
+  if (!email || notifications === undefined) {
     return res.status(400).json({
       message: "Please enter all input field",
     });

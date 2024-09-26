@@ -20,14 +20,14 @@ const SubscribeButton = () => {
     try {
       // API call here
       const response = await updateNotificationFunction(email, !notifications);
-
+      console.log(response);
       if (response.status == 200) {
         dispatch(updateNotificationStatus(!notifications));
         ToastMsg(response.data.message, "success");
       }
       setFormLoading(false);
     } catch (error) {
-      ToastMsg("Server error! Please try again later.", "error");
+      ToastMsg("Server error! Please try again later", "error");
       setFormLoading(false);
     }
   };
