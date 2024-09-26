@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // function to send email notification to all the users who have subscribed to our website
-async function sendNotificationEmails() {
+async function sendNotificationEmails(type, title, description, location) {
   try {
     // Find all users with notification set to true
     const usersToNotify = await users.find({ notifications: true });
@@ -30,8 +30,24 @@ async function sendNotificationEmails() {
         const mailOptions = {
           from: "vitcseguide@gmail.com",
           to: user.email,
-          subject: "New Post Notification",
-          text: "Hello, a new item post has been created.",
+          subject:
+            type == "LOST"
+              ? `New Lost Item: ${title}`
+              : `New Found Item: ${title}`,
+          text: `Hello ${user.name},
+
+We wanted to inform you that a new item has been ${
+            type === "LOST" ? "lost" : "found"
+          }.
+
+Title: ${title}
+Description: ${description}
+Location: ${location}
+
+Please check our platform for more details.
+
+Best regards,
+VIT Lost & Found Team`,
         };
 
         await transporter.sendMail(mailOptions);
@@ -41,7 +57,6 @@ async function sendNotificationEmails() {
     console.log("Error sending notification emails:", error.message);
   }
 }
-
 
 async function createFoundItemPost({
   title,
@@ -162,9 +177,14 @@ exports.createFoundPost = async (req, res) => {
           message: "Found Post Creation Failed!",
           error: error.message,
         });
-      }finally{
+      } finally {
         if (isPostCreated) {
-          await sendNotificationEmails();
+          await sendNotificationEmails(
+            "LOST",
+            itemTitle,
+            itemDescription,
+            itemLocation
+          );
         }
       }
     } else {
@@ -251,9 +271,14 @@ exports.createFoundPost = async (req, res) => {
           message: "Found Post Creation Failed!",
           error: error.message,
         });
-      }finally{
+      } finally {
         if (isPostCreated) {
-          await sendNotificationEmails();
+          await sendNotificationEmails(
+            "LOST",
+            itemTitle,
+            itemDescription,
+            itemLocation
+          );
         }
       }
     }
@@ -386,7 +411,12 @@ exports.createLostPost = async (req, res) => {
         });
       } finally {
         if (isLostPostCreated) {
-          await sendNotificationEmails();
+          await sendNotificationEmails(
+            "LOST",
+            itemTitle,
+            itemDescription,
+            itemLocation
+          );
         }
       }
     } else {
@@ -475,7 +505,12 @@ exports.createLostPost = async (req, res) => {
         });
       } finally {
         if (isLostPostCreated) {
-          await sendNotificationEmails();
+          await sendNotificationEmails(
+            "LOST",
+            itemTitle,
+            itemDescription,
+            itemLocation
+          );
         }
       }
     }
