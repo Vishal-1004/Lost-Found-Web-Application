@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { increaseNotificationPopupCount } from "../actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  increaseNotificationPopupCount,
+  updateNotificationStatus,
+} from "../actions";
+import { updateNotificationFunction } from "../services/API";
+import ToastMsg from "../constants/ToastMsg";
 
-const SubscribePopup = ({ setIsSubscribed }) => {
+const SubscribePopup = () => {
   const dispatch = useDispatch();
+
+  const notifications = useSelector(
+    (state) => state.storedUserData.userData.notifications
+  );
+  const email = useSelector((state) => state.storedUserData.userData.userEmail);
 
   const [isOpen, setIsOpen] = useState(true);
 
@@ -19,9 +29,23 @@ const SubscribePopup = ({ setIsSubscribed }) => {
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const handleSubscribe = () => {
-    setIsSubscribed(true);
-    setIsOpen(false);
+  const handleSubscribe = async () => {
+    try {
+      // API call here
+      const response = await updateNotificationFunction(email, !notifications);
+      //console.log(response);
+      if (response.status == 200) {
+        dispatch(updateNotificationStatus(!notifications));
+        ToastMsg(response.data.message, "success");
+      } else {
+        ToastMsg(response.response.data.message, "error");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
+      setIsOpen(false);
+    }
   };
 
   return (
