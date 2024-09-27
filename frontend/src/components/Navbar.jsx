@@ -104,7 +104,10 @@ const Navbar = () => {
               to="/lost"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
-              <button>Lost</button>
+              <button>
+                Lost 
+                <p className='hidden lg:inline-block'>&nbsp;Items</p>
+              </button>
             </Link>
           </div>
           <div className="mx-2 block">
@@ -112,7 +115,10 @@ const Navbar = () => {
               to="/found"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
-              <button>Found</button>
+              <button>
+                Found 
+                <p className='hidden lg:inline-block'>&nbsp;Items</p>
+              </button>
             </Link>
           </div>
           <div className="mx-2 block">
@@ -120,7 +126,10 @@ const Navbar = () => {
               to="/return-item"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
             >
-              <button>Returned Items</button>
+              <button>
+                Returned 
+                <p className='hidden lg:inline-block'>&nbsp;Items</p>
+              </button>
             </Link>
           </div>
           <div className="mx-2 block">
@@ -266,6 +275,15 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
             >
               <button>Found</button>
+            </Link>
+          </div>
+          <div className="mx-2 block">
+            <Link
+              to="/return-item"
+              className="block px-4 py-2 rounded hover:bg-[#2a67b11e]"
+              onClick={() => setMenuOpen(false)}
+            >
+              <button>Returned</button>
             </Link>
           </div>
           <div className="mx-2 block">
