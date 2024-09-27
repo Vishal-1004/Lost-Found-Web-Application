@@ -19,14 +19,35 @@ const Footer = () => {
             </div>
             <div className="l_footer_list">
               <div className="l_footer_link">
-                <span className="footer_link" onClick={() => handleLinkClick('/lost')}>Lost</span>
+                <span 
+                  className="footer_link" 
+                  onClick={() => handleLinkClick('/lost')}
+                >
+                  Lost 
+                  <span className='hidden md:inline-block'>&nbsp;Items</span>
+                </span>
               </div>
               <div className="l_footer_link">
-                <span className="footer_link" onClick={() => handleLinkClick('/found')}>Found</span>
+                <span 
+                  className="footer_link" 
+                  onClick={() => handleLinkClick('/found')}
+                >
+                  Found 
+                  <span className='hidden md:inline-block'>&nbsp;Items</span>
+                </span>
               </div>
               <div className="l_footer_link">
+                <span 
+                  className="footer_link" 
+                  onClick={() => handleLinkClick('/return-item')}
+                >
+                  Returned 
+                  <span className='hidden md:inline-block'>&nbsp;Items</span>
+                </span>
+              </div>
+              {/* <div className="l_footer_link">
                 <span className="footer_link" onClick={() => handleLinkClick('/about-us')}>About Us</span>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="col-sm-3 col-md-3 my-2">
