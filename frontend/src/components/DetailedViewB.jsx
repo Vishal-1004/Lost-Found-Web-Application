@@ -6,6 +6,7 @@ import { AiFillCalendar } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import ToastMsg from "../constants/ToastMsg";
 import moment from "moment";
+import { FaAsterisk } from "react-icons/fa";
 import {
   deleteFoundItemPostByUserFunction,
   deleteLostItemPostByUserFunction,
@@ -252,7 +253,7 @@ const DetailedViewB = ({
           {/* Name Field */}
           <div className="mb-3">
             <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="name">
-              Name: *
+              Name:<FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               type="text"
@@ -268,7 +269,7 @@ const DetailedViewB = ({
           {/* Email Field */}
           <div className="mb-3">
             <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="email">
-              Email: *
+              Email: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               type="email"
@@ -284,7 +285,7 @@ const DetailedViewB = ({
           {/* Registration Number Field */}
           <div className="mb-3">
             <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="regNumber">
-              Registration Number: *
+              Registration Number: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               type="text"
@@ -300,7 +301,7 @@ const DetailedViewB = ({
           {/* Phone Number Field */}
           <div className="mb-3">
             <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="phoneNumber">
-              Phone Number: *
+              Phone Number: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               type="text"
@@ -315,7 +316,7 @@ const DetailedViewB = ({
 
           {/* Date Field */}
           <div className="mb-3">
-            <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="date">
+            <label className="text-sm font-medium text-gray-700 flex items-center " htmlFor="date">
               Date:
             </label>
             <input
@@ -342,11 +343,11 @@ const DetailedViewB = ({
   </div>
 )}
 
-{/* Popup for entering OTP */}
+
 {showEnterOTPPopup && (
   <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
     <div className="bg-white p-8 rounded-xl shadow-lg w-[90%] max-w-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center required">
         Enter OTP
       </h2>
 
@@ -355,6 +356,7 @@ const DetailedViewB = ({
           <div className="mb-3">
             <label className="text-sm font-medium text-gray-700 flex items-center" htmlFor="otp">
               OTP:
+              <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
             </label>
             <input
               type="text"
@@ -367,11 +369,10 @@ const DetailedViewB = ({
             />
           </div>
 
-          {/* Submit OTP Button */}
           <button
-            className="btnSubmit py-3 mt-6 text-white bg-blue-500 hover:bg-blue-700 font-semibold rounded-lg"
+            className="btnSubmit w-1/3 mx-auto py-3 mt-6 text-white bg-blue-500 hover:bg-blue-700 font-semibold rounded-lg"
           >
-            Submit OTP
+              Submit OTP
           </button>
         </div>
       </form>
