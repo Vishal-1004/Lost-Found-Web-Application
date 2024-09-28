@@ -3,6 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import FoundItemForm from "./FoundItemForm";
 import LostItemForm from "./LostItemForm";
 import EditForm from "./EditForm";
+import ReturnForm from "./ReturnForm";
 
 function FormPopup({ isOpen, onClose, type, editData }) {
   const popupRef = useRef(null);
@@ -67,6 +68,9 @@ function FormPopup({ isOpen, onClose, type, editData }) {
         
         {/* edit item heading */}
         {type==="edit" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Edit Item</h2>}
+        
+        {/* return item heading */}
+        {type==="return" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Return Detail</h2>}
 
         {/* form components */}
         {type==="found" && 
@@ -77,6 +81,9 @@ function FormPopup({ isOpen, onClose, type, editData }) {
         }
         {type==="edit" && 
           <EditForm onClose={onClose} editData={editData} />
+        }
+        {type==="return" && 
+          <ReturnForm onClose={onClose} />
         }
       </div>
     </div>

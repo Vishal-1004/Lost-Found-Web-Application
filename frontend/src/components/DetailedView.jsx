@@ -77,6 +77,35 @@ const DetailedView = ({
     }
   };
 
+  // return verification functionality
+  const [showOTPPopup, setShowOTPPopup] = useState(false);
+  const [showReturnFormPopup, setShowReturnFormPopup] = useState(false);
+
+  const handleOpenReturnPopup = () => {
+    setShowReturnFormPopup(true);
+  };
+
+  const handleCloseReturnPopup = () => {
+    setShowReturnFormPopup(false);
+  };
+
+  const handleReturnSubmit = (formData) => {
+    // Handle form submission (like sending the OTP)
+    console.log(formData); // This will log contact and description details
+    setShowReturnFormPopup(false);
+    setShowOTPPopup(true); // Open OTP popup after form submission
+  };
+
+  const handleCloseOTPPopup = () => {
+    setShowOTPPopup(false);
+  };
+
+  const handleOTPSubmit = (otp) => {
+    // Handle OTP validation
+    console.log("Entered OTP: ", otp);
+    setShowOTPPopup(false);
+  };
+
   const editData = {
     id,
     url,
@@ -212,6 +241,12 @@ const DetailedView = ({
               Edit
             </button>
             <button
+              className="btnSubmit bg-green-400 hover:bg-green-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              onClick={handleOpenReturnPopup}
+            >
+              Return
+            </button>
+            <button
               className="btnSubmit bg-red-400 hover:bg-red-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               onClick={handleDelete}
             >
@@ -232,6 +267,11 @@ const DetailedView = ({
         onClose={handleCloseEditPopup}
         type="edit"
         editData={editData}
+      />
+      <FormPopup
+        isOpen={showReturnFormPopup}
+        onClose={handleCloseReturnPopup}
+        type="return"
       />
     </div>
   );
