@@ -154,4 +154,7 @@ router.post(
   userControllers.createLostPost
 );
 
+// Sending OTP to receiver of the found item
+router.post("/api/v1/send-otp-to-receiver", userControllers.sendOTPToReceiverOfFoundItem)
+
 module.exports = router;

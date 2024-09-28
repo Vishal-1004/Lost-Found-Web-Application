@@ -56,6 +56,9 @@ const foundItemSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  otp: {
+    type: String,
+  },
 });
 
 // creating model

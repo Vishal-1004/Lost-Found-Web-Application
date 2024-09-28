@@ -1510,3 +1510,63 @@ exports.userSendsMessage = async (req, res) => {
     return res.status(400).json({ message: "Invalid details", error });
   }
 };
+
+// API to send OTP to a receiver who is trying to collect back his lost item from a person
+exports.sendOTPToReceiverOfFoundItem = async (req, res) => {
+  const { senderEmail, receiverEmail, foundItemID, receiverName } = req.body;
+
+  if (!senderEmail || !receiverEmail || !foundItemID || !receiverName) {
+    return res.status(400).json({ message: "Please enter all input fields" });
+  }
+
+  try {
+    // First look for the found item
+    const foundItem = await foundItems.findOne({
+      _id: foundItemID,
+      personEmail: senderEmail
+    });
+
+    if (foundItem) {
+      // Generating a random OTP
+      const OTP = Math.floor(100000 + Math.random() * 900000);
+      foundItem.otp = OTP;
+      await foundItem.save();
+
+      // Constructing the email content
+      const mailOptions = {
+        from: "vitcseguide@gmail.com",
+        to: receiverEmail,
+        subject: "OTP for Item Collection Verification",
+        text: `Hello ${receiverName},
+
+The person with email ${senderEmail} is returning your lost item. Here are the details of the item:
+
+Title: ${foundItem.title}
+Description: ${foundItem.description}
+Location Found: ${foundItem.location}
+Date Found: ${new Date(foundItem.date).toLocaleDateString()}
+
+Please use the following OTP to verify your identity and collect the item:
+
+OTP: ${OTP}
+
+Thank you,
+Lost & Found Team`
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log("error", error);
+          return res.status(400).json({ message: "Email not sent" });
+        } else {
+          console.log("Email sent", info.response);
+          return res.status(200).json({ message: "Email sent successfully" });
+        }
+      });
+    } else {
+      return res.status(400).json({ message: "This found item doesn't exist" });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid details", error });
+  }
+};
