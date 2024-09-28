@@ -4,6 +4,7 @@ const {
   foundItems,
   nonRegisteredUser,
   lostItems,
+  returnedItems,
 } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -1523,7 +1524,7 @@ exports.sendOTPToReceiverOfFoundItem = async (req, res) => {
     // First look for the found item
     const foundItem = await foundItems.findOne({
       _id: foundItemID,
-      personEmail: senderEmail
+      personEmail: senderEmail,
     });
 
     if (foundItem) {
@@ -1551,7 +1552,7 @@ Please use the following OTP to verify your identity and collect the item:
 OTP: ${OTP}
 
 Thank you,
-Lost & Found Team`
+Lost & Found Team`,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
@@ -1565,6 +1566,76 @@ Lost & Found Team`
       });
     } else {
       return res.status(400).json({ message: "This found item doesn't exist" });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid details", error });
+  }
+};
+
+// API to verify OTP given by the receiver who is trying to colleck back his lost item from a person
+exports.verifyOTPByReceiver = async (req, res) => {
+  const {
+    otpToVerify,
+    senderEmail,
+    foundItemID,
+    receiverEmail,
+    receiverName,
+    receiverRegNo,
+    receiverPhoneNo,
+  } = req.body;
+
+  if (
+    !otpToVerify ||
+    !senderEmail ||
+    !foundItemID ||
+    !receiverEmail ||
+    !receiverName ||
+    !receiverPhoneNo ||
+    !receiverRegNo
+  ) {
+    return res.status(400).json({ message: "Please enter all input fields" });
+  }
+
+  try {
+    // First look for the found item
+    const foundItem = await foundItems.findOne({
+      _id: foundItemID,
+      personEmail: senderEmail,
+    });
+
+    if (foundItem) {
+      if (foundItem.otp == otpToVerify) {
+        const newReturnedItem = new returnedItems({
+          title: foundItem.title,
+          itemImage: foundItem.itemImage,
+          location: foundItem.location,
+          description: foundItem.description,
+          personName: foundItem.personName,
+          personRegistrationNumber: foundItem.personRegistrationNumber,
+          personEmail: foundItem.personEmail,
+          personDayScholarORhosteler: foundItem.personDayScholarORhosteler,
+          personStatus: foundItem.personStatus,
+          personNumber: foundItem.personNumber,
+          returnedPersonName: receiverName,
+          returnedPersonEmail: receiverEmail,
+          returnedPersonRegNo: receiverRegNo,
+          returnedPersonPhoneNo: receiverPhoneNo,
+        });
+        await newReturnedItem.save();
+
+        await foundItems.deleteOne({ _id: foundItemID });
+
+        await users.updateOne(
+          { email: senderEmail },
+          { $pull: { foundItemsID: new mongoose.Types.ObjectId(foundItemID) } }
+        );
+
+        return res.status(200).json({ message: "Item returned successfully" });
+      } else {
+        return res.status(400).json({ message: "Wrong OTP entered" });
+      }
+    } else {
+      return res.status(400).json({ message: "No such found item exists" });
     }
   } catch (error) {
     return res.status(400).json({ message: "Invalid details", error });

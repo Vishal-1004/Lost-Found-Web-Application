@@ -157,4 +157,7 @@ router.post(
 // Sending OTP to receiver of the found item
 router.post("/api/v1/send-otp-to-receiver", userControllers.sendOTPToReceiverOfFoundItem)
 
+// Verifying OTP from the receiver of the found item
+router.post("/api/v1/verify-otp-from-receiver", userControllers.verifyOTPByReceiver)
+
 module.exports = router;
