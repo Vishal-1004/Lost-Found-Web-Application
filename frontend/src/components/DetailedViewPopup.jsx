@@ -69,7 +69,7 @@ const DetailedViewPopup = ({ item, onClose, type }) => {
 
         {/* Detailed view card component */}
         {type === "found" ? (
-          <DetailedViewB
+          <DetailedView
             id={_id}
             url={itemImage}
             title={title}

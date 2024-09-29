@@ -1,25 +1,11 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+
 import ToastMsg from "../constants/ToastMsg";
-import { createFoundItemPost } from "../services/API";
-import { tryFetchingData } from "../actions";
-import { defaultPostImage } from "../assets";
 
-// default locations available
-const locations = [
-  "Custom",
-  "Clock Court",
-  "Gazebo",
-  "AB-1",
-  "AB-2",
-  "AB-3",
-  "Delta Block",
-];
-
-function FoundItemForm({ onClose }) {
-
+function ReturnForm({ onClose, onSubmit }) {
+  
   const [formLoading, setFormLoading] = useState(false);
   const {
     register,
@@ -41,8 +27,10 @@ function FoundItemForm({ onClose }) {
   // on submit
   const handleFormSubmit = async (formData) => {
     // setFormLoading(true);
-    const formDataToSend = new FormData();
     console.log(formData);
+    ToastMsg("OTP sent successfully", "success");
+
+    onSubmit();
   };
 
   // capitalize reg no
@@ -71,7 +59,8 @@ function FoundItemForm({ onClose }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="returnedName"
           >
-            Name: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Name:{" "}
+            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-500 ${
@@ -129,7 +118,8 @@ function FoundItemForm({ onClose }) {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="returnedEmail"
         >
-          Email: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          Email:{" "}
+          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <input
           className={`form-control text-gray-500 ${
@@ -224,7 +214,8 @@ function FoundItemForm({ onClose }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="date"
           >
-            Date: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Date:{" "}
+            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-400 ${
@@ -263,8 +254,16 @@ function FoundItemForm({ onClose }) {
           )}
         </button>
       </div>
+
+      {/* OTP Popup */}
+      {/* <FormPopup
+        isOpen={otpPopupVisible}
+        onClose={handleCloseOTPPopup}
+        type="otp"
+        returnDetail={data}
+      /> */}
     </form>
   );
 }
 
-export default FoundItemForm;
+export default ReturnForm;

@@ -4,8 +4,9 @@ import FoundItemForm from "./FoundItemForm";
 import LostItemForm from "./LostItemForm";
 import EditForm from "./EditForm";
 import ReturnForm from "./ReturnForm";
+import OTPForm from "./OTPForm";
 
-function FormPopup({ isOpen, onClose, type, editData }) {
+function FormPopup({ isOpen, onClose, type, editData, returnDetail, onSubmit }) {
   const popupRef = useRef(null);
 
   const handleCloseOnOutsideClick = (e) => {
@@ -71,6 +72,9 @@ function FormPopup({ isOpen, onClose, type, editData }) {
         
         {/* return item heading */}
         {type==="return" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Return Detail</h2>}
+        
+        {/* otp verification heading */}
+        {type==="otp" && <h2 className="text-2xl sm:text-3xl text-gray-500 hover:text-gray-600 font-bold mb-4 text-center">Enter OTP</h2>}
 
         {/* form components */}
         {type==="found" && 
@@ -83,7 +87,10 @@ function FormPopup({ isOpen, onClose, type, editData }) {
           <EditForm onClose={onClose} editData={editData} />
         }
         {type==="return" && 
-          <ReturnForm onClose={onClose} />
+          <ReturnForm onClose={onClose} onSubmit={onSubmit} />
+        }
+        {type==="otp" && 
+          <OTPForm onClose={onClose} />
         }
       </div>
     </div>

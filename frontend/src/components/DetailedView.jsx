@@ -24,7 +24,7 @@ const DetailedView = ({
 }) => {
   const dispatch = useDispatch();
 
-  //console.log(type);
+  // console.log(type);
   const userToken = useSelector((state) => state.storedUserData.userToken);
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   const userEmail = useSelector(
@@ -91,18 +91,11 @@ const DetailedView = ({
 
   const handleReturnSubmit = (formData) => {
     // Handle form submission (like sending the OTP)
-    console.log(formData); // This will log contact and description details
-    setShowReturnFormPopup(false);
-    setShowOTPPopup(true); // Open OTP popup after form submission
+    setShowReturnFormPopup(false); // Close the return form popup
+    setShowOTPPopup(true); // Open OTP popup after return form submission
   };
 
   const handleCloseOTPPopup = () => {
-    setShowOTPPopup(false);
-  };
-
-  const handleOTPSubmit = (otp) => {
-    // Handle OTP validation
-    console.log("Entered OTP: ", otp);
     setShowOTPPopup(false);
   };
 
@@ -240,12 +233,15 @@ const DetailedView = ({
             >
               Edit
             </button>
-            <button
-              className="btnSubmit bg-green-400 hover:bg-green-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              onClick={handleOpenReturnPopup}
-            >
-              Return
-            </button>
+            {/* Return button */}
+            {type=="found" && (
+              <button
+                className="btnSubmit bg-green-400 hover:bg-green-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                onClick={handleOpenReturnPopup}
+              >
+                Return
+              </button>
+            )}
             <button
               className="btnSubmit bg-red-400 hover:bg-red-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               onClick={handleDelete}
@@ -271,7 +267,13 @@ const DetailedView = ({
       <FormPopup
         isOpen={showReturnFormPopup}
         onClose={handleCloseReturnPopup}
+        onSubmit={handleReturnSubmit}
         type="return"
+      />
+      <FormPopup
+        isOpen={showOTPPopup}
+        onClose={handleCloseOTPPopup}
+        type="otp"
       />
     </div>
   );
