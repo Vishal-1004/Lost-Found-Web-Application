@@ -5,7 +5,7 @@ import { FaAsterisk, FaSpinner } from "react-icons/fa";
 import ToastMsg from "../constants/ToastMsg";
 
 function ReturnForm({ onClose, onSubmit }) {
-  
+
   const [formLoading, setFormLoading] = useState(false);
   const {
     register,
@@ -27,10 +27,10 @@ function ReturnForm({ onClose, onSubmit }) {
   // on submit
   const handleFormSubmit = async (formData) => {
     // setFormLoading(true);
-    console.log(formData);
+    // console.log(formData);
     ToastMsg("OTP sent successfully", "success");
 
-    onSubmit();
+    onSubmit(formData);
   };
 
   // capitalize reg no
@@ -212,25 +212,25 @@ function ReturnForm({ onClose, onSubmit }) {
         <div className="mb-3 w-full sm:w-1/2">
           <label
             className="text-sm font-medium text-gray-700 flex items-center"
-            htmlFor="date"
+            htmlFor="returnDate"
           >
             Date:{" "}
             <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-400 ${
-              errors.date ? "border-red-500" : ""
+              errors.returnDate ? "border-red-500" : ""
             }`}
-            name="date"
+            name="returnDate"
             type="date"
-            id="date"
+            id="returnDate"
             defaultValue={currentDate}
-            {...register("date", { required: "This field is required" })}
+            {...register("returnDate", { required: "This field is required" })}
             min={lastYearDateString}
             max={currentDate}
           />
-          {errors.date && (
-            <div className="invalid-feedback">{errors.date.message}</div>
+          {errors.returnDate && (
+            <div className="invalid-feedback">{errors.returnDate.message}</div>
           )}
         </div>
       </div>

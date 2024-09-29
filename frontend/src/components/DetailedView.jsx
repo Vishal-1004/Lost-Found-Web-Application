@@ -80,6 +80,7 @@ const DetailedView = ({
   // return verification functionality
   const [showOTPPopup, setShowOTPPopup] = useState(false);
   const [showReturnFormPopup, setShowReturnFormPopup] = useState(false);
+  const [returnDetails, setReturnDetails] = useState();
 
   const handleOpenReturnPopup = () => {
     setShowReturnFormPopup(true);
@@ -91,6 +92,7 @@ const DetailedView = ({
 
   const handleReturnSubmit = (formData) => {
     // Handle form submission (like sending the OTP)
+    setReturnDetails(formData);
     setShowReturnFormPopup(false); // Close the return form popup
     setShowOTPPopup(true); // Open OTP popup after return form submission
   };
@@ -274,6 +276,7 @@ const DetailedView = ({
         isOpen={showOTPPopup}
         onClose={handleCloseOTPPopup}
         type="otp"
+        returnDetails={returnDetails}
       />
     </div>
   );

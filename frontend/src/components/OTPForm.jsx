@@ -4,7 +4,7 @@ import { FaAsterisk, FaSpinner } from 'react-icons/fa';
 
 import ToastMsg from "../constants/ToastMsg";
 
-function OTPForm({ onClose }) {
+function OTPForm({ onClose, returnDetails }) {
   const [formLoading, setFormLoading] = useState(false);
 
   const {
@@ -21,6 +21,7 @@ function OTPForm({ onClose }) {
   // Handle OTP form submission
   const handleOtpSubmit = async (formData) => {
     // setFormLoading(true);
+    console.log(returnDetails);
     console.log(formData);
     ToastMsg("OTP submitted successfully", "success");
     onClose();

@@ -6,7 +6,7 @@ import EditForm from "./EditForm";
 import ReturnForm from "./ReturnForm";
 import OTPForm from "./OTPForm";
 
-function FormPopup({ isOpen, onClose, type, editData, returnDetail, onSubmit }) {
+function FormPopup({ isOpen, onClose, type, editData, returnDetails, onSubmit }) {
   const popupRef = useRef(null);
 
   const handleCloseOnOutsideClick = (e) => {
@@ -90,7 +90,7 @@ function FormPopup({ isOpen, onClose, type, editData, returnDetail, onSubmit }) 
           <ReturnForm onClose={onClose} onSubmit={onSubmit} />
         }
         {type==="otp" && 
-          <OTPForm onClose={onClose} />
+          <OTPForm onClose={onClose} returnDetails={returnDetails} />
         }
       </div>
     </div>
