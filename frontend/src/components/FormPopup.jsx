@@ -42,13 +42,13 @@ function FormPopup({ isOpen, onClose, type, editData, returnDetail, onSubmit }) 
   return (
     // dull backdrop
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[150]">
-        <style>
-            {`
-              .modal {
-                scrollbar-width: none;
-              }
-            `}
-        </style>
+      <style>
+          {`
+            .modal {
+              scrollbar-width: none;
+            }
+          `}
+      </style>
       {/* popup div */}
       <div 
         ref={popupRef}

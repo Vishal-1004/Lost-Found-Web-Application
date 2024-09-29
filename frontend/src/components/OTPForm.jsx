@@ -32,6 +32,10 @@ function OTPForm({ onClose }) {
       onSubmit={handleSubmit(handleOtpSubmit)} 
       noValidate
     >
+      <div className="mb-3 text-sm sm:text-md font-semibold text-red-400 text-center">
+        <p>An OTP has been sent to your email.</p>
+        <p>Please enter it in the field given below to verify.</p>
+      </div>
       {/* OTP input field */}
       <div className="mb-3">
         <label 
