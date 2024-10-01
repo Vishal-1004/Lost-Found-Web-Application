@@ -9,6 +9,7 @@ import moment from "moment";
 import {
   deleteFoundItemPostByUserFunction,
   deleteLostItemPostByUserFunction,
+  sendOTPToReceiverOfFoundItem,
 } from "../services/API";
 import { tryFetchingData } from "../actions";
 
@@ -23,8 +24,6 @@ const DetailedView = ({
   type,
 }) => {
   const dispatch = useDispatch();
-
-  // console.log(type);
   const userToken = useSelector((state) => state.storedUserData.userToken);
   const userStatus = useSelector((state) => state.storedUserData.userStatus);
   const userEmail = useSelector(
@@ -90,11 +89,38 @@ const DetailedView = ({
     setShowReturnFormPopup(false);
   };
 
-  const handleReturnSubmit = (formData) => {
+  const handleReturnSubmit = async (formData) => {
     // Handle form submission (like sending the OTP)
     setReturnDetails(formData);
-    setShowReturnFormPopup(false); // Close the return form popup
-    setShowOTPPopup(true); // Open OTP popup after return form submission
+    try {
+      console.log(formData);
+      const { returnedName, returnedEmail } = formData;
+      const response = await sendOTPToReceiverOfFoundItem(
+        userEmail,
+        returnedEmail,
+        id,
+        returnedName
+      );
+
+      //console.log(response);
+      if (response.status == 200) {
+        ToastMsg(response.data.message, "success");
+        setShowOTPPopup(true); // Open OTP popup after return form submission
+      } else {
+        ToastMsg(response.response.data.message, "success");
+      }
+    } catch (error) {
+      ToastMsg("Server error! please try later", "error");
+      console.log("Internal Server Error: ", error);
+    } finally {
+      // Add 'id' to returnDetails
+      setReturnDetails((prevDetails) => ({
+        ...prevDetails,
+        id,
+      }));
+
+      setShowReturnFormPopup(false); // Close the return form popup
+    }
   };
 
   const handleCloseOTPPopup = () => {
@@ -236,7 +262,7 @@ const DetailedView = ({
               Edit
             </button>
             {/* Return button */}
-            {type=="found" && (
+            {type == "found" && (
               <button
                 className="btnSubmit bg-green-400 hover:bg-green-600 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 onClick={handleOpenReturnPopup}
@@ -283,6 +309,7 @@ const DetailedView = ({
 };
 
 DetailedView.propTypes = {
+  id: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

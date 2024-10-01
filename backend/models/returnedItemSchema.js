@@ -59,6 +59,12 @@ const returnedItemSchema = new mongoose.Schema({
   returnedPersonEmail: { type: String, required: true },
   returnedPersonRegNo: { type: String, required: true },
   returnedPersonPhoneNo: { type: Number, default: undefined },
+  returnedPersonDayScholarORhosteler: {
+    type: String,
+    enum: ["Day Scholar", "Hosteler"],
+    default: "Day Scholar",
+    required: true,
+  },
   returnDate: {
     type: Date,
     required: true,

@@ -278,3 +278,33 @@ export const userSendsAMessageFunction = async (name, email, message) => {
     { name, email, message }
   );
 }
+
+// API to send OTP to the receiver of the Found item
+export const sendOTPToReceiverOfFoundItem = async (senderEmail, receiverEmail, foundItemID, receiverName ) => {
+  return await commonrequest(
+    "POST",`${BACKEND_URL}/api/v1/send-otp-to-receiver`,
+    { senderEmail, receiverEmail, foundItemID, receiverName }
+  )
+}
+
+// API to veirfy the OTP from the receiver of the Found item
+export const  verifyOTPToReceiveFoundItem = async (otpToVerify,
+  senderEmail,
+  foundItemID,
+  receiverEmail,
+  receiverName,
+  receiverRegNo,
+  receiverPhoneNo,
+  receiverDayScholarOrHosteler) => {
+  return await commonrequest(
+    "POST",`${BACKEND_URL}/api/v1/verify-otp-from-receiver`,
+    { otpToVerify,
+      senderEmail,
+      foundItemID,
+      receiverEmail,
+      receiverName,
+      receiverRegNo,
+      receiverPhoneNo,
+      receiverDayScholarOrHosteler }
+  )
+}

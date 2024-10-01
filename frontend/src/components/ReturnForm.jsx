@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { FaAsterisk, FaSpinner } from "react-icons/fa";
 
-import ToastMsg from "../constants/ToastMsg";
-
 function ReturnForm({ onClose, onSubmit }) {
-
   const [formLoading, setFormLoading] = useState(false);
   const {
     register,
@@ -26,9 +24,9 @@ function ReturnForm({ onClose, onSubmit }) {
 
   // on submit
   const handleFormSubmit = async (formData) => {
-    // setFormLoading(true);
+    setFormLoading(true);
     // console.log(formData);
-    ToastMsg("OTP sent successfully", "success");
+    //ToastMsg("OTP sent successfully", "success");
 
     onSubmit(formData);
   };
@@ -59,8 +57,7 @@ function ReturnForm({ onClose, onSubmit }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="returnedName"
           >
-            Name:{" "}
-            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Name: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-500 ${
@@ -75,7 +72,9 @@ function ReturnForm({ onClose, onSubmit }) {
             })}
           />
           {errors.returnedName && (
-            <div className="invalid-feedback">{errors.returnedName.message}</div>
+            <div className="invalid-feedback">
+              {errors.returnedName.message}
+            </div>
           )}
         </div>
 
@@ -118,8 +117,7 @@ function ReturnForm({ onClose, onSubmit }) {
           className="text-sm font-medium text-gray-700 flex items-center"
           htmlFor="returnedEmail"
         >
-          Email:{" "}
-          <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+          Email: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
         </label>
         <input
           className={`form-control text-gray-500 ${
@@ -214,8 +212,7 @@ function ReturnForm({ onClose, onSubmit }) {
             className="text-sm font-medium text-gray-700 flex items-center"
             htmlFor="returnDate"
           >
-            Date:{" "}
-            <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
+            Date: <FaAsterisk className="text-red-500 ml-[2px] text-[6px]" />
           </label>
           <input
             className={`form-control text-gray-400 ${
@@ -265,5 +262,13 @@ function ReturnForm({ onClose, onSubmit }) {
     </form>
   );
 }
+
+ReturnForm.propTypes = {
+  returnData: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    // Other fields in returnData
+  }).isRequired,
+  // Other prop validations
+};
 
 export default ReturnForm;

@@ -1582,6 +1582,7 @@ exports.verifyOTPByReceiver = async (req, res) => {
     receiverName,
     receiverRegNo,
     receiverPhoneNo,
+    receiverDayScholarOrHosteler,
   } = req.body;
 
   if (
@@ -1591,7 +1592,8 @@ exports.verifyOTPByReceiver = async (req, res) => {
     !receiverEmail ||
     !receiverName ||
     !receiverPhoneNo ||
-    !receiverRegNo
+    !receiverRegNo ||
+    !receiverDayScholarOrHosteler
   ) {
     return res.status(400).json({ message: "Please enter all input fields" });
   }
@@ -1620,6 +1622,7 @@ exports.verifyOTPByReceiver = async (req, res) => {
           returnedPersonEmail: receiverEmail,
           returnedPersonRegNo: receiverRegNo,
           returnedPersonPhoneNo: receiverPhoneNo,
+          returnedPersonDayScholarORhosteler: receiverDayScholarOrHosteler,
         });
         await newReturnedItem.save();
 
