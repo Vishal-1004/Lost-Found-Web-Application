@@ -94,6 +94,8 @@ router.post("/api/v1/get-found-items", userControllers.fetchFoundItems);
 
 //Getting all lost items
 router.post("/api/v1/get-lost-items", userControllers.fetchLostItems);
+//Getting all returned items
+router.post("/api/v1/get-returned-items", userControllers.fetchReturnedItems);
 
 // Get all users for admin to show
 router.post("/api/v1/get-all-users", adminControllers.getAllUsers);
@@ -155,9 +157,15 @@ router.post(
 );
 
 // Sending OTP to receiver of the found item
-router.post("/api/v1/send-otp-to-receiver", userControllers.sendOTPToReceiverOfFoundItem)
+router.post(
+  "/api/v1/send-otp-to-receiver",
+  userControllers.sendOTPToReceiverOfFoundItem
+);
 
 // Verifying OTP from the receiver of the found item
-router.post("/api/v1/verify-otp-from-receiver", userControllers.verifyOTPByReceiver)
+router.post(
+  "/api/v1/verify-otp-from-receiver",
+  userControllers.verifyOTPByReceiver
+);
 
 module.exports = router;
