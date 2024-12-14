@@ -779,6 +779,70 @@ exports.fetchFoundItems = async (req, res) => {
   }
 };
 
+// getting all returned items
+exports.fetchReturnedItems = async (req, res) => {
+  try {
+    const {
+      all,
+      count,
+      page = 1,
+      search = "",
+      sortOrder = -1,
+      limit = 6,
+    } = req.query;
+
+    if (all === "true" || all === "1") {
+      const skip = (page - 1) * limit;
+
+      const searchFilter = {
+        $or: [
+          { title: new RegExp(search, "i") },
+          { description: new RegExp(search, "i") },
+        ],
+      };
+
+      const returnedItemsAll = await returnedItems
+        .find(searchFilter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: parseInt(sortOrder, 10) });
+
+      const totalReturnedItemsPost = await returnedItems.countDocuments(
+        searchFilter
+      );
+
+      return res.status(200).json({
+        message: "All Returned Items Fetched Successfully!",
+        data: returnedItemsAll,
+        totalPages: Math.ceil(totalReturnedItemsPost / limit),
+        currentPage: page,
+        limit: limit,
+        sortOrder: sortOrder,
+      });
+    } else if (count) {
+      const countValue = parseInt(count, 10);
+      if (isNaN(countValue)) {
+        return res.status(400).json({ message: "Invalid count value" });
+      }
+
+      const returnedItemsCount = await returnedItems
+        .find()
+        .sort({ createdAt: -1 })
+        .limit(countValue);
+
+      return res.status(200).json({
+        message: "Returned Items Fetched Successfully!",
+        data: returnedItemsCount,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid parameter" });
+    }
+  } catch (error) {
+    console.error("Error fetching returned items:", error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 // updating your password
 exports.updatePassword = async (req, res) => {
   const { email, oldPassword, newPassword } = req.body;
