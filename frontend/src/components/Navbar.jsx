@@ -121,7 +121,7 @@ const Navbar = () => {
               </button>
             </Link>
           </div>
-          <div className="mx-2 block">
+{/*           <div className="mx-2 block">
             <Link
               to="/return-item"
               className="block px-4 py-2 rounded hover:bg-[#2a67b11e] coursor-pointer"
@@ -131,7 +131,7 @@ const Navbar = () => {
                 <p className='hidden lg:inline-block'>&nbsp;Items</p>
               </button>
             </Link>
-          </div>
+          </div> */}
           <div className="mx-2 block">
             <Link
               to="/about-us"
