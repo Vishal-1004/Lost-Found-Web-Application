@@ -221,8 +221,8 @@ const AboutUs = () => {
                 name="Surya M.U"
                 image={surya}
                 link="https://linkedin.com/in/suryamu7"
-              />
-            </div> */}
+              /> */}
+            </div>
           </div>
           <div className="inline-block items-bottom">
             <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
