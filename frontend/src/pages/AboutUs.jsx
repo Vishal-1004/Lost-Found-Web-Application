@@ -19,23 +19,35 @@ const AboutUs = () => {
           Problem Statement
         </h1>
         <p className="pt-6 pb-10 text-gray-600 leading-loose">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut facere ea,
-          rerum quo sunt cum pariatur consectetur voluptatibus ratione
-          voluptatem voluptates, perferendis quaerat vero? Obcaecati, in quidem?
-          Provident nobis libero voluptate itaque inventore fugiat iste
-          consectetur quod enim veniam, aspernatur nulla dolores maxime dicta!
-          Porro voluptates molestias impedit incidunt natus!
+          Losing personal belongings in crowded places like college campuses, 
+          offices, or public areas is a common and frustrating experience. Despite
+          the frequency of such incidents, there is often no reliable or 
+          centralized system to help individuals report, track, or recover lost 
+          items. Traditional methods—such as notice boards, word of mouth, or 
+          group chats—are inefficient, unorganized, and offer limited reach, 
+          leading to many items remaining unclaimed or permanently lost.
         </p>
         <h1 className="text-4xl font-bold text-gray-800 pb-6 border-b border-gray-300">
           How We Are Solving the Problem?
         </h1>
         <p className="pt-6 pb-10 text-gray-600 leading-loose">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum sunt,
-          nemo repellat tempora asperiores pariatur quasi consequuntur ipsam
-          fugiat facilis quia illum, enim impedit ea sit ipsa? Totam illum non
-          neque voluptatum excepturi officiis omnis itaque, incidunt distinctio
-          cupiditate iure. Fugiat cum aspernatur quis? Dolores dicta totam
-          officia quo excepturi.
+          Our <strong>Lost & Found</strong> platform provides a digital-first, community-driven 
+          solution to bridge the gap between people who lose items and those who find them. 
+          Here's how we address the issue:
+          <br /><br />
+          • <strong>Report Lost Items Easily</strong>: Users can quickly submit details and images 
+          of lost items, making it easier for others to identify and return them. <br />
+          • <strong>Post Found Items</strong>: Individuals who discover unclaimed belongings can 
+          upload information and photos, increasing visibility and chances of recovery. <br />
+          • <strong>Smart Matching System</strong>: Our platform uses category tags and location 
+          filters to suggest possible matches between lost and found reports. <br />
+          • <strong>Real-Time Alerts</strong>: Users receive notifications when similar items 
+          are reported, helping them act quickly. <br />
+          • <strong>Secure Communication</strong>: Built-in messaging ensures safe, anonymous 
+          communication between the item owner and finder until the return is arranged.
+          <br /><br />
+          By providing a structured and accessible ecosystem, we reduce stress, save time, 
+          and improve the chances of lost items being successfully returned.
         </p>
         <div>
           <h1 className="text-4xl font-bold text-gray-800 pb-6 border-b border-gray-300">
