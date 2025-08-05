@@ -209,7 +209,7 @@ const AboutUs = () => {
         <div className="flex flex-col md:scale-110 md:py-10 lg:scale-100 lg:flex-row justify-evenly items-center lg:items-end ">
           <div className="inline-block items-bottom">
             <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-              Frontend Developer
+              Frontend Developers
             </h3>
             <div className="flex">
               <TeamCard
@@ -217,11 +217,11 @@ const AboutUs = () => {
                 image={shashank}
                 link="https://www.linkedin.com/in/shashank-sharma-733ba126b/"
               />
-{/*               <TeamCard
+               <TeamCard
                 name="Surya M.U"
                 image={surya}
                 link="https://linkedin.com/in/suryamu7"
-              /> */}
+              /> 
             </div>
           </div>
           <div className="inline-block items-bottom">
